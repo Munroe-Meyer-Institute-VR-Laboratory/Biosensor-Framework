@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 
+using MMIVR.MachineLearningUtilities;
+
 namespace MMIVR.Extensions
 {
     public static class ArrayExtensions
