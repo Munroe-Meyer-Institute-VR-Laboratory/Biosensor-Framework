@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 
 using MMIVR.BiosensorFramework.DataProcessing.ThirdParty.DSPLib;
+using MMIVR.BiosensorFramework.Extensions;
 
 namespace MMIVR.BiosensorFramework.DataProcessing
 {
