@@ -1,6 +1,6 @@
 ﻿using Microsoft.ML.Data;
 
-namespace MMIVR.MachineLearningUtilities
+namespace MMIVR.BiosensorFramework.MachineLearningUtilities
 {
     public class ExtractedFeatures
     {

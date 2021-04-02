@@ -6,10 +6,10 @@ using MathNet.Numerics;
 using MathNet.Numerics.Integration;
 using MathNet.Numerics.LinearAlgebra;
 
-using MMIVR.DataProcessing.ThirdParty.DSPLib;
-using MMIVR.Extensions;
+using MMIVR.BiosensorFramework.DataProcessing.ThirdParty.DSPLib;
+using MMIVR.BiosensorFramework.Extensions;
 
-namespace MMIVR.DataProcessing
+namespace MMIVR.BiosensorFramework.DataProcessing
 {
     class FeatureExtraction
     {

@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 
-using MMIVR.MachineLearningUtilities;
+using MMIVR.BiosensorFramework.MachineLearningUtilities;
 
-namespace MMIVR.Extensions
+namespace MMIVR.BiosensorFramework.Extensions
 {
     public static class ArrayExtensions
     {

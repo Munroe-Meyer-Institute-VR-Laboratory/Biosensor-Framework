@@ -14,7 +14,7 @@ using System.Diagnostics;
 // 15Oct17 - 1.03.1 - Slight interoperability correction to V1.03, same results, different design pattern.
 
 
-namespace MMIVR.DataProcessing
+namespace MMIVR.BiosensorFramework.DataProcessing
 {
     #region =====[ FFT Implementation Utilities ]========================================
 
@@ -48,7 +48,7 @@ namespace MMIVR.DataProcessing
     #endregion
 }
 
-namespace MMIVR.DataProcessing.ThirdParty.DSPLib
+namespace MMIVR.BiosensorFramework.DataProcessing.ThirdParty.DSPLib
 { 
     #region =====[ Signal Filter Implementations ]========================================
     /// <summary>
