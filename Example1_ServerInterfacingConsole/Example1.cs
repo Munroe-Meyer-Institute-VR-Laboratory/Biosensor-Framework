@@ -58,7 +58,7 @@ namespace Example1_ServerInterfacingConsole
         }
         private static void PullData()
         {
-            var WindowData = Utilities.GrabWindow(Device1, @"C:\Users\Walker Arce\Documents\Business\Research\UNMC\Software\CSharp\E4-Inferencing\ConsoleInterfacing\E4ServerInterfacing\Saved Readings\Readings.e4");
+            var WindowData = Utilities.GrabWindow(Device1, @"C:\Readings.data");
             foreach (ServerClient.DeviceStreams data in Enum.GetValues(typeof(ServerClient.DeviceStreams)))
             {
                 Console.WriteLine("Writing {0} data from last window:", data.ToString());
