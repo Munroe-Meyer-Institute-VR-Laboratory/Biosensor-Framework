@@ -389,7 +389,7 @@ namespace MMIVR.BiosensorFramework.Biosensors.EmpaticaE4
             int DevicesFound = int.Parse(responses[2]);
             if (DevicesFound == 0)
             {
-                //Console.WriteLine("No Devices Found");
+                throw new DeviceNotAvailableException("No devices found connected to server.");
             }
             else
             {
@@ -397,7 +397,6 @@ namespace MMIVR.BiosensorFramework.Biosensors.EmpaticaE4
                 {
                     Utilities.AvailableDevices.Add(responses[i]);
                 }
-                //Console.WriteLine("Devices added to Available Devices list");
             }
         }
         private void HandleDiscoverResponseBTLE(string[] responses)
@@ -405,7 +404,7 @@ namespace MMIVR.BiosensorFramework.Biosensors.EmpaticaE4
             int DevicesFound = int.Parse(responses[2]);
             if (DevicesFound == 0)
             {
-                //Console.WriteLine("No Devices Found");
+                throw new DeviceNotAvailableException("No devices found connected to server.");
             }
             else
             {
@@ -416,7 +415,6 @@ namespace MMIVR.BiosensorFramework.Biosensors.EmpaticaE4
                         Utilities.AvailableDevices.Add(responses[i]);
                     }
                 }
-                //Console.WriteLine("Devices added to Available Devices list");
             }
         }
         public void TagStressEvent()

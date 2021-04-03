@@ -23,6 +23,8 @@ namespace Example1_ServerInterfacingConsole
             //Train.RunBenchmarks(out ITransformer RegModel, out ITransformer MultiModel, out ITransformer BinModel);
             //Console.ReadKey();
             Console.WriteLine("E4 Console Interface - Press ENTER to begin the client");
+
+            Console.WriteLine("Step 1 - Start Empatica server");
             Utilities.StartE4ServerGUI();
 
             client = new ServerClient();
@@ -30,11 +32,12 @@ namespace Example1_ServerInterfacingConsole
             client.StartClient();
             Utilities.StartE4Server(APIKey);
 
-            Console.WriteLine("Getting connected E4 devices");
+            Console.WriteLine("Step 2 - Getting connected E4 devices");
             Utilities.ListDiscoveredDevices(client);
             Console.ReadKey();
 
-            Utilities.AvailableDevices.ForEach(i => Console.WriteLine("Device Name: {0}", i));
+            Console.WriteLine("     Available Devices:");
+            Utilities.AvailableDevices.ForEach(i => Console.WriteLine("     Device Name: {0}", i));
             Console.ReadKey();
 
             Device1 = new ServerClient();
@@ -44,12 +47,12 @@ namespace Example1_ServerInterfacingConsole
             Console.ReadKey();
 
             Utilities.SuspendStreaming(Device1);
-            Console.WriteLine("Adding streams");
+            Console.WriteLine("Step 3 - Adding biometric data streams");
 
             foreach (ServerClient.DeviceStreams stream in Enum.GetValues(typeof(ServerClient.DeviceStreams)))
             {
                 Thread.Sleep(100);
-                Console.WriteLine("Adding new stream: " + stream.ToString());
+                Console.WriteLine("     Adding new stream: " + stream.ToString());
                 Utilities.SubscribeToStream(Device1, stream);
             }
 
