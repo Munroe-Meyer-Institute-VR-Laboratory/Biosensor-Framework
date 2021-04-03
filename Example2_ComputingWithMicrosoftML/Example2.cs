@@ -6,7 +6,7 @@ using Microsoft.ML;
 using MMIVR.BiosensorFramework.Biosensors.EmpaticaE4;
 using MMIVR.BiosensorFramework.MachineLearningUtilities;
 
-namespace Example1_ServerInterfacingConsole
+namespace Example2_ComputingWithMicrosoftML
 {
     class Program
     {
@@ -15,22 +15,25 @@ namespace Example1_ServerInterfacingConsole
         public static MLContext mlContext;
         public static ITransformer Model;
         public static DataViewSchema ModelSchema;
+        // TODO: Fill these out with your own values
         public static string APIKey = "";
+        public static string ServerPath = "";
 
         static void Main(string[] args)
         {
-            //mlContext = new MLContext();
-            //Train.RunBenchmarks(out ITransformer RegModel, out ITransformer MultiModel, out ITransformer BinModel);
-            //Console.ReadKey();
+            mlContext = new MLContext();
+            Train.RunBenchmarks(out ITransformer RegModel, out ITransformer MultiModel, out ITransformer BinModel);
+            Console.ReadKey();
+
             Console.WriteLine("E4 Console Interface - Press ENTER to begin the client");
 
             Console.WriteLine("Step 1 - Start Empatica server");
-            Utilities.StartE4ServerGUI();
+            Utilities.StartE4ServerGUI(ServerPath);
 
             client = new ServerClient();
             Console.ReadKey();
             client.StartClient();
-            Utilities.StartE4Server(APIKey);
+            Utilities.StartE4Server(ServerPath, APIKey);
 
             Console.WriteLine("Step 2 - Getting connected E4 devices");
             Utilities.ListDiscoveredDevices(client);
@@ -66,7 +69,7 @@ namespace Example1_ServerInterfacingConsole
         private static void PullData()
         {
             var watch = Stopwatch.StartNew();
-            var WindowData = Utilities.GrabWindow(Device1, @"C:\Users\Walker Arce\Documents\Business\Research\UNMC\Software\CSharp\E4-Inferencing\ConsoleInterfacing\E4ServerInterfacing\Saved Readings\Readings.e4");
+            var WindowData = Utilities.GrabWindow(Device1, @"C:\Readings.data");
             var pred = Predict.PredictWindow(mlContext, Model, WindowData);
             watch.Stop();
             Console.WriteLine("Time: {0} | Prediction: {1}", DateTime.Now, pred.Prediction);

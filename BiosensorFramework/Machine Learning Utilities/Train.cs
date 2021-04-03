@@ -18,9 +18,9 @@ namespace MMIVR.BiosensorFramework.MachineLearningUtilities
 
             DataImport.SchmidtDatasetPipeline(mlContext, out TrainTestData MultiClass, out TrainTestData BinClass, out TrainTestData RegClass);
 
-            //var RegMultiModels = BuildAndTrainRegressionModels(mlContext, RegClass.TrainSet);
+            var RegMultiModels = BuildAndTrainRegressionModels(mlContext, RegClass.TrainSet);
             var BinModels = BuildAndTrainBinClassModels(mlContext, BinClass.TrainSet);
-            //var MultiModels = BuildAndTrainMultiClassModels(mlContext, MultiClass.TrainSet);
+            var MultiModels = BuildAndTrainMultiClassModels(mlContext, MultiClass.TrainSet);
 
             double RegRSquared = 0;
             double BinAccuracy = 0;
@@ -34,7 +34,7 @@ namespace MMIVR.BiosensorFramework.MachineLearningUtilities
             DataViewSchema MultiModelSchema = null;
             DataViewSchema BinModelSchema = null;
 
-            /*foreach (var model in RegMultiModels)
+            foreach (var model in RegMultiModels)
             {
                 try
                 {
@@ -52,7 +52,7 @@ namespace MMIVR.BiosensorFramework.MachineLearningUtilities
                 {
                     continue;
                 }
-            }*/
+            }
             foreach (var model in BinModels)
             {
                 try
@@ -72,8 +72,8 @@ namespace MMIVR.BiosensorFramework.MachineLearningUtilities
                     continue;
                 }
             }
-            /* foreach (var model in MultiModels)
-             {
+            foreach (var model in MultiModels)
+            {
                  try
                  {
                      IDataView testpred = model.Transform(MultiClass.TestSet);
@@ -90,10 +90,10 @@ namespace MMIVR.BiosensorFramework.MachineLearningUtilities
                  {
                      continue;
                  }
-             }*/
-            mlContext.Model.Save(BestMultiModel, MultiModelSchema, @"C:\Users\Walker Arce\Documents\Business\Research\UNMC\Software\CSharp\E4-Inferencing\ConsoleInterfacing\E4ServerInterfacing\Trained Models\MultiModel.zip");
-            mlContext.Model.Save(BestBinModel, BinModelSchema, @"C:\Users\Walker Arce\Documents\Business\Research\UNMC\Software\CSharp\E4-Inferencing\ConsoleInterfacing\E4ServerInterfacing\Trained Models\BinModel.zip");
-            mlContext.Model.Save(BestRegModel, RegModelSchema, @"C:\Users\Walker Arce\Documents\Business\Research\UNMC\Software\CSharp\E4-Inferencing\ConsoleInterfacing\E4ServerInterfacing\Trained Models\RegModel.zip");
+            }
+            mlContext.Model.Save(BestMultiModel, MultiModelSchema, @"C:\MultiModel.zip");
+            mlContext.Model.Save(BestBinModel, BinModelSchema, @"C:\BinModel.zip");
+            mlContext.Model.Save(BestRegModel, RegModelSchema, @"C:\RegModel.zip");
         }
         public static void PrintBinMetrics(BinaryClassificationMetrics metrics)
         {

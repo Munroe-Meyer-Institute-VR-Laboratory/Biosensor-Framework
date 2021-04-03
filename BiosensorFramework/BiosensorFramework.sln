@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MMIVR", "MMIVR.csproj", "{B
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Example1_ServerInterfacingConsole", "..\Example1_ServerInterfacingConsole\Example1_ServerInterfacingConsole.csproj", "{DF570A39-3BA5-4716-8CD1-0098CF613C54}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Example2_ComputingWithMicrosoftML", "..\Example2_ComputingWithMicrosoftML\Example2_ComputingWithMicrosoftML.csproj", "{C9907FB6-72B5-4AC5-8A51-82AB1733E571}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{DF570A39-3BA5-4716-8CD1-0098CF613C54}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{DF570A39-3BA5-4716-8CD1-0098CF613C54}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{DF570A39-3BA5-4716-8CD1-0098CF613C54}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C9907FB6-72B5-4AC5-8A51-82AB1733E571}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C9907FB6-72B5-4AC5-8A51-82AB1733E571}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C9907FB6-72B5-4AC5-8A51-82AB1733E571}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C9907FB6-72B5-4AC5-8A51-82AB1733E571}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

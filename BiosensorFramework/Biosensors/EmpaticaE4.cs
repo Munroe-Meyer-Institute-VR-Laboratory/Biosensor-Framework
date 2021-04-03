@@ -431,26 +431,26 @@ namespace MMIVR.BiosensorFramework.Biosensors.EmpaticaE4
     {
         public delegate void WindowedDataReady();
         public static event WindowedDataReady WindowedDataReadyEvent;
-        public static void StartE4ServerGUI()
+        public static void StartE4ServerGUI(string ServerPath)
         {
             System.Diagnostics.Process process = new System.Diagnostics.Process();
             System.Diagnostics.ProcessStartInfo startInfo = new System.Diagnostics.ProcessStartInfo
             {
                 WindowStyle = System.Diagnostics.ProcessWindowStyle.Hidden,
-                FileName = @"C:\Program Files (x86)\Empatica\EmpaticaBLEServer\EmpaticaBLEServer.exe"
+                FileName = ServerPath //@"{absolute path}\EmpaticaBLEServer.exe"
             };
             process.StartInfo = startInfo;
             process.Start();
         }
         /// <summary>  </summary>
         public static List<string> AvailableDevices = new List<string>();
-        public static void StartE4Server(string APIKey, string IPaddress = "127.0.0.1", string Port = "8000")
+        public static void StartE4Server(string ServerPath, string APIKey, string IPaddress = "127.0.0.1", string Port = "8000")
         {
             System.Diagnostics.Process process = new System.Diagnostics.Process();
             System.Diagnostics.ProcessStartInfo startInfo = new System.Diagnostics.ProcessStartInfo
             {
                 WindowStyle = System.Diagnostics.ProcessWindowStyle.Hidden,
-                FileName = @"C:\Program Files (x86)\Empatica\EmpaticaBLEServer\EmpaticaBLEServer.exe",
+                FileName = ServerPath, //@"{absolute path}\EmpaticaBLEServer.exe"
                 Arguments = APIKey + " " + IPaddress + " " + Port
             };
             process.StartInfo = startInfo;
