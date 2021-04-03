@@ -7,7 +7,7 @@ using MMIVR.BiosensorFramework.DataProcessing;
 
 namespace MMIVR.BiosensorFramework.InputPipeline
 {
-    class SignalProcessing
+    public class SignalProcessing
     {
         public static List<double> ProcessEdaSignal(double[] EdaSignal, double SamplingRate = 4.0)
         {
@@ -20,26 +20,26 @@ namespace MMIVR.BiosensorFramework.InputPipeline
                 double[] SclSignal = TarvainenDetrending.GetResidual(EdaSignal, ScrSignal);
                 double[] SummedFeatures = HealeyStressDetection.SumFeatures(HealeyStressDetection.GetPeakFeatures(EdaSignal, SamplingRate));
                 Features = new List<double>
-            {
-                EdaSignal.Mean(),
-                EdaSignal.StandardDeviation(),
-                EdaSignal.Min(),
-                EdaSignal.Max(),
-                FeatureExtraction.SignalSlope(
-                    EdaSignal, Array.ConvertAll(Enumerable.Range(0, EdaSignal.Length).ToArray(), Convert.ToDouble)),
-                FeatureExtraction.SignalDynamicRange(EdaSignal),
-                SclSignal.Mean(),
-                SclSignal.StandardDeviation(),
-                ScrSignal.StandardDeviation(),
-                FeatureExtraction.SignalCorrelation(
-                    SclSignal, Array.ConvertAll(Enumerable.Range(0, SclSignal.Length).ToArray(), Convert.ToDouble)),
-                FeatureExtraction.FindLocalMaxima(ScrSignal, ScrSignal.Mean(), 4).Length,
-                SummedFeatures[0],
-                SummedFeatures[1],
-                SummedFeatures[2],
-                FeatureExtraction.SignalSlope(
-                    ScrSignal, Array.ConvertAll(Enumerable.Range(0, ScrSignal.Length).ToArray(), Convert.ToDouble)),
-            };
+                {
+                    EdaSignal.Mean(),
+                    EdaSignal.StandardDeviation(),
+                    EdaSignal.Min(),
+                    EdaSignal.Max(),
+                    FeatureExtraction.SignalSlope(
+                        EdaSignal, Array.ConvertAll(Enumerable.Range(0, EdaSignal.Length).ToArray(), Convert.ToDouble)),
+                    FeatureExtraction.SignalDynamicRange(EdaSignal),
+                    SclSignal.Mean(),
+                    SclSignal.StandardDeviation(),
+                    ScrSignal.StandardDeviation(),
+                    FeatureExtraction.SignalCorrelation(
+                        SclSignal, Array.ConvertAll(Enumerable.Range(0, SclSignal.Length).ToArray(), Convert.ToDouble)),
+                    FeatureExtraction.FindLocalMaxima(ScrSignal, ScrSignal.Mean(), 4).Length,
+                    SummedFeatures[0],
+                    SummedFeatures[1],
+                    SummedFeatures[2],
+                    FeatureExtraction.SignalSlope(
+                        ScrSignal, Array.ConvertAll(Enumerable.Range(0, ScrSignal.Length).ToArray(), Convert.ToDouble)),
+                };
             }
             return Features;
         }
