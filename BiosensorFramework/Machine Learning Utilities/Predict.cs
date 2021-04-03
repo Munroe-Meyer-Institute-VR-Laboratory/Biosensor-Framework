@@ -7,7 +7,7 @@ using MMIVR.BiosensorFramework.InputPipeline;
 
 namespace MMIVR.BiosensorFramework.MachineLearningUtilities
 {
-    class Predict
+    public class Predict
     {
         /// <summary>
         /// Takes the readings from the windowed data, extracts the features, and runs it through a prediction pipeline.
@@ -54,9 +54,17 @@ namespace MMIVR.BiosensorFramework.MachineLearningUtilities
             PredictionBinResult Prediction = MakeBinPrediction(mlContext, WindowFeatures, Model);
             return Prediction;
         }
+        public static PredictionMultiResult MakeMultiPrediction(MLContext mlContext, ExtractedMultiFeatures LiveData, ITransformer Model)
+        {
+            return mlContext.Model.CreatePredictionEngine<ExtractedMultiFeatures, PredictionMultiResult>(Model).Predict(LiveData);
+        }
         public static PredictionBinResult MakeBinPrediction(MLContext mlContext, ExtractedBinFeatures LiveData, ITransformer Model)
         {
             return mlContext.Model.CreatePredictionEngine<ExtractedBinFeatures, PredictionBinResult>(Model).Predict(LiveData);
+        }
+        public static PredictionRegResult MakeRegPrediction(MLContext mlContext, IDataView LiveData, ITransformer Model)
+        {
+            return mlContext.Model.CreatePredictionEngine<IDataView, PredictionRegResult>(Model).Predict(LiveData);
         }
     }
 }

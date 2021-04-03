@@ -173,7 +173,7 @@ namespace MMIVR.BiosensorFramework.Biosensors.EmpaticaE4
             }
             catch (Exception e)
             {
-                //throw new ReceiveCallbackException("Exception encountered when completing receive callback: " + e.Message);
+                throw new ReceiveCallbackException("Exception encountered when completing receive callback: " + e.Message);
             }
         }
         /// <summary>
