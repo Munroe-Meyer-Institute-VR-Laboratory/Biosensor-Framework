@@ -126,13 +126,13 @@ The data can be manipulated once the timer expires for the window size.  The dat
 ### License
 The software and hardware designs are available under a Creative Commons Attribution-ShareAlike 4.0 International Public License (CC BY-SA 4.0). You are free to:
 
-    Share — copy and redistribute the material in any medium or format
-    Adapt — remix, transform, and build upon the material for any purpose, even commercially.
+* Share — copy and redistribute the material in any medium or format
+* Adapt — remix, transform, and build upon the material for any purpose, even commercially.
 
 Under the following terms:
 
-    Attribution — You must give appropriate credit, provide a link to the license, and indicate if changes were made. You may do so in any reasonable manner, but not in any way that suggests the licensor endorses you or your use.
-    ShareAlike — If you remix, transform, or build upon the material, you must distribute your contributions under the same license as the original.
+* Attribution — You must give appropriate credit, provide a link to the license, and indicate if changes were made. You may do so in any reasonable manner, but not in any way that suggests the licensor endorses you or your use.
+* ShareAlike — If you remix, transform, or build upon the material, you must distribute your contributions under the same license as the original.
 
 ### Citation
 
