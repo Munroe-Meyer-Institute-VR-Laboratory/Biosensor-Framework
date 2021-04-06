@@ -124,7 +124,7 @@ The data can be manipulated once the timer expires for the window size.  The dat
 ### Class Documentation
 
 ### License
-The software and hardware designs are available under a Creative Commons Attribution-ShareAlike 4.0 International Public License (CC BY-SA 4.0). You are free to:
+This software is available under a Creative Commons Attribution-ShareAlike 4.0 International Public License (CC BY-SA 4.0). You are free to:
 
 * Share — copy and redistribute the material in any medium or format
 * Adapt — remix, transform, and build upon the material for any purpose, even commercially.
