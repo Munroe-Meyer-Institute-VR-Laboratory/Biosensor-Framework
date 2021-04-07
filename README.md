@@ -1,4 +1,4 @@
-## Biosensor Framework: A C# Static Library for Generic Affective Computing
+## Biosensor Framework: A C# Library for Generic Affective Computing
 ### Parties Involved
 Institution: Munroe Meyer Institute in the University of Nebraska Medical Center<br>
 Laboratory: Virtual Reality Laboratory<br>
