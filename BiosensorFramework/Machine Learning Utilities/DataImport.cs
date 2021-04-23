@@ -7,12 +7,49 @@ using MathNet.Numerics.Statistics;
 
 using MMIVR.BiosensorFramework.Extensions;
 using MMIVR.BiosensorFramework.InputPipeline;
+using System.Linq;
 
 namespace MMIVR.BiosensorFramework.MachineLearningUtilities
 {
     class DataImport
     {
-        public static List<Tuple<string, List<double[]>, double[]>> LoadDataset(string DirectoryPath = @"C:\Users\Walker Arce\Documents\Business\Research\UNMC\Software\Python\MachineLearning\E4Inferencing\datasets\")
+        enum Data { Acc3D, GSR, BVP, TMP, IBI, BAT, TAG, TIMESTAMPS, DATE }
+        public static List<double[]> LoadCollectedDataset(string DirectoryPath, string SearchPattern)
+        {
+            string[] files = Directory.GetFiles(DirectoryPath, SearchPattern, SearchOption.TopDirectoryOnly);
+            List<List<double[]>> DataFeatures = new List<List<double[]>>();
+
+            foreach (string file in files)
+            {
+                List<string> lines = new List<string>();
+                List<List<double>> ExtractedData = new List<List<double>>();
+                string Date = "";
+
+                // Opening the file for reading 
+                using (StreamReader stream = File.OpenText(file))
+                {
+                    string temp = "";
+                    while ((temp = stream.ReadLine()) != null)
+                    {
+                        lines.Add(temp);
+                    }
+                }
+                foreach (string line in lines)
+                {
+                    List<string> tempList = line.Split(new char[] { ',' }).ToList();
+                    tempList.RemoveAt(tempList.Count - 1);
+                    ExtractedData.Add(tempList.Select(x => double.Parse(x)).ToList());
+                }
+                Date = lines.Last();
+            }
+            throw new NotImplementedException();
+        }
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="DirectoryPath"></param>
+        /// <returns></returns>
+        public static List<Tuple<string, List<double[]>, double[]>> LoadDataset(string DirectoryPath)
         {
             string[] files = Directory.GetFiles(DirectoryPath, "*.csv", SearchOption.AllDirectories);
             List<Tuple<string, List<double[]>, double[]>> Dataset = new List<Tuple<string, List<double[]>, double[]>>();
@@ -67,10 +104,10 @@ namespace MMIVR.BiosensorFramework.MachineLearningUtilities
         /// Schmidt, Philip, et al. "Introducing wesad, a multimodal dataset for wearable stress and affect detection." 
         ///     Proceedings of the 20th ACM International Conference on Multimodal Interaction. 2018.
         /// <param name="WindowSize"></param>
-        public static void SchmidtDatasetPipeline(MLContext mlContext, out TrainTestData MultiClass, out TrainTestData BinClass, out TrainTestData RegClass, int WindowSize = 5, double TrainTestRatio = 0.1)
+        public static void SchmidtDatasetPipeline(string DirectoryPath, MLContext mlContext, out TrainTestData MultiClass, out TrainTestData BinClass, out TrainTestData RegClass, int WindowSize = 5, double TrainTestRatio = 0.1)
         {
             List<ExtractedMultiFeatures> MultiFeatureSet = new List<ExtractedMultiFeatures>();
-            List<Tuple<string, List<double[]>, double[]>> Datasets = DataImport.LoadDataset();
+            List<Tuple<string, List<double[]>, double[]>> Datasets = LoadDataset(DirectoryPath);
             foreach (Tuple<string, List<double[]>, double[]> Dataset in Datasets)
             {
                 int NumberOfSamples = Dataset.Item2[1].Length / 32;

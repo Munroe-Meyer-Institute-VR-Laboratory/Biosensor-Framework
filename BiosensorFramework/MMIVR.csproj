@@ -9,6 +9,7 @@
     <PackageReference Include="Microsoft.ML" Version="1.5.5" />
     <PackageReference Include="Microsoft.ML.FastTree" Version="1.5.5" />
     <PackageReference Include="Microsoft.ML.LightGbm" Version="1.5.5" />
+    <PackageReference Include="TensorFlow.NET" Version="0.40.0" />
   </ItemGroup>
 
 </Project>
