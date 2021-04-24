@@ -19,12 +19,12 @@ namespace MMIVR.BiosensorFramework.Extensions
             x = new double[array.Length / 3];
             y = new double[array.Length / 3];
             z = new double[array.Length / 3];
-
+            int index = 0;
             for (int i = 0; i < array.Length; i += 3)
             {
-                x[i] = array[i];
-                y[i] = array[i + 1];
-                z[i] = array[i + 2];
+                x[index] = array[i];
+                y[index] = array[i + 1];
+                z[index++] = array[i + 2];
             }
         }
         public static float[] ToFloat(this double[] array)
