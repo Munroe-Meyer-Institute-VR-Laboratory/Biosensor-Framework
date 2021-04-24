@@ -11,7 +11,7 @@ using System.Linq;
 
 namespace MMIVR.BiosensorFramework.MachineLearningUtilities
 {
-    class DataImport
+    public class DataImport
     {
         /// <summary>
         /// 
