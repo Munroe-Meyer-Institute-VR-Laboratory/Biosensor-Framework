@@ -7,6 +7,26 @@ namespace MMIVR.BiosensorFramework.Extensions
 {
     public static class ArrayExtensions
     {
+        /// <summary>
+        /// Splits the 3D accelerometer readings into three separate arrays for the input pipeline.
+        /// </summary>
+        /// <param name="array">Array with 3D accelerometer readings</param>
+        /// <param name="x">Array with only x axis readings</param>
+        /// <param name="y">Array with only y axis readings</param>
+        /// <param name="z">Array with only z axis readings</param>
+        public static void SplitAcc3D(this double[] array, out double[] x, out double[] y, out double[] z)
+        {
+            x = new double[array.Length / 3];
+            y = new double[array.Length / 3];
+            z = new double[array.Length / 3];
+
+            for (int i = 0; i < array.Length; i += 3)
+            {
+                x[i] = array[i];
+                y[i] = array[i + 1];
+                z[i] = array[i + 2];
+            }
+        }
         public static float[] ToFloat(this double[] array)
         {
             float[] RetArray = new float[array.Length];

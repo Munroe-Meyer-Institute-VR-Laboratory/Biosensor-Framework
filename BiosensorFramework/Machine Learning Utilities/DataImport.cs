@@ -13,8 +13,17 @@ namespace MMIVR.BiosensorFramework.MachineLearningUtilities
 {
     class DataImport
     {
-        enum Data { Acc3D, GSR, BVP, TMP, IBI, BAT, TAG, TIMESTAMPS, DATE }
-        public static List<double[]> LoadCollectedDataset(string DirectoryPath, string SearchPattern)
+        /// <summary>
+        /// 
+        /// </summary>
+        enum CollectedData { Acc3D, GSR, BVP, TMP, IBI, BAT, TAG, TIMESTAMPS, DATE }
+        /// <summary>
+        /// Parses and transforms the data collected from a biosensor from a txt file.  
+        /// </summary>
+        /// <param name="DirectoryPath"></param>
+        /// <param name="SearchPattern"></param>
+        /// <returns></returns>
+        public static List<List<double[]>> LoadCollectedDataset(string DirectoryPath, string SearchPattern)
         {
             string[] files = Directory.GetFiles(DirectoryPath, SearchPattern, SearchOption.TopDirectoryOnly);
             List<List<double[]>> DataFeatures = new List<List<double[]>>();
@@ -41,8 +50,15 @@ namespace MMIVR.BiosensorFramework.MachineLearningUtilities
                     ExtractedData.Add(tempList.Select(x => double.Parse(x)).ToList());
                 }
                 Date = lines.Last();
+
+                ExtractedData[0].ToArray().SplitAcc3D(out double[] AccX, out double[] AccY, out double[] AccZ);
+
+                foreach (List<double> Data in ExtractedData)
+                {
+
+                }
             }
-            throw new NotImplementedException();
+            return DataFeatures;
         }
         /// <summary>
         /// 

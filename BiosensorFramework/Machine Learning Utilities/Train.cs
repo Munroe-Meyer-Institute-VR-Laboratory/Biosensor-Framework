@@ -12,11 +12,11 @@ namespace MMIVR.BiosensorFramework.MachineLearningUtilities
 {
     public class Train
     {
-        public static void RunBenchmarks(out ITransformer BestRegModel, out ITransformer BestMultiModel, out ITransformer BestBinModel)
+        public static void RunBenchmarks(string DirectoryPath, out ITransformer BestRegModel, out ITransformer BestMultiModel, out ITransformer BestBinModel)
         {
             MLContext mlContext = new MLContext();
 
-            DataImport.SchmidtDatasetPipeline(mlContext, out TrainTestData MultiClass, out TrainTestData BinClass, out TrainTestData RegClass);
+            DataImport.SchmidtDatasetPipeline(DirectoryPath, mlContext, out TrainTestData MultiClass, out TrainTestData BinClass, out TrainTestData RegClass);
 
             var RegMultiModels = BuildAndTrainRegressionModels(mlContext, RegClass.TrainSet);
             var BinModels = BuildAndTrainBinClassModels(mlContext, BinClass.TrainSet);
