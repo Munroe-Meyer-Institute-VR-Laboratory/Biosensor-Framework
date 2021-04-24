@@ -197,5 +197,23 @@ namespace MMIVR.BiosensorFramework.MachineLearningUtilities
             BinClass = mlContext.Data.TrainTestSplit(BinClassView, TrainTestRatio);
             RegClass = mlContext.Data.TrainTestSplit(RegClassView, TrainTestRatio);
         }
+        public static TrainTestData ConvertRawToBin(MLContext mlContext, List<Tuple<double[], int>> RawFeatures, double TrainTestRatio = 0.1)
+        {
+            List<ExtractedBinFeatures> BinFeatureSet = new List<ExtractedBinFeatures>();
+            foreach (Tuple<double[], int> RawFeature in RawFeatures)
+            {
+                BinFeatureSet.Add(new ExtractedBinFeatures()
+                {
+                    Features = RawFeature.Item1.ToFloat(),
+                    Label = RawFeature.Item2 > 0
+                });
+            }
+            IDataView BinClassView = mlContext.Data.LoadFromEnumerable(BinFeatureSet);
+            return mlContext.Data.TrainTestSplit(BinClassView, TrainTestRatio);
+        }
+        public static TrainTestData ConvertRawToMulti(List<Tuple<double[], int>> RawFeatures)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
