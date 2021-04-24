@@ -26,11 +26,17 @@ For our lab to use biosensor data in our research projects, we needed an interfa
 
 ### Installation
 [Using the Empatica Server](http://developer.empatica.com/windows-streaming-server-usage.html)
+
 [LightGBM](https://www.nuget.org/packages/LightGBM/2.2.3?_src=template)
+
 [MathNet.Numerics](https://www.nuget.org/packages/MathNet.Numerics/4.15.0?_src=template)
+
 [Microsoft.ML](https://www.nuget.org/packages/Microsoft.ML/1.5.5?_src=template)
+
 [Microsoft.ML.CpuMath](https://www.nuget.org/packages/Microsoft.ML.CpuMath/1.5.5?_src=template)
+
 [Microsoft.ML.FastTree](https://www.nuget.org/packages/Microsoft.ML.FastTree/1.5.5?_src=template)
+
 [Microsoft.ML.LightGbm](https://www.nuget.org/packages/Microsoft.ML.LightGbm/1.5.5?_src=template)
 
 ### Basic Usage
