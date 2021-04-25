@@ -18,6 +18,79 @@ namespace MMIVR.BiosensorFramework.MachineLearningUtilities
         /// </summary>
         enum CollectedData { Acc3D, GSR, BVP, TMP, IBI, BAT, TAG, TIMESTAMPS, DATE }
         /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="Filepath"></param>
+        /// <param name="WindowSize"></param>
+        /// <returns></returns>
+        public static List<Tuple<double[], int>> LoadFile(string Filepath, int WindowSize = 5)
+        {
+            List<Tuple<double[], int>> DataFeatures = new List<Tuple<double[], int>>();
+
+            List<string> lines = new List<string>();
+            List<double[]> ExtractedData = new List<double[]>();
+            string Date = "";
+
+            // Opening the file for reading 
+            using (StreamReader stream = File.OpenText(Filepath))
+            {
+                string temp = "";
+                while ((temp = stream.ReadLine()) != null)
+                {
+                    lines.Add(temp);
+                }
+            }
+            foreach (string line in lines)
+            {
+                List<string> tempList = line.Split(new char[] { ',' }).ToList();
+                tempList.RemoveAt(tempList.Count - 1);
+                ExtractedData.Add(tempList.Select(x => double.Parse(x)).ToArray());
+            }
+            Date = lines.Last();
+
+            int[] TagLocations = ExtractedData[(int)CollectedData.TAG].Select(x => (int)(x / 64)).ToArray();
+            ExtractedData[0].ToArray().SplitAcc3D(out double[] AccX, out double[] AccY, out double[] AccZ);
+
+            int NumberOfSamples = ExtractedData[0].Length / 96;
+            int[] Tags = new int[NumberOfSamples];
+            int Tag = 0;
+
+            for (int i = 0; i < NumberOfSamples; i++)
+            {
+                for (int j = 0; j < ExtractedData[(int)CollectedData.TAG].Length; j++)
+                {
+                    if (i >= ExtractedData[(int)CollectedData.TAG][j])
+                    {
+                        Tag = 1;
+                    }
+                }
+                Tags[i] = Tag;
+            }
+
+            for (int i = 0; i < NumberOfSamples - WindowSize; i += WindowSize)
+            {
+                List<double> ComputedFeatures = new List<double>();
+                for (int j = 0; j < WindowSize; j++)
+                {
+                    ComputedFeatures.AddRange(SignalProcessing.ProcessAccSignal(ExtractedData[(int)CollectedData.Acc3D].GetSubArray(j * 96, (j + 1) * 96)));
+                    ComputedFeatures.AddRange(SignalProcessing.ProcessAccSignal(AccX.GetSubArray(j * 32, (j + 1) * 32)));
+                    ComputedFeatures.AddRange(SignalProcessing.ProcessAccSignal(AccY.GetSubArray(j * 32, (j + 1) * 32)));
+                    ComputedFeatures.AddRange(SignalProcessing.ProcessAccSignal(AccZ.GetSubArray(j * 32, (j + 1) * 32)));
+                }
+                ComputedFeatures.AddRange(SignalProcessing.ProcessPpgSignal(ExtractedData[(int)CollectedData.BVP].GetSubArray(i * 64, (i + WindowSize) * 64)));
+                ComputedFeatures.AddRange(SignalProcessing.ProcessEdaSignal(ExtractedData[(int)CollectedData.GSR].GetSubArray(i * 4, (i + WindowSize) * 4)));
+                ComputedFeatures.AddRange(SignalProcessing.ProcessTmpSignal(ExtractedData[(int)CollectedData.TMP].GetSubArray(i * 4, (i + WindowSize) * 4)));
+
+                DataFeatures.Add(Tuple.Create(ComputedFeatures.ToArray(), Tags[i]));
+
+                if (i + WindowSize > NumberOfSamples)
+                {
+                    WindowSize = NumberOfSamples - i;
+                }
+            }
+            return DataFeatures;
+        }
+        /// <summary>
         /// Parses and transforms the data collected from a biosensor from a txt file.  To facilitate training the Fast Forest classifier used, the WESAD data is loaded in 
         /// first to allow retraining.
         /// </summary>
