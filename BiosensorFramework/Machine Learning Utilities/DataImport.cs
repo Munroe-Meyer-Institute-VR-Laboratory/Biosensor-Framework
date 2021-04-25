@@ -18,15 +18,43 @@ namespace MMIVR.BiosensorFramework.MachineLearningUtilities
         /// </summary>
         enum CollectedData { Acc3D, GSR, BVP, TMP, IBI, BAT, TAG, TIMESTAMPS, DATE }
         /// <summary>
-        /// Parses and transforms the data collected from a biosensor from a txt file.  
+        /// Parses and transforms the data collected from a biosensor from a txt file.  To facilitate training the Fast Forest classifier used, the WESAD data is loaded in 
+        /// first to allow retraining.
         /// </summary>
         /// <param name="DirectoryPath"></param>
         /// <param name="SearchPattern"></param>
         /// <returns></returns>
-        public static List<Tuple<double[], int>> LoadCollectedDataset(string DirectoryPath, string SearchPattern, int WindowSize = 5)
+        public static List<Tuple<double[], int>> LoadCollectedDataset(string WesadDirectory, string DirectoryPath, string SearchPattern, int WindowSize = 5)
         {
             string[] files = Directory.GetFiles(DirectoryPath, SearchPattern, SearchOption.TopDirectoryOnly);
             List<Tuple<double[], int>> DataFeatures = new List<Tuple<double[], int>>();
+
+            List<Tuple<string, List<double[]>, double[]>> Datasets = LoadDataset(WesadDirectory);
+            foreach (Tuple<string, List<double[]>, double[]> Dataset in Datasets)
+            {
+                int NumberOfSamples = Dataset.Item2[1].Length / 32;
+                for (int i = 0; i < NumberOfSamples - WindowSize; i += WindowSize)
+                {
+                    List<double> SubjectFeatures = new List<double>();
+                    for (int j = 0; j < WindowSize; j++)
+                    {
+                        SubjectFeatures.AddRange(SignalProcessing.ProcessAccSignal(Dataset.Item2[0].GetSubArray(j * 96, (j + 1) * 96)));
+                        SubjectFeatures.AddRange(SignalProcessing.ProcessAccSignal(Dataset.Item2[1].GetSubArray(j * 32, (j + 1) * 32)));
+                        SubjectFeatures.AddRange(SignalProcessing.ProcessAccSignal(Dataset.Item2[2].GetSubArray(j * 32, (j + 1) * 32)));
+                        SubjectFeatures.AddRange(SignalProcessing.ProcessAccSignal(Dataset.Item2[3].GetSubArray(j * 32, (j + 1) * 32)));
+                    }
+                    SubjectFeatures.AddRange(SignalProcessing.ProcessPpgSignal(Dataset.Item2[4].GetSubArray(i * 64, (i + WindowSize) * 64)));
+                    SubjectFeatures.AddRange(SignalProcessing.ProcessEdaSignal(Dataset.Item2[5].GetSubArray(i * 4, (i + WindowSize) * 4)));
+                    SubjectFeatures.AddRange(SignalProcessing.ProcessTmpSignal(Dataset.Item2[6].GetSubArray(i * 4, (i + WindowSize) * 4)));
+
+                    DataFeatures.Add(Tuple.Create(SubjectFeatures.ToArray(), (int)Dataset.Item3.GetSubArray(i * 700, (i + WindowSize) * 700).Mean()));
+
+                    if (i + WindowSize > NumberOfSamples)
+                    {
+                        WindowSize = NumberOfSamples - i;
+                    }
+                }
+            }
 
             foreach (string file in files)
             {
