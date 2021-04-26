@@ -18,11 +18,12 @@ namespace Example2_ComputingWithMicrosoftML
         // TODO: Fill these out with your own values
         public static string APIKey = "";
         public static string ServerPath = "";
+        public static string WesadDirectory = "";
 
         static void Main(string[] args)
         {
             mlContext = new MLContext();
-            Train.RunBenchmarks(out ITransformer RegModel, out ITransformer MultiModel, out ITransformer BinModel);
+            Train.RunBenchmarks(WesadDirectory, out ITransformer RegModel, out ITransformer MultiModel, out ITransformer BinModel);
             Console.ReadKey();
 
             Console.WriteLine("E4 Console Interface - Press ENTER to begin the client");
