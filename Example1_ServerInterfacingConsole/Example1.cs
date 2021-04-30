@@ -12,6 +12,7 @@ namespace Example1_ServerInterfacingConsole
         // TODO: Fill these out with your own values
         public static string APIKey = "";
         public static string ServerPath = "";
+        public static string SessionOutputPath = "";
 
         static void Main(string[] args)
         {
@@ -58,7 +59,7 @@ namespace Example1_ServerInterfacingConsole
         }
         private static void PullData()
         {
-            var WindowData = Utilities.GrabWindow(Device1, @"C:\Readings.data");
+            var WindowData = Utilities.GrabWindow(Device1, Path.Combine(SessionOutputPath, "Readings.data");
             foreach (ServerClient.DeviceStreams data in Enum.GetValues(typeof(ServerClient.DeviceStreams)))
             {
                 Console.WriteLine("Writing {0} data from last window:", data.ToString());

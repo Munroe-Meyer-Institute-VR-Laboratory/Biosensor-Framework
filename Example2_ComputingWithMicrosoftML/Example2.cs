@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
+using System.IO;
 using System.Threading;
 using Microsoft.ML;
 
@@ -19,6 +20,7 @@ namespace Example2_ComputingWithMicrosoftML
         public static string APIKey = "";
         public static string ServerPath = "";
         public static string WesadDirectory = "";
+        public static string SessionOutputPath = "";
 
         static void Main(string[] args)
         {
@@ -70,7 +72,7 @@ namespace Example2_ComputingWithMicrosoftML
         private static void PullData()
         {
             var watch = Stopwatch.StartNew();
-            var WindowData = Utilities.GrabWindow(Device1, @"C:\Readings.data");
+            var WindowData = Utilities.GrabWindow(Device1, Path.Combine(SessionOutputPath, "Readings.data"));
             var pred = Predict.PredictWindow(mlContext, Model, WindowData);
             watch.Stop();
             Console.WriteLine("Time: {0} | Prediction: {1}", DateTime.Now, pred.Prediction);
