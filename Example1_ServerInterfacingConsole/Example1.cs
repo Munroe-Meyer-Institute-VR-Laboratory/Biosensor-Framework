@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.Threading;
 
 using MMIVR.BiosensorFramework.Biosensors.EmpaticaE4;
@@ -59,7 +60,7 @@ namespace Example1_ServerInterfacingConsole
         }
         private static void PullData()
         {
-            var WindowData = Utilities.GrabWindow(Device1, Path.Combine(SessionOutputPath, "Readings.data");
+            var WindowData = Utilities.GrabWindow(Device1, Path.Combine(SessionOutputPath, "Readings.data"));
             foreach (ServerClient.DeviceStreams data in Enum.GetValues(typeof(ServerClient.DeviceStreams)))
             {
                 Console.WriteLine("Writing {0} data from last window:", data.ToString());
