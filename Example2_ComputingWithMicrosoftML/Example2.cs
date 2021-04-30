@@ -18,7 +18,7 @@ namespace Example2_ComputingWithMicrosoftML
         // TODO: Fill these out with your own values
         public static string APIKey = "";
         public static string ServerPath = "";
-        public static string WesadDirectory = @"D:\Research\UNMC\Software\Python\MachineLearning\E4Inferencing\datasets";
+        public static string WesadDirectory = "";
 
         static void Main(string[] args)
         {
