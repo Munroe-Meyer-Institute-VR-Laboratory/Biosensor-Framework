@@ -18,12 +18,12 @@ namespace Example2_ComputingWithMicrosoftML
         // TODO: Fill these out with your own values
         public static string APIKey = "";
         public static string ServerPath = "";
-        public static string WesadDirectory = "";
+        public static string WesadDirectory = @"D:\Research\UNMC\Software\Python\MachineLearning\E4Inferencing\datasets";
 
         static void Main(string[] args)
         {
             mlContext = new MLContext();
-            Train.RunBenchmarks(WesadDirectory, out ITransformer RegModel, out ITransformer MultiModel, out ITransformer BinModel);
+            Train.RunBenchmarks(WesadDirectory, out ITransformer RegModel, out ITransformer MultiModel, out Model);
             Console.ReadKey();
 
             Console.WriteLine("E4 Console Interface - Press ENTER to begin the client");

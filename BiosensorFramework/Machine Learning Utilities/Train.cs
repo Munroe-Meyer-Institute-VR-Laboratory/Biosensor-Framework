@@ -18,7 +18,7 @@ namespace MMIVR.BiosensorFramework.MachineLearningUtilities
 
             DataImport.SchmidtDatasetPipeline(DirectoryPath, mlContext, out TrainTestData MultiClass, out TrainTestData BinClass, out TrainTestData RegClass);
 
-            var RegMultiModels = BuildAndTrainRegressionModels(mlContext, RegClass.TrainSet);
+            List<ITransformer> RegMultiModels = BuildAndTrainRegressionModels(mlContext, RegClass.TrainSet);
             var BinModels = BuildAndTrainBinClassModels(mlContext, BinClass.TrainSet);
             var MultiModels = BuildAndTrainMultiClassModels(mlContext, MultiClass.TrainSet);
 
@@ -91,9 +91,9 @@ namespace MMIVR.BiosensorFramework.MachineLearningUtilities
                      continue;
                  }
             }
-            mlContext.Model.Save(BestMultiModel, MultiModelSchema, @"C:\MultiModel.zip");
-            mlContext.Model.Save(BestBinModel, BinModelSchema, @"C:\BinModel.zip");
-            mlContext.Model.Save(BestRegModel, RegModelSchema, @"C:\RegModel.zip");
+            //mlContext.Model.Save(BestMultiModel, MultiModelSchema, @"C:\MultiModel.zip");
+            //mlContext.Model.Save(BestBinModel, BinModelSchema, @"C:\BinModel.zip");
+            //mlContext.Model.Save(BestRegModel, RegModelSchema, @"C:\RegModel.zip");
         }
         public static void PrintBinMetrics(BinaryClassificationMetrics metrics)
         {
