@@ -373,11 +373,11 @@ namespace MMIVR.BiosensorFramework.Biosensors.EmpaticaE4
                 case "The device requested for connection is not available.":
                     throw new DeviceNotAvailableException("The device requested for connection is not available.");
                 case "The device is not connected over btle":
-                    throw new DeviceNotConnectedException("The device is not connected over BTLE");
+                    throw new DeviceNotConnectedException("The device is not connected over BTLE.");
                 case "The device has not been discovered yet":
-                    throw new DeviceNotAvailableException("The device has not been discovered yet");
+                    throw new DeviceNotAvailableException("The device has not been discovered yet.");
                 case "turned off via button":
-                    throw new DeviceTurnedOffException(DeviceName + ": Device turned off via button");
+                    throw new DeviceTurnedOffException(DeviceName + ": Device turned off via button.");
             }
         }
         /// <summary>

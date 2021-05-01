@@ -1,5 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="..\BiosensorFramework\packages\LightGBM.2.2.3\build\LightGBM.props" Condition="Exists('..\BiosensorFramework\packages\LightGBM.2.2.3\build\LightGBM.props')" />
   <Import Project="..\BiosensorFramework\packages\Microsoft.ML.FastTree.1.5.5\build\netstandard2.0\Microsoft.ML.FastTree.props" Condition="Exists('..\BiosensorFramework\packages\Microsoft.ML.FastTree.1.5.5\build\netstandard2.0\Microsoft.ML.FastTree.props')" />
   <Import Project="..\BiosensorFramework\packages\Microsoft.ML.1.5.5\build\netstandard2.0\Microsoft.ML.props" Condition="Exists('..\BiosensorFramework\packages\Microsoft.ML.1.5.5\build\netstandard2.0\Microsoft.ML.props')" />
   <Import Project="..\BiosensorFramework\packages\Microsoft.ML.CpuMath.1.5.5\build\netstandard2.0\Microsoft.ML.CpuMath.props" Condition="Exists('..\BiosensorFramework\packages\Microsoft.ML.CpuMath.1.5.5\build\netstandard2.0\Microsoft.ML.CpuMath.props')" />
@@ -82,6 +83,9 @@
     <Reference Include="Microsoft.ML.KMeansClustering, Version=1.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
       <HintPath>..\BiosensorFramework\packages\Microsoft.ML.1.5.5\lib\netstandard2.0\Microsoft.ML.KMeansClustering.dll</HintPath>
     </Reference>
+    <Reference Include="Microsoft.ML.LightGbm, Version=1.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\BiosensorFramework\packages\Microsoft.ML.LightGbm.1.5.5\lib\netstandard2.0\Microsoft.ML.LightGbm.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.ML.PCA, Version=1.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
       <HintPath>..\BiosensorFramework\packages\Microsoft.ML.1.5.5\lib\netstandard2.0\Microsoft.ML.PCA.dll</HintPath>
     </Reference>
@@ -152,6 +156,9 @@
     <Error Condition="!Exists('..\BiosensorFramework\packages\Microsoft.ML.1.5.5\build\netstandard2.0\Microsoft.ML.props')" Text="$([System.String]::Format('$(ErrorText)', '..\BiosensorFramework\packages\Microsoft.ML.1.5.5\build\netstandard2.0\Microsoft.ML.props'))" />
     <Error Condition="!Exists('..\BiosensorFramework\packages\Microsoft.ML.1.5.5\build\netstandard2.0\Microsoft.ML.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\BiosensorFramework\packages\Microsoft.ML.1.5.5\build\netstandard2.0\Microsoft.ML.targets'))" />
     <Error Condition="!Exists('..\BiosensorFramework\packages\Microsoft.ML.FastTree.1.5.5\build\netstandard2.0\Microsoft.ML.FastTree.props')" Text="$([System.String]::Format('$(ErrorText)', '..\BiosensorFramework\packages\Microsoft.ML.FastTree.1.5.5\build\netstandard2.0\Microsoft.ML.FastTree.props'))" />
+    <Error Condition="!Exists('..\BiosensorFramework\packages\LightGBM.2.2.3\build\LightGBM.props')" Text="$([System.String]::Format('$(ErrorText)', '..\BiosensorFramework\packages\LightGBM.2.2.3\build\LightGBM.props'))" />
+    <Error Condition="!Exists('..\BiosensorFramework\packages\LightGBM.2.2.3\build\LightGBM.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\BiosensorFramework\packages\LightGBM.2.2.3\build\LightGBM.targets'))" />
   </Target>
   <Import Project="..\BiosensorFramework\packages\Microsoft.ML.1.5.5\build\netstandard2.0\Microsoft.ML.targets" Condition="Exists('..\BiosensorFramework\packages\Microsoft.ML.1.5.5\build\netstandard2.0\Microsoft.ML.targets')" />
+  <Import Project="..\BiosensorFramework\packages\LightGBM.2.2.3\build\LightGBM.targets" Condition="Exists('..\BiosensorFramework\packages\LightGBM.2.2.3\build\LightGBM.targets')" />
 </Project>

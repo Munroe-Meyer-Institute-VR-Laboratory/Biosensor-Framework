@@ -16,11 +16,12 @@ namespace MMIVR.BiosensorFramework.MachineLearningUtilities
         {
             MLContext mlContext = new MLContext();
 
-            DataImport.SchmidtDatasetPipeline(DirectoryPath, mlContext, out TrainTestData MultiClass, out TrainTestData BinClass, out TrainTestData RegClass);
+            DataImport.SchmidtDatasetPipeline(DirectoryPath, mlContext, 
+                out TrainTestData MultiClass, out TrainTestData BinClass, out TrainTestData RegClass, 5, 0.3);
 
             List<ITransformer> RegMultiModels = BuildAndTrainRegressionModels(mlContext, RegClass.TrainSet);
-            var BinModels = BuildAndTrainBinClassModels(mlContext, BinClass.TrainSet);
-            var MultiModels = BuildAndTrainMultiClassModels(mlContext, MultiClass.TrainSet);
+            List<ITransformer> BinModels = BuildAndTrainBinClassModels(mlContext, BinClass.TrainSet);
+            List<ITransformer> MultiModels = BuildAndTrainMultiClassModels(mlContext, MultiClass.TrainSet);
 
             double RegRSquared = 0;
             double BinAccuracy = 0;
@@ -34,6 +35,7 @@ namespace MMIVR.BiosensorFramework.MachineLearningUtilities
             DataViewSchema MultiModelSchema = null;
             DataViewSchema BinModelSchema = null;
 
+            Console.WriteLine("\nRegression Model Metrics");
             foreach (var model in RegMultiModels)
             {
                 try
@@ -53,6 +55,8 @@ namespace MMIVR.BiosensorFramework.MachineLearningUtilities
                     continue;
                 }
             }
+
+            Console.WriteLine("\nBinary Classification Model Metrics");
             foreach (var model in BinModels)
             {
                 try
@@ -72,6 +76,8 @@ namespace MMIVR.BiosensorFramework.MachineLearningUtilities
                     continue;
                 }
             }
+
+            Console.WriteLine("\nMulti-Class Classification Model Metrics");
             foreach (var model in MultiModels)
             {
                  try
@@ -86,9 +92,10 @@ namespace MMIVR.BiosensorFramework.MachineLearningUtilities
                          BestMultiModel = model;
                      }
                  }
-                 catch
+                 catch (Exception e)
                  {
-                     continue;
+                    Console.WriteLine(e.Message); 
+                    continue;
                  }
             }
             //mlContext.Model.Save(BestMultiModel, MultiModelSchema, @"C:\MultiModel.zip");
@@ -104,7 +111,7 @@ namespace MMIVR.BiosensorFramework.MachineLearningUtilities
                 "\nNegative Precision: {4}" +
                 "\nNegative Recall {5}" +
                 "\nPositive Precision: {6}" +
-                "\nPositive Recall: {7}",
+                "\nPositive Recall: {7}\n",
                 metrics.Accuracy, metrics.AreaUnderPrecisionRecallCurve, metrics.AreaUnderRocCurve, metrics.F1Score,
                 metrics.NegativePrecision, metrics.NegativeRecall, metrics.PositivePrecision, metrics.PositiveRecall);
         }
@@ -114,15 +121,33 @@ namespace MMIVR.BiosensorFramework.MachineLearningUtilities
                 "\nLog Loss Reduction: {1}" +
                 "\nMacro Accuracy: {2}" +
                 "\nMicro Accuracy: {3}" +
-                "\nTop K Accuracy: {4}",
-                metrics.LogLoss, metrics.LogLossReduction, metrics.MacroAccuracy, metrics.MicroAccuracy, metrics.TopKAccuracy);
+                "\nTop K Accuracy: {4}" +
+                "\nCF Classes: {5}" +
+                "\nTop K Accuracy: {6}",
+                metrics.LogLoss, metrics.LogLossReduction, metrics.MacroAccuracy, metrics.MicroAccuracy, metrics.TopKAccuracy,
+                metrics.TopKAccuracy, metrics.ConfusionMatrix.NumberOfClasses);
+            for (int i = 0; i < metrics.ConfusionMatrix.PerClassPrecision.Count; i++)
+            {
+                Console.WriteLine(i + " Class Precision: " + metrics.ConfusionMatrix.PerClassPrecision[i]);
+            }
+            for (int i = 0; i < metrics.ConfusionMatrix.PerClassRecall.Count; i++)
+            {
+                Console.WriteLine(i + " Class Recall: " + metrics.ConfusionMatrix.PerClassRecall[i]);
+            }
+            for (int i = 0; i < metrics.PerClassLogLoss.Count; i++)
+            {
+                Console.WriteLine(i + " Loss: " + metrics.PerClassLogLoss[i]);
+            }
+            Console.WriteLine();
         }
         public static void PrintRegMetrics(RegressionMetrics metrics)
         {
+            Console.WriteLine("Loss Function: " + metrics.LossFunction);
             Console.WriteLine("Mean Absolute Error: " + metrics.MeanAbsoluteError);
             Console.WriteLine("Mean Squared Error: " + metrics.MeanSquaredError);
             Console.WriteLine("Root Mean Squared Error: " + metrics.RootMeanSquaredError);
             Console.WriteLine("RSquared: " + metrics.RSquared);
+            Console.WriteLine();
         }
         public static List<ITransformer> BuildAndTrainMultiClassModels(MLContext mlContext, IDataView TrainingSet)
         {
