@@ -18,8 +18,18 @@ namespace MMIVR.BiosensorFramework.DataProcessing
 {
     #region =====[ FFT Implementation Utilities ]========================================
 
+    /// <summary>
+    /// Class to process a signal through FFT and return the frequency and magnitude spectrums.
+    /// </summary>
     public static class ProcessFFT
     {
+        /// <summary>
+        /// Processes the input signal through the FFT and returns the frequency span and magnitude spectrum.
+        /// </summary>
+        /// <param name="Signal">An array containing the original sensor signals.</param>
+        /// <param name="SamplingRate">The sampling rate of the input signal.</param>
+        /// <param name="FreqSpan">The frequency span of the input signal.</param>
+        /// <param name="MagSpectrum">The magnitude spectrum of the input signal.</param>
         public static void ProcessSignal(ref double[] Signal, double SamplingRate, out double[] FreqSpan, out double[] MagSpectrum)
         {
             // Checks if signal is a power of two and appends zero padding to make it a power of two

@@ -12,7 +12,7 @@ using System.Numerics;
 
 namespace MMIVR.BiosensorFramework.DataProcessing
 {
-    class FeatureExtraction
+    public class FeatureExtraction
     {
         public static double SignalMean(List<float> Signal)
         {
@@ -69,9 +69,6 @@ namespace MMIVR.BiosensorFramework.DataProcessing
                 BandpassFilterButterworthImplementation bp = new BandpassFilterButterworthImplementation(band.Item1, band.Item2, Order, SamplingFrequency);
                 bp.compute(Signal);
                 SignalEnergies.Add(Signal);
-                /*double[] bp = FirCoefficients.BandPass(SamplingFrequency, band.Item1, band.Item2, HalfOrder);
-                OnlineFirFilter filter = new OnlineFirFilter(bp);
-                SignalEnergies.Add(filter.ProcessSamples(Signal));*/
             }
             return SignalEnergies;
         }

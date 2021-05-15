@@ -5,6 +5,9 @@ using MMIVR.BiosensorFramework.MachineLearningUtilities;
 
 namespace MMIVR.BiosensorFramework.Extensions
 {
+    /// <summary>
+    /// Extension methods to support the array manipulations needed for feature extraction and machine learning.
+    /// </summary>
     public static class ArrayExtensions
     {
         /// <summary>
@@ -27,6 +30,11 @@ namespace MMIVR.BiosensorFramework.Extensions
                 z[index++] = array[i + 2];
             }
         }
+        /// <summary>
+        /// Converts a double array to a float array.
+        /// </summary>
+        /// <param name="array">Original double array.</param>
+        /// <returns>The converted double array in float format.</returns>
         public static float[] ToFloat(this double[] array)
         {
             float[] RetArray = new float[array.Length];
@@ -36,6 +44,12 @@ namespace MMIVR.BiosensorFramework.Extensions
             }
             return RetArray;
         }
+        /// <summary>
+        /// Gets all indices from an ExtractedMultiFeatures class object that match target label.
+        /// </summary>
+        /// <param name="array">A list of labeled feature sets.</param>
+        /// <param name="value">The class to search for.</param>
+        /// <returns>A List of indices where the feature set matches the target label.</returns>
         public static List<int> AllIndexesOf(this List<ExtractedMultiFeatures> array, int value)
         {
             List<int> Indices = new List<int>();
@@ -48,6 +62,14 @@ namespace MMIVR.BiosensorFramework.Extensions
             }
             return Indices;
         }
+        /// <summary>
+        /// Generic extension to split an array from the start index to end index.
+        /// </summary>
+        /// <typeparam name="T">Standard data types.</typeparam>
+        /// <param name="array">An array of values with more than one value.</param>
+        /// <param name="start">The index to start the sub array.</param>
+        /// <param name="end">The noninclusive index to end the sub array.</param>
+        /// <returns>The sub array from start to end of original array.</returns>
         public static T[] GetSubArray<T>(this T[] array, int start, int end)
         {
             if (end > array.Length)
@@ -62,7 +84,12 @@ namespace MMIVR.BiosensorFramework.Extensions
             return RetArray;
         }
 
-        private static Random rng = new Random();
+        private static readonly Random rng = new Random();
+        /// <summary>
+        /// Generic implementation of Fisher-Yates shuffling algorithm.
+        /// </summary>
+        /// <typeparam name="T">Standard data types.</typeparam>
+        /// <param name="list">List of values to be shuffled.</param>
         public static void Shuffle<T>(this IList<T> list)
         {
             int n = list.Count;

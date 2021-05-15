@@ -545,7 +545,7 @@ namespace MMIVR.BiosensorFramework.Biosensors.EmpaticaE4
         /// <summary>
         /// 
         /// </summary>
-        /// <param name="E4Client"></param>
+        /// <param name="E4Object"></param>
         public static void ListDiscoveredDevices(ServerClient E4Object)
         {
             E4Object.Send(E4Object.SocketConnection, "device_list" + Environment.NewLine);
@@ -556,8 +556,7 @@ namespace MMIVR.BiosensorFramework.Biosensors.EmpaticaE4
         /// <summary>
         /// 
         /// </summary>
-        /// <param name="ConnectedDevice"></param>
-        /// <param name="E4Client"></param>
+        /// <param name="E4Object"></param>
         public static void ConnectDevice(ServerClient E4Object)
         {
             E4Object.Send(E4Object.SocketConnection, "device_connect " + E4Object.DeviceName + Environment.NewLine);
@@ -568,7 +567,7 @@ namespace MMIVR.BiosensorFramework.Biosensors.EmpaticaE4
         /// <summary>
         /// 
         /// </summary>
-        /// <param name="E4Client"></param>
+        /// <param name="E4Object"></param>
         public static void DisconnectDevice(ServerClient E4Object)
         {
             E4Object.Send(E4Object.SocketConnection, "device_disconnect" + Environment.NewLine);
@@ -579,7 +578,7 @@ namespace MMIVR.BiosensorFramework.Biosensors.EmpaticaE4
         /// <summary>
         /// 
         /// </summary>
-        /// <param name="E4Client"></param>
+        /// <param name="E4Object"></param>
         public static void ListDiscoveredDevicesBTLE(ServerClient E4Object)
         {
             E4Object.Send(E4Object.SocketConnection, "device_discover_list" + Environment.NewLine);
@@ -603,8 +602,7 @@ namespace MMIVR.BiosensorFramework.Biosensors.EmpaticaE4
         /// <summary>
         /// 
         /// </summary>
-        /// <param name="E4Client"></param>
-        /// <param name="ConnectedDevice"></param>
+        /// <param name="E4Object"></param>
         public static void DisconnectDeviceBTLE(ServerClient E4Object)
         {
             E4Object.Send(E4Object.SocketConnection, "device_disconnect_btle " + E4Object.DeviceName + Environment.NewLine);
@@ -615,7 +613,7 @@ namespace MMIVR.BiosensorFramework.Biosensors.EmpaticaE4
         /// <summary>
         /// 
         /// </summary>
-        /// <param name="E4Client"></param>
+        /// <param name="E4Object"></param>
         /// <param name="Stream"></param>
         public static void SubscribeToStream(ServerClient E4Object, ServerClient.DeviceStreams Stream)
         {
@@ -656,8 +654,7 @@ namespace MMIVR.BiosensorFramework.Biosensors.EmpaticaE4
         /// <summary>
         /// 
         /// </summary>
-        /// <param name="E4Client"></param>
-        /// <param name="ConnectedDevice"></param>
+        /// <param name="E4Object"></param>
         /// <param name="Stream"></param>
         public static void UnsubscribeToStream(ServerClient E4Object, ServerClient.DeviceStreams Stream)
         {
@@ -698,7 +695,7 @@ namespace MMIVR.BiosensorFramework.Biosensors.EmpaticaE4
         /// <summary>
         /// 
         /// </summary>
-        /// <param name="E4Client"></param>
+        /// <param name="E4Object"></param>
         public static void SuspendStreaming(ServerClient E4Object)
         {
             E4Object.Send(E4Object.SocketConnection, "pause ON" + Environment.NewLine);
@@ -709,7 +706,7 @@ namespace MMIVR.BiosensorFramework.Biosensors.EmpaticaE4
         /// <summary>
         /// 
         /// </summary>
-        /// <param name="E4Client"></param>
+        /// <param name="E4Object"></param>
         public static void StartStreaming(ServerClient E4Object)
         {
             E4Object.Send(E4Object.SocketConnection, "pause OFF" + Environment.NewLine);

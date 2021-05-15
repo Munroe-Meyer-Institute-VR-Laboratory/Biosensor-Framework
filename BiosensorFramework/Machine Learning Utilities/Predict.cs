@@ -7,14 +7,17 @@ using MMIVR.BiosensorFramework.InputPipeline;
 
 namespace MMIVR.BiosensorFramework.MachineLearningUtilities
 {
+    /// <summary>
+    /// Class for performing predictions on Microsoft.ML models.
+    /// </summary>
     public class Predict
     {
         /// <summary>
         /// Takes the readings from the windowed data, extracts the features, and runs it through a prediction pipeline.
         /// </summary>
-        /// <param name="mlContext"></param>
-        /// <param name="Model"></param>
-        /// <param name="WindowReadings"></param>
+        /// <param name="mlContext">Microsoft ML context for operations to be performed in.</param>
+        /// <param name="Model">The loaded model for operations to be performed on.</param>
+        /// <param name="WindowReadings">Packaged List of List of sensor readings.</param>
         public static PredictionBinResult PredictWindow(MLContext mlContext, ITransformer Model, List<List<double>> WindowReadings)
         {
             List<double> Features = new List<double>();
@@ -54,14 +57,35 @@ namespace MMIVR.BiosensorFramework.MachineLearningUtilities
             PredictionBinResult Prediction = MakeBinPrediction(mlContext, WindowFeatures, Model);
             return Prediction;
         }
+        /// <summary>
+        /// Performs a prediction on a dataset for multi-class models.
+        /// </summary>
+        /// <param name="mlContext">Microsoft ML context for operations to be performed in.</param>
+        /// <param name="LiveData">The extracted features packaged in the ExtractedMultiFeatures class.</param>
+        /// <param name="Model">The model to perform inferencing with.</param>
+        /// <returns></returns>
         public static PredictionMultiResult MakeMultiPrediction(MLContext mlContext, ExtractedMultiFeatures LiveData, ITransformer Model)
         {
             return mlContext.Model.CreatePredictionEngine<ExtractedMultiFeatures, PredictionMultiResult>(Model).Predict(LiveData);
         }
+        /// <summary>
+        /// Performs a prediction on a dataset for binary classification models.
+        /// </summary>
+        /// <param name="mlContext">Microsoft ML context for operations to be performed in.</param>
+        /// <param name="LiveData">The extracted features packaged in the ExtractedMultiFeatures class.</param>
+        /// <param name="Model">The model to perform inferencing with.</param>
+        /// <returns></returns>
         public static PredictionBinResult MakeBinPrediction(MLContext mlContext, ExtractedBinFeatures LiveData, ITransformer Model)
         {
             return mlContext.Model.CreatePredictionEngine<ExtractedBinFeatures, PredictionBinResult>(Model).Predict(LiveData);
         }
+        /// <summary>
+        /// Performs a prediction on a dataset for regression classification models.
+        /// </summary>
+        /// <param name="mlContext">Microsoft ML context for operations to be performed in.</param>
+        /// <param name="LiveData">The extracted features packaged in the ExtractedMultiFeatures class.</param>
+        /// <param name="Model">The model to perform inferencing with.</param>
+        /// <returns></returns>
         public static PredictionRegResult MakeRegPrediction(MLContext mlContext, IDataView LiveData, ITransformer Model)
         {
             return mlContext.Model.CreatePredictionEngine<IDataView, PredictionRegResult>(Model).Predict(LiveData);
