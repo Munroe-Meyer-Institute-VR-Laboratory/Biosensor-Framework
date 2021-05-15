@@ -329,7 +329,5 @@ ASALocalRun/
 # MFractors (Xamarin productivity tool) working folder 
 .mfractor/
 /ConsoleInterfacing/E4ServerInterfacing/Saved Readings/Readings.e4
-Paper/paper.bib
-Paper/paper.html
-Paper/paper.md
 Paper/paper.docx
+Paper/Arce_JOSS_paper_JG.docx
