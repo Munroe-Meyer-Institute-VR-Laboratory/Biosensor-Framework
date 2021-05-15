@@ -7,8 +7,17 @@ using MMIVR.BiosensorFramework.DataProcessing;
 
 namespace MMIVR.BiosensorFramework.InputPipeline
 {
+    /// <summary>
+    /// Public methods to compute features of biosensor signals.
+    /// </summary>
     public class SignalProcessing
     {
+        /// <summary>
+        /// Method to compute features of EDA signal.
+        /// </summary>
+        /// <param name="EdaSignal">An array containing the EDA signal readings.</param>
+        /// <param name="SamplingRate">The sampling rate of the sensor. Defaults to 4 Hz.</param>
+        /// <returns></returns>
         public static List<double> ProcessEdaSignal(double[] EdaSignal, double SamplingRate = 4.0)
         {
             List<double> Features;
@@ -43,6 +52,12 @@ namespace MMIVR.BiosensorFramework.InputPipeline
             }
             return Features;
         }
+        /// <summary>
+        /// Method to compute features for 3-axis accelerometer signals.
+        /// </summary>
+        /// <param name="AccSignal">An array of accelerometer data, packaged in [X, Y, Z] format in a single array.</param>
+        /// <param name="SamplingRate">The sampling rate of the sensor. Defaults to 32 Hz.</param>
+        /// <returns></returns>
         public static List<double> ProcessAccSignal(double[] AccSignal, double SamplingRate = 32.0)
         {
             List<double> Features;
@@ -60,6 +75,11 @@ namespace MMIVR.BiosensorFramework.InputPipeline
             }
             return Features;
         }
+        /// <summary>
+        /// Method to compute the features of the temperature signal.
+        /// </summary>
+        /// <param name="TempSignal">An array containing the temperature sensor readings.</param>
+        /// <returns></returns>
         public static List<double> ProcessTmpSignal(double[] TempSignal)
         {
             List<double> Features = null;
@@ -79,6 +99,14 @@ namespace MMIVR.BiosensorFramework.InputPipeline
 
             return Features;
         }
+        /// <summary>
+        /// Method to compute the features for the PPG signal.
+        /// </summary>
+        /// <param name="PpgSignal">An array containing readings from the PPG sensor.</param>
+        /// <param name="SamplingRate">The sampling rate of the sensor. Defaults to 64 Hz.</param>
+        /// <param name="Threshold">The signal threshold for feature computation. Defaults to 3.5.</param>
+        /// <param name="PeakSize">The peak size needed for feature computation. Defaults to 3.</param>
+        /// <returns></returns>
         public static List<double> ProcessPpgSignal(double[] PpgSignal, double SamplingRate = 64.0, double Threshold = 3.5, int PeakSize = 3)
         {
             List<double> Features;

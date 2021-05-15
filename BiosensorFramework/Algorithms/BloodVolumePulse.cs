@@ -1,12 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 namespace MMIVR.BiosensorFramework.DataProcessing
 {
     class BloodVolumePulse
     {
+        /// <summary>
+        /// Computes the features of the PPG signal.  Returns the heartrate, RR intervals, NN50 metric, pNN50 metric.
+        /// </summary>
+        /// <param name="Beats">Indices of heart beats in PPG signal.</param>
+        /// <param name="SamplingRate">The sensor sampling rate.</param>
+        /// <returns></returns>
         public static Tuple<double[], double[], int, double> GetHeartFeatures(int[] Beats, double SamplingRate)
         {
             List<double> RRIntervals = new List<double>();

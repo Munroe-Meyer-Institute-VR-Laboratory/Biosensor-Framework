@@ -2,6 +2,21 @@
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
+    <Authors>Walker Arce</Authors>
+    <Company>Virtual Reality Laboratory in the Munroe Meyer Institute at the University of Nebraska Medical Center</Company>
+    <Product>Biosensor Framework</Product>
+    <Description>Biosensor Framework is a C# library that handles the full process of gathering biometric data from a body-worn sensor, transforming it into handcrafted feature vectors, and delivering an inferencing result in twenty-six lines of code. Purpose built to handle the Empatica E4 biosensor, the Empatica provided TCP client is wrapped in a static C# class to provide convenient function calls and error handling to simplify code structure.</Description>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <PackageProjectUrl></PackageProjectUrl>
+    <RepositoryUrl>https://github.com/Munroe-Meyer-Institute-VR-Laboratory/Biosensor-Framework</RepositoryUrl>
+    <RepositoryType>GitHub</RepositoryType>
+    <PackageTags>Affective Computing, Machine Learning, Unity</PackageTags>
+    <PackageId>MMIVR Biosensor Framework</PackageId>
+    <Copyright>2021</Copyright>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <DocumentationFile>D:\GitHub Repos\Biosensor-Framework\BiosensorFramework\BiosensorFrameworkDoc.xml</DocumentationFile>
   </PropertyGroup>
 
   <ItemGroup>
