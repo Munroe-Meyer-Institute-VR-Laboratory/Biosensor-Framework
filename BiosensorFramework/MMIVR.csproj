@@ -11,7 +11,7 @@
     <RepositoryUrl>https://github.com/Munroe-Meyer-Institute-VR-Laboratory/Biosensor-Framework</RepositoryUrl>
     <RepositoryType>GitHub</RepositoryType>
     <PackageTags>Affective Computing, Machine Learning, Unity</PackageTags>
-    <PackageId>MMIVR Biosensor Framework</PackageId>
+    <PackageId>MMIVR-BF</PackageId>
     <Copyright>2021</Copyright>
   </PropertyGroup>
 
@@ -25,6 +25,10 @@
     <PackageReference Include="Microsoft.ML" Version="1.5.5" />
     <PackageReference Include="Microsoft.ML.FastTree" Version="1.5.5" />
     <PackageReference Include="Microsoft.ML.LightGbm" Version="1.5.5" />
+    <PackageReference Include="Vsxmd" Version="1.4.5">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
   </ItemGroup>
 
 </Project>

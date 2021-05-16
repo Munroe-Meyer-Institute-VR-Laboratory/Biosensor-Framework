@@ -1,0 +1,1460 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>MMIVR</name>
+    </assembly>
+    <members>
+        <member name="M:MMIVR.BiosensorFramework.DataProcessing.BloodVolumePulse.GetHeartFeatures(System.Int32[],System.Double)">
+            <summary>
+            Computes the features of the PPG signal.  Returns the heartrate, RR intervals, NN50 metric, pNN50 metric.
+            </summary>
+            <param name="Beats">Indices of heart beats in PPG signal.</param>
+            <param name="SamplingRate">The sensor sampling rate.</param>
+            <returns></returns>
+        </member>
+        <member name="T:MMIVR.BiosensorFramework.DataProcessing.ProcessFFT">
+            <summary>
+            Class to process a signal through FFT and return the frequency and magnitude spectrums.
+            </summary>
+        </member>
+        <member name="M:MMIVR.BiosensorFramework.DataProcessing.ProcessFFT.ProcessSignal(System.Double[]@,System.Double,System.Double[]@,System.Double[]@)">
+            <summary>
+            Processes the input signal through the FFT and returns the frequency span and magnitude spectrum.
+            </summary>
+            <param name="Signal">An array containing the original sensor signals.</param>
+            <param name="SamplingRate">The sampling rate of the input signal.</param>
+            <param name="FreqSpan">The frequency span of the input signal.</param>
+            <param name="MagSpectrum">The magnitude spectrum of the input signal.</param>
+        </member>
+        <member name="T:MMIVR.BiosensorFramework.DataProcessing.ThirdParty.DSPLib.FIRFilterImplementation">
+            <summary>
+            Source: https://www.codeproject.com/Tips/5070936/Lowpass-Highpass-and-Bandpass-Butterworth-Filters
+            Modified to process samples in an array, rather than individually.  
+            </summary>
+        </member>
+        <member name="T:MMIVR.BiosensorFramework.DataProcessing.ThirdParty.DSPLib.DFT">
+             Performs a complex DFT w/Optimizations for .NET >= 4.
+            
+             Released under the MIT License
+            
+             DFT Core Functions Copyright (c) 2016 Steven C. Hageman
+            
+             Permission is hereby granted, free of charge, to any person obtaining a copy
+             of this software and associated documentation files (the "Software"), to
+             deal in the Software without restriction, including without limitation the
+             rights to use, copy, modify, merge, publish, distribute, sublicense, and/or
+             sell copies of the Software, and to permit persons to whom the Software is
+             furnished to do so, subject to the following conditions:
+            
+             The above copyright notice and this permission notice shall be included in
+             all copies or substantial portions of the Software.
+            
+             THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+             IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+             FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+             AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+             LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
+             FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
+             IN THE SOFTWARE.
+            <summary>
+            DFT Base Class
+            </summary>
+        </member>
+        <member name="M:MMIVR.BiosensorFramework.DataProcessing.ThirdParty.DSPLib.DFT.#ctor">
+            <summary>
+            DFT Class
+            </summary>
+        </member>
+        <member name="P:MMIVR.BiosensorFramework.DataProcessing.ThirdParty.DSPLib.DFT.IsUsingCached">
+            <summary>
+            Read only Boolean property. True meas the currently defined DFT is using cached memory to speed up calculations.
+            </summary>
+        </member>
+        <member name="M:MMIVR.BiosensorFramework.DataProcessing.ThirdParty.DSPLib.DFT.Initialize(System.UInt32,System.UInt32,System.Boolean)">
+            <summary>
+            Pre-Initializes the DFT.
+            Must call first and this anytime the FFT setup changes.
+            </summary>
+            <param name="inputDataLength"></param>
+            <param name="zeroPaddingLength"></param>
+            <param name="forceNoCache">True will force the DFT to not use pre-calculated caching.</param>
+        </member>
+        <member name="M:MMIVR.BiosensorFramework.DataProcessing.ThirdParty.DSPLib.DFT.Execute(System.Double[])">
+            <summary>
+            Execute the DFT.
+            </summary>
+            <param name="timeSeries"></param>
+            <returns>Complex[] FFT Result</returns>
+        </member>
+        <member name="M:MMIVR.BiosensorFramework.DataProcessing.ThirdParty.DSPLib.DFT.Dft(System.Double[])">
+            <summary>
+            A brute force DFT - Uses Task / Parallel pattern
+            </summary>
+            <param name="timeSeries"></param>
+            <returns>Complex[] result</returns>
+        </member>
+        <member name="M:MMIVR.BiosensorFramework.DataProcessing.ThirdParty.DSPLib.DFT.DftCached(System.Double[])">
+            <summary>
+            DFT with Pre-calculated Sin/Cos arrays + Task / Parallel pattern.
+            DFT can only be so big before the computer runs out of memory and has to use
+            the brute force DFT.
+            </summary>
+            <param name="timeSeries"></param>
+            <returns>Complex[] result</returns>
+        </member>
+        <member name="M:MMIVR.BiosensorFramework.DataProcessing.ThirdParty.DSPLib.DFT.FrequencySpan(System.Double)">
+            <summary>
+            Return the Frequency Array for the currently defined DFT.
+            Takes into account the total number of points and zero padding points that were defined.
+            </summary>
+            <param name="samplingFrequencyHz"></param>
+            <returns></returns>
+        </member>
+        <member name="T:MMIVR.BiosensorFramework.DataProcessing.ThirdParty.DSPLib.FFT">
+             Performs an in-place complex FFT.
+            
+             Released under the MIT License
+            
+             Core FFT class based on,
+                  Fast C# FFT - Copyright (c) 2010 Gerald T. Beauregard
+            
+             Changes to: Interface, scaling, zero padding, return values.
+             Change to .NET Complex output types and integrated with my DSP Library. 
+             Note: Complex Number Type requires .NET >= 4.0
+             
+             These changes as noted above Copyright (c) 2016 Steven C. Hageman
+            
+             
+             Permission is hereby granted, free of charge, to any person obtaining a copy
+             of this software and associated documentation files (the "Software"), to
+             deal in the Software without restriction, including without limitation the
+             rights to use, copy, modify, merge, publish, distribute, sublicense, and/or
+             sell copies of the Software, and to permit persons to whom the Software is
+             furnished to do so, subject to the following conditions:
+            
+             The above copyright notice and this permission notice shall be included in
+             all copies or substantial portions of the Software.
+            
+             THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+             IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+             FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+             AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+             LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
+             FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
+             IN THE SOFTWARE.
+            <summary>
+            FFT Base Class
+            </summary>
+        </member>
+        <member name="M:MMIVR.BiosensorFramework.DataProcessing.ThirdParty.DSPLib.FFT.#ctor">
+            <summary>
+            FFT Class
+            </summary>
+        </member>
+        <member name="M:MMIVR.BiosensorFramework.DataProcessing.ThirdParty.DSPLib.FFT.Initialize(System.UInt32,System.UInt32)">
+            <summary>
+            Initialize the FFT. Must call first and this anytime the FFT setup changes.
+            </summary>
+            <param name="inputDataLength"></param>
+            <param name="zeroPaddingLength"></param>
+        </member>
+        <member name="M:MMIVR.BiosensorFramework.DataProcessing.ThirdParty.DSPLib.FFT.Execute(System.Double[])">
+            <summary>
+            Executes a FFT of the input time series.
+            </summary>
+            <param name="timeSeries"></param>
+            <returns>Complex[] Spectrum</returns>
+        </member>
+        <member name="M:MMIVR.BiosensorFramework.DataProcessing.ThirdParty.DSPLib.FFT.BitReverse(System.UInt32,System.UInt32)">
+             Do bit reversal of specified number of places of an int
+             For example, 1101 bit-reversed is 1011
+            
+             @param   x       Number to be bit-reverse.
+             @param   numBits Number of bits in the number.
+        </member>
+        <member name="M:MMIVR.BiosensorFramework.DataProcessing.ThirdParty.DSPLib.FFT.FrequencySpan(System.Double)">
+            <summary>
+            Return the Frequency Array for the currently defined FFT.
+            Takes into account the total number of points and zero padding points that were defined.
+            </summary>
+            <param name="samplingFrequencyHz"></param>
+            <returns></returns>
+        </member>
+        <member name="M:MMIVR.BiosensorFramework.DataProcessing.ThirdParty.DSPLib.DSP.Generate.LinSpace(System.Double,System.Double,System.UInt32)">
+            <summary>
+            Generate linearly spaced array. Like the Octave function of the same name.
+            EX: DSP.Generate.LinSpace(1, 10, 10) -> Returns array: 1, 2, 3, 4....10.
+            </summary>
+            <param name="startVal">Any value</param>
+            <param name="stopVal">Any value > startVal</param>
+            <param name="points">Number of points to generate</param>
+            <returns>double[] array</returns>
+        </member>
+        <member name="M:MMIVR.BiosensorFramework.DataProcessing.ThirdParty.DSPLib.DSP.Generate.ToneSampling(System.Double,System.Double,System.Double,System.UInt32,System.Double,System.Double)">
+            <summary>
+            Generates a Sine Wave Tone using Sampling Terms.
+            </summary>
+            <param name="amplitudeVrms"></param>
+            <param name="frequencyHz"></param>
+            <param name="samplingFrequencyHz"></param>
+            <param name="points"></param>
+            <param name="dcV">[Optional] DC Voltage offset</param>
+            <param name="phaseDeg">[Optional] Phase of signal in degrees</param>
+            <returns>double[] array</returns>
+        </member>
+        <member name="M:MMIVR.BiosensorFramework.DataProcessing.ThirdParty.DSPLib.DSP.Generate.ToneCycles(System.Double,System.Double,System.UInt32,System.Double,System.Double)">
+            <summary>
+            Generates a Sine Wave Tone using Number of Cycles Terms.
+            </summary>
+            <param name="amplitudeVrms"></param>
+            <param name="cycles"></param>
+            <param name="points"></param>
+            <param name="dcV">[Optional] DC Voltage offset</param>
+            <param name="phaseDeg">[Optional] Phase of signal in degrees</param>
+            <returns>double[] array</returns>
+        </member>
+        <member name="M:MMIVR.BiosensorFramework.DataProcessing.ThirdParty.DSPLib.DSP.Generate.NoisePsd(System.Double,System.Double,System.UInt32)">
+            <summary>
+            Generates a normal distribution noise signal of the specified power spectral density (Vrms / rt-Hz).
+            </summary>
+            <param name="amplitudePsd (Vrms / rt-Hz)(Vrms/rt-Hz)"></param>
+            <param name="samplingFrequencyHz"></param>
+            <param name="points"></param>
+            <returns>double[] array</returns>
+        </member>
+        <member name="M:MMIVR.BiosensorFramework.DataProcessing.ThirdParty.DSPLib.DSP.Generate.NoiseRms(System.Double,System.UInt32,System.Double)">
+            <summary>
+            Generates a normal distribution noise signal of the specified Volts RMS.
+            </summary>
+            <param name="amplitudeVrms"></param>
+            <param name="points"></param>
+            <param name="dcV"></param>
+            <returns>double[] array</returns>
+        </member>
+        <member name="T:MMIVR.BiosensorFramework.DataProcessing.ThirdParty.DSPLib.DSP.Window">
+            
+             Many of the windows functions are based on the article,
+            
+               Spectrum and spectral density estimation by the Discrete Fourier
+               transform (DFT), including a comprehensive list of window
+               functions and some new ﬂat-top windows.
+            
+               G. Heinzel, A. Rudiger and R. Schilling,
+               Max-Planck-Institut fur Gravitationsphysik
+             
+               February 15, 2002
+            
+            
+        </member>
+        <member name="T:MMIVR.BiosensorFramework.DataProcessing.ThirdParty.DSPLib.DSP.Window.Type">
+            <summary>
+            ENUM Types for included Windows.
+            </summary>
+        </member>
+        <member name="M:MMIVR.BiosensorFramework.DataProcessing.ThirdParty.DSPLib.DSP.Window.ScaleFactor.Signal(System.Double[])">
+            <summary>
+            Calculate Signal scale factor from window coefficient array.
+            Designed to be applied to the "Magnitude" result.
+            </summary>
+            <param name="windowCoefficients"></param>
+            <returns>double scaleFactor</returns>
+        </member>
+        <member name="M:MMIVR.BiosensorFramework.DataProcessing.ThirdParty.DSPLib.DSP.Window.ScaleFactor.Noise(System.Double[],System.Double)">
+            <summary>
+             Calculate Noise scale factor from window coefficient array.
+             Takes into account the bin width in Hz for the final result also.
+             Designed to be applied to the "Magnitude" result.
+            </summary>
+            <param name="windowCoefficients"></param>
+            <param name="samplingFrequencyHz"></param>
+            <returns>double scaleFactor</returns>
+        </member>
+        <member name="M:MMIVR.BiosensorFramework.DataProcessing.ThirdParty.DSPLib.DSP.Window.ScaleFactor.NENBW(System.Double[])">
+            <summary>
+             Calculate Normalized, Equivalent Noise BandWidth from window coefficient array.
+            </summary>
+            <param name="windowCoefficients"></param>
+            <returns>double NENBW</returns>
+        </member>
+        <member name="M:MMIVR.BiosensorFramework.DataProcessing.ThirdParty.DSPLib.DSP.Window.Coefficients(MMIVR.BiosensorFramework.DataProcessing.ThirdParty.DSPLib.DSP.Window.Type,System.UInt32)">
+            <summary>
+            Calculates a set of Windows coefficients for a given number of points and a window type to use.
+            </summary>
+            <param name="windowName"></param>
+            <param name="points"></param>
+            <returns>double[] array of the calculated window coefficients</returns>
+        </member>
+        <member name="T:MMIVR.BiosensorFramework.DataProcessing.ThirdParty.DSPLib.DSP.ConvertMagnitude">
+            <summary>
+            DFT / FFT Format Conversion Functions
+            </summary>
+        </member>
+        <member name="M:MMIVR.BiosensorFramework.DataProcessing.ThirdParty.DSPLib.DSP.ConvertMagnitude.ToMagnitudeSquared(System.Double[])">
+            <summary>
+            Convert Magnitude FT Result to: Magnitude Squared Format
+            </summary>
+            <param name="magnitude"></param>
+            <returns></returns>
+        </member>
+        <member name="M:MMIVR.BiosensorFramework.DataProcessing.ThirdParty.DSPLib.DSP.ConvertMagnitude.ToMagnitudeDBV(System.Double[])">
+            <summary>
+            Convert Magnitude FT Result to: Magnitude dBVolts
+            </summary>
+            <param name="magnitude"></param>
+            <returns>double[] array</returns>
+        </member>
+        <member name="T:MMIVR.BiosensorFramework.DataProcessing.ThirdParty.DSPLib.DSP.ConvertMagnitudeSquared">
+            <summary>
+            DFT / FFT Format Conversion Functions
+            </summary>
+        </member>
+        <member name="M:MMIVR.BiosensorFramework.DataProcessing.ThirdParty.DSPLib.DSP.ConvertMagnitudeSquared.ToMagnitude(System.Double[])">
+            <summary>
+            Convert Magnitude Squared FFT Result to: Magnitude Vrms
+            </summary>
+            <param name="magSquared"></param>
+            <returns>double[] array</returns>
+        </member>
+        <member name="M:MMIVR.BiosensorFramework.DataProcessing.ThirdParty.DSPLib.DSP.ConvertMagnitudeSquared.ToMagnitudeDBV(System.Double[])">
+            <summary>
+            Convert Magnitude Squared FFT Result to: Magnitude dBVolts
+            </summary>
+            <param name="magSquared"></param>
+            <returns>double[] array</returns>
+        </member>
+        <member name="T:MMIVR.BiosensorFramework.DataProcessing.ThirdParty.DSPLib.DSP.ConvertComplex">
+            <summary>
+            DFT / FFT Format Conversion Functions.
+            </summary>
+        </member>
+        <member name="M:MMIVR.BiosensorFramework.DataProcessing.ThirdParty.DSPLib.DSP.ConvertComplex.ToMagnitudeSquared(System.Numerics.Complex[])">
+            <summary>
+            Convert Complex DFT/FFT Result to: Magnitude Squared V^2 rms
+            </summary>
+            <param name="rawFFT"></param>
+            <returns>double[] MagSquared Format</returns>
+        </member>
+        <member name="M:MMIVR.BiosensorFramework.DataProcessing.ThirdParty.DSPLib.DSP.ConvertComplex.ToMagnitude(System.Numerics.Complex[])">
+            <summary>
+            Convert Complex DFT/FFT Result to: Magnitude Vrms
+            </summary>
+            <param name="rawFFT"></param>
+            <returns>double[] Magnitude Format (Vrms)</returns>
+        </member>
+        <member name="M:MMIVR.BiosensorFramework.DataProcessing.ThirdParty.DSPLib.DSP.ConvertComplex.ToMagnitudeDBV(System.Numerics.Complex[])">
+            <summary>
+            Convert Complex DFT/FFT Result to: Log Magnitude dBV
+            </summary>
+            <param name="rawFFT"> Complex[] input array"></param>
+            <returns>double[] Magnitude Format (dBV)</returns>
+        </member>
+        <member name="M:MMIVR.BiosensorFramework.DataProcessing.ThirdParty.DSPLib.DSP.ConvertComplex.ToPhaseDegrees(System.Numerics.Complex[])">
+            <summary>
+            Convert Complex DFT/FFT Result to: Phase in Degrees
+            </summary>
+            <param name="rawFFT"> Complex[] input array"></param>
+            <returns>double[] Phase (Degrees)</returns>
+        </member>
+        <member name="M:MMIVR.BiosensorFramework.DataProcessing.ThirdParty.DSPLib.DSP.ConvertComplex.ToPhaseRadians(System.Numerics.Complex[])">
+            <summary>
+            Convert Complex DFT/FFT Result to: Phase in Radians
+            </summary>
+            <param name="rawFFT"> Complex[] input array"></param>
+            <returns>double[] Phase (Degrees)</returns>
+        </member>
+        <member name="T:MMIVR.BiosensorFramework.DataProcessing.ThirdParty.DSPLib.DSP.Analyze">
+            <summary>
+            DFT / FFT Output Analysis Functions
+            </summary>
+        </member>
+        <member name="M:MMIVR.BiosensorFramework.DataProcessing.ThirdParty.DSPLib.DSP.Analyze.FindRms(System.Double[],System.UInt32,System.UInt32)">
+            <summary>
+            Find the RMS value of a[].
+            </summary>
+            <param name="inData"> = of N data points, 0 based.</param>
+            <param name="startBin"> = Bin to start the counting at (0 based)."></param>
+            <param name="stopBin"> = Bin FROM END to stop counting at (Max = N - 1)."></param>
+            <returns>RMS value of input array between start and stop bins.</returns>
+        </member>
+        <member name="M:MMIVR.BiosensorFramework.DataProcessing.ThirdParty.DSPLib.DSP.Analyze.FindMean(System.Double[],System.UInt32,System.UInt32)">
+            <summary>
+            Finds the mean of the input array.
+            </summary>
+            <param name="inData"> = of N data points, 0 based.</param>
+            <param name="startBin"> = Bin to start the counting at (0 based)."></param>
+            <param name="stopBin"> = Bin FROM END to stop counting at (Max = N - 1)."></param>
+            <returns>Mean value of input array between start and stop bins.</returns>
+        </member>
+        <member name="M:MMIVR.BiosensorFramework.DataProcessing.ThirdParty.DSPLib.DSP.Analyze.FindMaxAmplitude(System.Double[])">
+            <summary>
+            Finds the maximum value in an array.
+            </summary>
+            <param name="inData"></param>
+            <returns>Maximum value of input array</returns>
+        </member>
+        <member name="M:MMIVR.BiosensorFramework.DataProcessing.ThirdParty.DSPLib.DSP.Analyze.FindMaxPosition(System.Double[])">
+            <summary>
+            Finds the position in the inData array where the maximum value happens.
+            </summary>
+            <param name="inData"></param>
+            <returns>Position of maximum value in input array</returns>
+        </member>
+        <member name="M:MMIVR.BiosensorFramework.DataProcessing.ThirdParty.DSPLib.DSP.Analyze.FindMaxFrequency(System.Double[],System.Double[])">
+            <summary>
+            Finds the maximum frequency from the given inData and fSpan arrays.
+            </summary>
+            <param name="inData"></param>
+            <param name="fSpan"></param>
+            <returns>Maximum frequency from input arrays</returns>
+        </member>
+        <member name="M:MMIVR.BiosensorFramework.DataProcessing.ThirdParty.DSPLib.DSP.Analyze.UnwrapPhaseDegrees(System.Double[])">
+            <summary>
+            Unwraps the phase so that it is continuous, without jumps.
+            </summary>
+            <param name="inPhaseDeg">Array of Phase Data from FT in Degrees</param>
+            <returns>Continuous Phase data</returns>
+        </member>
+        <member name="M:MMIVR.BiosensorFramework.DataProcessing.ThirdParty.DSPLib.DSP.Analyze.UnwrapPhaseRadians(System.Double[])">
+            <summary>
+            Unwraps the phase so that it is continuous, without jumps.
+            </summary>
+            <param name="inPhaseRad">Array of Phase Data from FT in Radians</param>
+            <returns>Continuous Phase data</returns>
+        </member>
+        <member name="T:MMIVR.BiosensorFramework.DataProcessing.ThirdParty.DSPLib.DSP.Math">
+            <summary>
+            Double[] Array Math Operations (All Static)
+            </summary>
+        </member>
+        <member name="M:MMIVR.BiosensorFramework.DataProcessing.ThirdParty.DSPLib.DSP.Math.Multiply(System.Double[],System.Double[])">
+            <summary>
+            result[] = a[] * b[]
+            </summary>
+        </member>
+        <member name="M:MMIVR.BiosensorFramework.DataProcessing.ThirdParty.DSPLib.DSP.Math.Multiply(System.Double[],System.Double)">
+            <summary>
+            result[] = a[] * b
+            </summary>
+        </member>
+        <member name="M:MMIVR.BiosensorFramework.DataProcessing.ThirdParty.DSPLib.DSP.Math.Add(System.Double[],System.Double[])">
+            <summary>
+            result[] = a[] + b[]
+            </summary>
+        </member>
+        <member name="M:MMIVR.BiosensorFramework.DataProcessing.ThirdParty.DSPLib.DSP.Math.Add(System.Double[],System.Double)">
+            <summary>
+            result[] = a[] + b
+            </summary>
+        </member>
+        <member name="M:MMIVR.BiosensorFramework.DataProcessing.ThirdParty.DSPLib.DSP.Math.Subtract(System.Double[],System.Double[])">
+            <summary>
+            result[] = a[] - b[]
+            </summary>
+        </member>
+        <member name="M:MMIVR.BiosensorFramework.DataProcessing.ThirdParty.DSPLib.DSP.Math.Subtract(System.Double[],System.Double)">
+            <summary>
+            result[] = a[] - b
+            </summary>
+        </member>
+        <member name="M:MMIVR.BiosensorFramework.DataProcessing.ThirdParty.DSPLib.DSP.Math.Divide(System.Double[],System.Double[])">
+            <summary>
+            result[] = a[] / b[]
+            </summary>
+        </member>
+        <member name="M:MMIVR.BiosensorFramework.DataProcessing.ThirdParty.DSPLib.DSP.Math.Divide(System.Double[],System.Double)">
+            <summary>
+            result[] = a[] / b
+            </summary>
+        </member>
+        <member name="M:MMIVR.BiosensorFramework.DataProcessing.ThirdParty.DSPLib.DSP.Math.Sqrt(System.Double[])">
+            <summary>
+            Square root of a[].
+            </summary>
+        </member>
+        <member name="M:MMIVR.BiosensorFramework.DataProcessing.ThirdParty.DSPLib.DSP.Math.Square(System.Double[])">
+            <summary>
+            Squares a[].
+            </summary>
+        </member>
+        <member name="M:MMIVR.BiosensorFramework.DataProcessing.ThirdParty.DSPLib.DSP.Math.Log10(System.Double[])">
+            <summary>
+            Log10 a[].
+            </summary>
+        </member>
+        <member name="M:MMIVR.BiosensorFramework.DataProcessing.ThirdParty.DSPLib.DSP.Math.RemoveMean(System.Double[])">
+            <summary>
+            Removes mean value from a[].
+            </summary>
+        </member>
+        <member name="T:MMIVR.BiosensorFramework.DataProcessing.FeatureExtraction">
+            <summary>
+            Class with methods for extracted features from time-series data.
+            </summary>
+        </member>
+        <member name="M:MMIVR.BiosensorFramework.DataProcessing.FeatureExtraction.SignalMean(System.Collections.Generic.List{System.Single})">
+            <summary>
+            Returns the mean of the data.
+            </summary>
+            <param name="Signal">List of data.</param>
+            <returns>Mean of the signal.</returns>
+        </member>
+        <member name="M:MMIVR.BiosensorFramework.DataProcessing.FeatureExtraction.SignalStandardDeviation(System.Collections.Generic.List{System.Single})">
+            <summary>
+            Returns the standard deviation of the data.
+            </summary>
+            <param name="Signal">List of data.</param>
+            <returns>Standard deviation of the signal.</returns>
+        </member>
+        <member name="M:MMIVR.BiosensorFramework.DataProcessing.FeatureExtraction.SignalIntegral(System.Double[])">
+            <summary>
+            Computes the integral of the signal using Simpson's Rule.
+            </summary>
+            <param name="Signal">Array of data.</param>
+            <returns>The integral of the data.</returns>
+        </member>
+        <member name="M:MMIVR.BiosensorFramework.DataProcessing.FeatureExtraction.SignalAbsolute(System.Double)">
+            <summary>
+            Returns the absolute value of the area under the curve.
+            </summary>
+            <param name="AUC">The area under the curve of the signal.</param>
+            <returns>The absolute value of the AUC.</returns>
+        </member>
+        <member name="M:MMIVR.BiosensorFramework.DataProcessing.FeatureExtraction.SignalDynamicRange(System.Double[])">
+            <summary>
+            Returns the dynamic range of the signal (max / min).
+            </summary>
+            <param name="Signal">Array of data.</param>
+            <returns>The dynamic range of the signal.</returns>
+        </member>
+        <member name="M:MMIVR.BiosensorFramework.DataProcessing.FeatureExtraction.SignalRMS(System.Double[])">
+            <summary>
+            Computes the root mean square of the signal.
+            </summary>
+            <param name="Signal">Array of data.</param>
+            <returns>The root mean square of the signal.</returns>
+        </member>
+        <member name="M:MMIVR.BiosensorFramework.DataProcessing.FeatureExtraction.SignalMinMax(System.Collections.Generic.List{System.Single})">
+            <summary>
+            Gets the signal min and max from the array of data.
+            </summary>
+            <param name="Signal">List of data.</param>
+            <returns>Tuple with max and min.</returns>
+        </member>
+        <member name="M:MMIVR.BiosensorFramework.DataProcessing.FeatureExtraction.SignalFreqRatio(System.Double,System.Double)">
+            <summary>
+            Returns the frequency ratio of the signal.
+            </summary>
+            <param name="LowFreq">The low frequency value.</param>
+            <param name="HighFreq">The high frequency value.</param>
+            <returns>Returns the ratio of the freqencies (low / high).</returns>
+        </member>
+        <member name="M:MMIVR.BiosensorFramework.DataProcessing.FeatureExtraction.SignalPeakFrequency(System.Double[],System.Double)">
+            <summary>
+            Computes the peak frequency of the signal.
+            </summary>
+            <param name="Signal">Array of data.</param>
+            <param name="SamplingRate">The sampling rate of the signal.</param>
+            <returns>Peak frequency component of the signal.</returns>
+        </member>
+        <member name="M:MMIVR.BiosensorFramework.DataProcessing.FeatureExtraction.SignalFreqBandEnergies(System.Double[],System.Collections.Generic.List{System.Tuple{System.Double,System.Double}},System.Double,System.Int32)">
+            <summary>
+            Computes the frequency band energies of the signal.
+            </summary>
+            <param name="Signal">Array of data.</param>
+            <param name="Bands">The frequency bands to compute.</param>
+            <param name="SamplingFrequency">The sampling rate of the signal.</param>
+            <param name="Order">The filter order. Defaults to 5.</param>
+            <returns>List of frequency band energies.</returns>
+        </member>
+        <member name="M:MMIVR.BiosensorFramework.DataProcessing.FeatureExtraction.SignalRelativePower(System.Collections.Generic.List{System.Double[]},System.Double,System.Double)">
+            <summary>
+            Computes the signal relative power from the frequency band energies.
+            </summary>
+            <param name="Energies">The frequency band energies.</param>
+            <param name="Resolution">The resolution of the relative power.</param>
+            <param name="Epsilon">Default 1e-7.</param>
+            <returns>List of doubles for the signal relative power.</returns>
+        </member>
+        <member name="M:MMIVR.BiosensorFramework.DataProcessing.FeatureExtraction.SignalFreqNormalize(System.Double[])">
+            <summary>
+            Normalizes the frequency components.
+            </summary>
+            <param name="Freq">The signal band energies.</param>
+            <returns>The normalized frequency components.</returns>
+        </member>
+        <member name="M:MMIVR.BiosensorFramework.DataProcessing.FeatureExtraction.SignalSlope(System.Double[],System.Double[])">
+            <summary>
+            The slope of the data.
+            </summary>
+            <param name="Signal">Array of data.</param>
+            <param name="TimeLabels">Array of time labels for each data point.</param>
+            <returns>The slope of the signal.</returns>
+        </member>
+        <member name="M:MMIVR.BiosensorFramework.DataProcessing.FeatureExtraction.SignalPercentile(System.Double[],System.Int32)">
+            <summary>
+            Calculates the signal p-percentile.
+            </summary>
+            <param name="Signal">Array of data.</param>
+            <param name="percentile">The percentile to calculate.</param>
+            <returns>The signal percentile.</returns>
+        </member>
+        <member name="M:MMIVR.BiosensorFramework.DataProcessing.FeatureExtraction.SignalCorrelation(System.Double[],System.Double[])">
+            <summary>
+            Computes the Pearson correlation coefficient of the signal.
+            </summary>
+            <param name="Signal">Array of data.</param>
+            <param name="TimeLabels">The time labels for each data point.</param>
+            <returns>The correlation coefficient of the data.</returns>
+        </member>
+        <member name="M:MMIVR.BiosensorFramework.DataProcessing.FeatureExtraction.SignalFreqSummation(System.Collections.Generic.List{System.Double[]})">
+            <summary>
+            Sums the frequency components of the signal band energies.
+            </summary>
+            <param name="Freq">The signal band energies.</param>
+            <returns>List of doubles with the summed signal band energies.</returns>
+        </member>
+        <member name="M:MMIVR.BiosensorFramework.DataProcessing.FeatureExtraction.FindLocalMaxima(System.Double[],System.Double,System.Int32)">
+            <summary>
+            Finds the local maxima of the signal.
+            </summary>
+            <param name="array">Array of data.</param>
+            <param name="Threshold">The threshold for the local maxima.</param>
+            <param name="Samples">The number of samples required to classify a maxima.</param>
+            <returns></returns>
+        </member>
+        <member name="M:MMIVR.BiosensorFramework.DataProcessing.FeatureExtraction.PSI(System.Collections.Generic.List{System.Double},System.Double@,System.Double@,System.Int32)">
+            <summary>
+            Calculates the physical stillness index, specified in the paper referenced below.  
+            Chang, Kang-Ming, et al. "A wireless accelerometer-based body posture stability detection system and its application for 
+                meditation practitioners." Sensors 12.12 (2012): 17620-17632.
+            Calculates a metric of physical stillness from acceleration readings. 
+            Uses a sliding window, root mean square filter to get the absolute magnitude of the overall acceleration in the readings.
+            This method works with the absolute magnitude of accelerations and not three-axis readings, use PSIVector for those purposes.
+            </summary>
+            <param name="Accelerations"> List of acceleration readings </param>
+            <param name="AverageIndex"> Output PSI, the average of the filtered output </param>
+            <param name="MaxIndex"> Output PSI, the max value of the filtered output </param>
+            <param name="WindowWidth"> The number of values to incorporate in the window on both sides </param>
+            <returns> The output filtered list of RMS values, can be discarded in favor of 'out' variables </returns>
+        </member>
+        <member name="M:MMIVR.BiosensorFramework.DataProcessing.FeatureExtraction.PSIVector(System.Collections.Generic.List{System.Collections.Generic.List{System.Double}},System.Double@,System.Double@,System.Int32)">
+            <summary>
+            Performs the calculation of the physical stillness index using a 3D acceleration vector
+            </summary>
+            <param name="Accelerations"> List of acceleration readings </param>
+            <param name="AverageIndex"> Output PSI, the average of the filtered output </param>
+            <param name="MaxIndex"> Output PSI, the max value of the filtered output </param>
+            <param name="WindowWidth"> The number of values to incorporate in the window on both sides </param>
+            <returns> The output filtered list of RMS values, can be discarded in favor of 'out' variables </returns>
+        </member>
+        <member name="M:MMIVR.BiosensorFramework.DataProcessing.FeatureExtraction.RootMeanSquare(System.Double,System.Double)">
+            <summary>
+            Calculates the root mean square of the input variables
+            </summary>
+            <param name="FirstTerm"> Calculated first term of form - 1/2n </param>
+            <param name="Summation"> The square sum of the input values </param>
+            <returns>Root mean square</returns>
+        </member>
+        <member name="M:MMIVR.BiosensorFramework.DataProcessing.FeatureExtraction.SquareSummation(System.Double)">
+            <summary>
+            Performs square of input values
+            </summary>
+            <param name="Value"></param>
+            <returns></returns>
+        </member>
+        <member name="M:MMIVR.BiosensorFramework.DataProcessing.FeatureExtraction.SquareSummation(System.Numerics.Vector3)">
+            <summary>
+            Performs square summation of Vector3 variables
+            </summary>
+            <param name="Value"> Vector3 with x, y, and z values </param>
+            <returns>The squared Vector3.</returns>
+        </member>
+        <member name="M:MMIVR.BiosensorFramework.DataProcessing.FeatureExtraction.RemoveBias(System.Numerics.Vector3,System.Double,System.Double,System.Double)">
+            <summary>
+            Removes mean from each axis of the 3D vector
+            </summary>
+            <param name="AccelerationVector"> 3D acceleration vector </param>
+            <param name="BiasX"> Mean of X axis </param>
+            <param name="BiasY"> Mean of Y axis </param>
+            <param name="BiasZ"> Mean of Z axis </param>
+            <returns>Vector3 with subtracted bias.</returns>
+        </member>
+        <member name="M:MMIVR.BiosensorFramework.DataProcessing.HealeyStressDetection.GetPeakFeatures(System.Double[],System.Double,System.Double,System.Double)">
+            <summary>
+            Uses the approximate first derivative of the GSR signal to find the magnitude, duration, and amplitude of the peaks in the 
+            signal.
+            </summary>
+            Healey, Jennifer Anne. Wearable and automotive systems for affect recognition from physiology. Diss. 
+                Massachusetts Institute of Technology, 2000.
+            <param name="Signal"></param>
+            <param name="SamplingRate"></param>
+            <param name="CutoffFreq"></param>
+            <param name="Threshold"></param>
+        </member>
+        <member name="M:MMIVR.BiosensorFramework.DataProcessing.HealeyStressDetection.SumFeatures(System.Collections.Generic.List{System.Double[]})">
+            <summary>
+            
+            </summary>
+            <param name="PeakFeatures"> Output of the GetPeakFeatures function </param>
+            <returns></returns>
+        </member>
+        <member name="M:MMIVR.BiosensorFramework.DataProcessing.HealeyStressDetection.FindAbove(System.Double[],System.Double,System.Double)">
+            <summary>
+            Returns indices above a threshold, removes zero elements.  Intended for time-series data collection.
+            </summary>
+            <param name="array">An array of data.</param>
+            <param name="Threshold">The threshold for inclusion in return data.</param>
+            <param name="SamplingRate">The sampling rate of the data.</param>
+            <returns>List of List of indices above the threshold.</returns>
+        </member>
+        <member name="M:MMIVR.BiosensorFramework.DataProcessing.HealeyStressDetection.FindZeroCrossings(System.Double[])">
+            <summary>
+            Find zero crossings for two cases:
+                1. Goes from below zero to above zero
+                2. Goes from above zero to below zero
+            </summary>
+            <param name="array"> Array to find the indices of zero crossings in </param>
+            <returns> A tuple of the form: Item1 is case one and Item2 is case twos </returns>
+        </member>
+        <member name="M:MMIVR.BiosensorFramework.DataProcessing.HealeyStressDetection.ConstructPeaks(System.Collections.Generic.List{System.Collections.Generic.List{System.Int32}},System.Tuple{System.Int32[],System.Int32[]})">
+            <summary>
+            Takes the zero crossings and peaks and reconstructs the index range for the peaks.
+            </summary>
+            <param name="Peaks"> List of List of indices that represent the indices above threshold </param>
+            <param name="ZeroCrossings"> List of indices where zero crossings happen </param>
+            <returns>List of peak indices.</returns>
+        </member>
+        <member name="M:MMIVR.BiosensorFramework.DataProcessing.HealeyStressDetection.FindNearestMinus(System.Int32,System.Int32[])">
+            <summary>
+            Finds the nearest index for zero crossings that go from above zero to below zero
+            </summary>
+            <param name="PeakStart"> Peak starting index </param>
+            <param name="ZeroCrossings"> Array of indices that represent the zero crossing points </param>
+            <returns> int, the index in ZeroCrossings that is closest to PeakStart </returns>
+        </member>
+        <member name="M:MMIVR.BiosensorFramework.DataProcessing.HealeyStressDetection.FindNearestPlus(System.Int32,System.Int32[])">
+            <summary>
+            Finds the nearest index for zero crossings that go from below zero to above zero
+            </summary>
+            <param name="PeakStart"> Peak starting index </param>
+            <param name="ZeroCrossings"> Array of indices that represent the zero crossing points </param>
+            <returns> int, the index in ZeroCrossings that is closest to PeakStart </returns>
+        </member>
+        <member name="M:MMIVR.BiosensorFramework.DataProcessing.HealeyStressDetection.MergeOverlappingPeaks(System.Collections.Generic.List{System.Int32[]})">
+            <summary>
+            If reconstructed peaks are overlapping in their indices, which can happen if a peak does not zero cross before the next peak,
+            then remove the copies.
+            </summary>
+            <param name="Peaks"> List of indices for the reconstructed peaks </param>
+            <returns> List with any overlapping peaks removed </returns>
+        </member>
+        <member name="M:MMIVR.BiosensorFramework.DataProcessing.HealeyStressDetection.FiniteDifference(System.Double[]@)">
+            <summary>
+            Calculates the differences between adjacent elements, equating to the approximate first derivative
+            Algorithm: Y = [X(1)-X(0), X(2)-X(1), ..., X(m + 1)-X(m)]
+            Source: https://www.mathworks.com/help/matlab/ref/diff.html?s_tid=srchtitle
+            </summary>
+            <param name="Signal"></param>
+            <returns></returns>
+        </member>
+        <member name="M:MMIVR.BiosensorFramework.DataProcessing.TarvainenDetrending.RemoveTrend(System.Double[],System.Int32,System.Double[])">
+            <summary>
+            A time-varying finite-impulse-response high-pass filter for detrending
+            </summary>
+            If using this in a published study, cite:
+                Tarvainen, Mika P., Perttu O. Ranta-Aho, and Pasi A.Karjalainen. "An advanced detrending method with
+                    application to HRV analysis." IEEE Transactions on Biomedical Engineering 49.2 (2002): 172-175.
+            <param name="InputSignal"> Original EDA signal </param>
+            <param name="Lambda"> The 'smoothing' factor of the filter </param>
+            <param name="Filter"> Coefficients for the 0, 1, 2 diagonals in the second derivative matrix.  Can be null, will default to standard value </param>
+            <returns> Filtered signal without a trend, double[] </returns>
+        </member>
+        <member name="M:MMIVR.BiosensorFramework.DataProcessing.TarvainenDetrending.GetResidual(System.Double[],System.Double[])">
+            <summary>
+            Removes the stationary signal from the EDA signal and returns the residual signal
+            </summary>
+            <param name="TrendedSignal"> Original EDA signal </param>
+            <param name="DetrendedSignal"> Output of RemoveTrend function </param>
+            <returns></returns>
+        </member>
+        <member name="T:MMIVR.BiosensorFramework.Biosensors.EmpaticaE4.ServerClient">
+            <summary>
+            Class to instantiate a client to communicate with TCP server.
+            </summary>
+        </member>
+        <member name="T:MMIVR.BiosensorFramework.Biosensors.EmpaticaE4.ServerClient.DeviceStreams">
+            <summary>
+            The applicable device data streams for the E4 server.
+            </summary>
+        </member>
+        <member name="F:MMIVR.BiosensorFramework.Biosensors.EmpaticaE4.ServerClient.DeviceStreams.ACC">
+            <summary>
+            Accelerometer data stream.
+            </summary>
+        </member>
+        <member name="F:MMIVR.BiosensorFramework.Biosensors.EmpaticaE4.ServerClient.DeviceStreams.BVP">
+            <summary>
+            Blood volume pulse data stream.
+            </summary>
+        </member>
+        <member name="F:MMIVR.BiosensorFramework.Biosensors.EmpaticaE4.ServerClient.DeviceStreams.GSR">
+            <summary>
+            Galvanic skin response data stream.
+            </summary>
+        </member>
+        <member name="F:MMIVR.BiosensorFramework.Biosensors.EmpaticaE4.ServerClient.DeviceStreams.IBI">
+            <summary>
+            Inter-beat interval data stream.
+            </summary>
+        </member>
+        <member name="F:MMIVR.BiosensorFramework.Biosensors.EmpaticaE4.ServerClient.DeviceStreams.HR">
+            <summary>
+            Heart rate data stream.
+            </summary>
+        </member>
+        <member name="F:MMIVR.BiosensorFramework.Biosensors.EmpaticaE4.ServerClient.DeviceStreams.TMP">
+            <summary>
+            Temperature data stream.
+            </summary>
+        </member>
+        <member name="F:MMIVR.BiosensorFramework.Biosensors.EmpaticaE4.ServerClient.DeviceStreams.BAT">
+            <summary>
+            Battery data stream.
+            </summary>
+        </member>
+        <member name="F:MMIVR.BiosensorFramework.Biosensors.EmpaticaE4.ServerClient.DeviceStreams.TAG">
+            <summary>
+            Tags data stream. This is the onboard E4 button.
+            </summary>
+        </member>
+        <member name="F:MMIVR.BiosensorFramework.Biosensors.EmpaticaE4.ServerClient.SocketConnection">
+            <summary>
+            Connection to be used in communications
+            </summary>
+        </member>
+        <member name="F:MMIVR.BiosensorFramework.Biosensors.EmpaticaE4.ServerClient.DeviceName">
+            <summary>
+            Name of the device for connection
+            </summary>
+        </member>
+        <member name="F:MMIVR.BiosensorFramework.Biosensors.EmpaticaE4.ServerClient.SubscribedStreams">
+            <summary>
+            List of subscribed streams for synchronizing readings
+            </summary>
+        </member>
+        <member name="F:MMIVR.BiosensorFramework.Biosensors.EmpaticaE4.ServerClient.ACCReadings3D">
+            <summary>
+            List for 3D accelerometer readings.
+            </summary>
+        </member>
+        <member name="F:MMIVR.BiosensorFramework.Biosensors.EmpaticaE4.ServerClient.ACCReadingsX">
+            <summary>
+            List for X accelerometer readings.
+            </summary>
+        </member>
+        <member name="F:MMIVR.BiosensorFramework.Biosensors.EmpaticaE4.ServerClient.ACCReadingsY">
+            <summary>
+            List for Y accelerometer readings.
+            </summary>
+        </member>
+        <member name="F:MMIVR.BiosensorFramework.Biosensors.EmpaticaE4.ServerClient.ACCReadingsZ">
+            <summary>
+            List for Z accelerometer readings.
+            </summary>
+        </member>
+        <member name="F:MMIVR.BiosensorFramework.Biosensors.EmpaticaE4.ServerClient.ACCTimestamps">
+            <summary>
+            List for accelerometer timestamps.
+            </summary>
+        </member>
+        <member name="F:MMIVR.BiosensorFramework.Biosensors.EmpaticaE4.ServerClient.BVPReadings">
+            <summary>
+            List for blood volume pulse readings.
+            </summary>
+        </member>
+        <member name="F:MMIVR.BiosensorFramework.Biosensors.EmpaticaE4.ServerClient.BVPTimestamps">
+            <summary>
+            List for blood volume pulse timestamps.
+            </summary>
+        </member>
+        <member name="F:MMIVR.BiosensorFramework.Biosensors.EmpaticaE4.ServerClient.GSRReadings">
+            <summary>
+            List for galvanic skin response readings.
+            </summary>
+        </member>
+        <member name="F:MMIVR.BiosensorFramework.Biosensors.EmpaticaE4.ServerClient.GSRTimestamps">
+            <summary>
+            List for galvanic skin response timestamps.
+            </summary>
+        </member>
+        <member name="F:MMIVR.BiosensorFramework.Biosensors.EmpaticaE4.ServerClient.IBIReadings">
+            <summary>
+            List for inter-beat interval readings.
+            </summary>
+        </member>
+        <member name="F:MMIVR.BiosensorFramework.Biosensors.EmpaticaE4.ServerClient.IBITimestamps">
+            <summary>
+            List for inter-beat interval timestamps.
+            </summary>
+        </member>
+        <member name="F:MMIVR.BiosensorFramework.Biosensors.EmpaticaE4.ServerClient.HRReadings">
+            <summary>
+            List for heart rate readings.
+            </summary>
+        </member>
+        <member name="F:MMIVR.BiosensorFramework.Biosensors.EmpaticaE4.ServerClient.HRTimestamps">
+            <summary>
+            List for heart rate timestamps.
+            </summary>
+        </member>
+        <member name="F:MMIVR.BiosensorFramework.Biosensors.EmpaticaE4.ServerClient.TMPReadings">
+            <summary>
+            List for temperature readings.
+            </summary>
+        </member>
+        <member name="F:MMIVR.BiosensorFramework.Biosensors.EmpaticaE4.ServerClient.TMPTimestamps">
+            <summary>
+            List for temperature timestamps.
+            </summary>
+        </member>
+        <member name="F:MMIVR.BiosensorFramework.Biosensors.EmpaticaE4.ServerClient.BATReadings">
+            <summary>
+            List for battery readings.
+            </summary>
+        </member>
+        <member name="F:MMIVR.BiosensorFramework.Biosensors.EmpaticaE4.ServerClient.BATTimestamps">
+            <summary>
+            List for battery timestamps.
+            </summary>
+        </member>
+        <member name="F:MMIVR.BiosensorFramework.Biosensors.EmpaticaE4.ServerClient.TAGReadings">
+            <summary>
+            List for tag readings.
+            </summary>
+        </member>
+        <member name="F:MMIVR.BiosensorFramework.Biosensors.EmpaticaE4.ServerClient.TAGTimestamps">
+            <summary>
+            List for tag timestamps.
+            </summary>
+        </member>
+        <member name="F:MMIVR.BiosensorFramework.Biosensors.EmpaticaE4.ServerClient.BufferSize">
+            <summary>
+            Size of receive buffer.
+            </summary>
+        </member>
+        <member name="F:MMIVR.BiosensorFramework.Biosensors.EmpaticaE4.ServerClient.Buffer">
+            <summary>
+            Receive buffer.
+            </summary>
+        </member>
+        <member name="F:MMIVR.BiosensorFramework.Biosensors.EmpaticaE4.ServerClient.Sb">
+            <summary>
+            Received data string.
+            </summary>
+        </member>
+        <member name="F:MMIVR.BiosensorFramework.Biosensors.EmpaticaE4.ServerClient.ConnectDone">
+            <summary>
+            ManualResetEvent instances signal completion.
+            </summary>
+        </member>
+        <member name="F:MMIVR.BiosensorFramework.Biosensors.EmpaticaE4.ServerClient.SendDone">
+            <summary>
+            ManualResetEvent signal completion of send.
+            </summary>
+        </member>
+        <member name="F:MMIVR.BiosensorFramework.Biosensors.EmpaticaE4.ServerClient.ReceiveDone">
+            <summary>
+            ManualResetEvent signal completion of receive.
+            </summary>
+        </member>
+        <member name="M:MMIVR.BiosensorFramework.Biosensors.EmpaticaE4.ServerClient.StartClient">
+            <summary>  
+            Starts the TCP client.
+            </summary>
+        </member>
+        <member name="M:MMIVR.BiosensorFramework.Biosensors.EmpaticaE4.ServerClient.ConnectCallback(System.IAsyncResult)">
+            <summary>
+            The callback for connect events to the TCP server.
+            </summary>
+            <param name="ar">The async result.</param>
+        </member>
+        <member name="M:MMIVR.BiosensorFramework.Biosensors.EmpaticaE4.ServerClient.Receive">
+            <summary>
+            Starts the receive process.
+            </summary>
+        </member>
+        <member name="M:MMIVR.BiosensorFramework.Biosensors.EmpaticaE4.ServerClient.ReceiveCallback(System.IAsyncResult)">
+            <summary>
+            TCP receive callback.
+            </summary>
+            <param name="ar">Async result.</param>
+        </member>
+        <member name="M:MMIVR.BiosensorFramework.Biosensors.EmpaticaE4.ServerClient.Send(System.Net.Sockets.Socket,System.String)">
+            <summary>
+            Send data to TCP server.
+            </summary>
+            <param name="client">The TCP client.</param>
+            <param name="data">The data to send.</param>
+        </member>
+        <member name="M:MMIVR.BiosensorFramework.Biosensors.EmpaticaE4.ServerClient.SendCallback(System.IAsyncResult)">
+            <summary>
+            The callback for send completion.
+            </summary>
+            <param name="ar">The async result.</param>
+        </member>
+        <member name="M:MMIVR.BiosensorFramework.Biosensors.EmpaticaE4.ServerClient.HandleResponseFromEmpaticaBLEServer(System.String)">
+            <summary>
+            Handles the response from the E4 TCP server.
+            </summary>
+            <param name="response">The response from the server.</param>
+        </member>
+        <member name="M:MMIVR.BiosensorFramework.Biosensors.EmpaticaE4.ServerClient.HandleDataStream(System.String[],System.String)">
+            <summary>
+            Takes the TCP data and places it into the corresponding list.
+            </summary>
+            <param name="DataPacket">The data packet from TCP server.</param>
+            <param name="response">Unused.</param>
+        </member>
+        <member name="M:MMIVR.BiosensorFramework.Biosensors.EmpaticaE4.ServerClient.HandleErrorCodes(System.String[])">
+            <summary>
+            Handles the received error codes.
+            </summary>
+            <param name="ErrorResponse">TCP error response to be parsed.</param>
+        </member>
+        <member name="M:MMIVR.BiosensorFramework.Biosensors.EmpaticaE4.ServerClient.HandleDiscoverResponse(System.String[])">
+            <summary>
+            Handles the device discovered response.
+            </summary>
+            <param name="responses">The responses from the TCP server.</param>
+        </member>
+        <member name="M:MMIVR.BiosensorFramework.Biosensors.EmpaticaE4.ServerClient.HandleDiscoverResponseBTLE(System.String[])">
+            <summary>
+            Handles the discover device from BTLE connection.
+            </summary>
+            <param name="responses">The responses from the TCP server.</param>
+        </member>
+        <member name="M:MMIVR.BiosensorFramework.Biosensors.EmpaticaE4.ServerClient.TagStressEvent">
+            <summary>
+            Adds tag event to tag list.
+            </summary>
+        </member>
+        <member name="M:MMIVR.BiosensorFramework.Biosensors.EmpaticaE4.ServerClient.Dispose">
+            <summary>
+            Closes the TCP client.
+            </summary>
+        </member>
+        <member name="T:MMIVR.BiosensorFramework.Biosensors.EmpaticaE4.Utilities">
+            <summary>
+            Utilities for sending commands to TCP server.
+            </summary>
+        </member>
+        <member name="T:MMIVR.BiosensorFramework.Biosensors.EmpaticaE4.Utilities.WindowedDataReady">
+            <summary>
+            Delegate to alert that windowed data is ready. Triggered by stopwatch.
+            </summary>
+        </member>
+        <member name="E:MMIVR.BiosensorFramework.Biosensors.EmpaticaE4.Utilities.WindowedDataReadyEvent">
+            <summary>
+            Event to alert that windowed data is ready.
+            </summary>
+        </member>
+        <member name="M:MMIVR.BiosensorFramework.Biosensors.EmpaticaE4.Utilities.StartE4ServerGUI(System.String)">
+            <summary>
+            Starts the E4 server GUI with a process call.
+            </summary>
+            <param name="ServerPath">The path to the server exe.</param>
+        </member>
+        <member name="F:MMIVR.BiosensorFramework.Biosensors.EmpaticaE4.Utilities.AvailableDevices">
+            <summary> 
+            List of available devices on TCP server.
+            </summary>
+        </member>
+        <member name="M:MMIVR.BiosensorFramework.Biosensors.EmpaticaE4.Utilities.StartE4Server(System.String,System.String,System.String,System.String)">
+            <summary>
+            Starts the E4 server.
+            </summary>
+            <param name="ServerPath">The path to the exe.</param>
+            <param name="APIKey">The API key to complete connection.</param>
+            <param name="IPaddress">The IP address to the TCP server. Defaults to 127.0.0.1</param>
+            <param name="Port">The port to connect through. Defaults to 8000.</param>
+        </member>
+        <member name="M:MMIVR.BiosensorFramework.Biosensors.EmpaticaE4.Utilities.StartTimer(System.Single)">
+            <summary>
+            Starts the windowed data reading timer.
+            </summary>
+            <param name="Seconds">The number of seconds for the timer.</param>
+            <returns>Returns the timer instance.</returns>
+        </member>
+        <member name="M:MMIVR.BiosensorFramework.Biosensors.EmpaticaE4.Utilities.GrabWindow(MMIVR.BiosensorFramework.Biosensors.EmpaticaE4.ServerClient,System.String)">
+            <summary>
+            Grab data window.
+            </summary>
+            <param name="E4Object">The TCP client handling the responses.</param>
+            <param name="Filepath">The filepath to save out the data. Defaults to null.</param>
+            <returns>List of List of data from TCP server.</returns>
+        </member>
+        <member name="M:MMIVR.BiosensorFramework.Biosensors.EmpaticaE4.Utilities.ClearReadings(MMIVR.BiosensorFramework.Biosensors.EmpaticaE4.ServerClient)">
+            <summary>
+            Clears the data lists.
+            </summary>
+            <param name="E4Object">The TCP client handling the responses.</param>
+        </member>
+        <member name="M:MMIVR.BiosensorFramework.Biosensors.EmpaticaE4.Utilities.SaveReadings(MMIVR.BiosensorFramework.Biosensors.EmpaticaE4.ServerClient,System.String)">
+            <summary>
+            Saves the readings from the lists of data to file.
+            </summary>
+            <param name="E4Object">The TCP client handling the responses.</param>
+            <param name="Filepath">The filepath to the file to save data to.</param>
+        </member>
+        <member name="M:MMIVR.BiosensorFramework.Biosensors.EmpaticaE4.Utilities.ListDiscoveredDevices(MMIVR.BiosensorFramework.Biosensors.EmpaticaE4.ServerClient)">
+            <summary>
+            Lists the discovered device on the TCP server to the AvailableDevices list.
+            </summary>
+            <param name="E4Object">The TCP client handling resposnes.</param>
+        </member>
+        <member name="M:MMIVR.BiosensorFramework.Biosensors.EmpaticaE4.Utilities.ConnectDevice(MMIVR.BiosensorFramework.Biosensors.EmpaticaE4.ServerClient)">
+            <summary>
+            Connect device from TCP server.
+            </summary>
+            <param name="E4Object">The TCP client handling resposnes.</param>
+        </member>
+        <member name="M:MMIVR.BiosensorFramework.Biosensors.EmpaticaE4.Utilities.DisconnectDevice(MMIVR.BiosensorFramework.Biosensors.EmpaticaE4.ServerClient)">
+            <summary>
+            Disconnect device from TCP server.
+            </summary>
+            <param name="E4Object">The TCP client handling resposnes.</param>
+        </member>
+        <member name="M:MMIVR.BiosensorFramework.Biosensors.EmpaticaE4.Utilities.ListDiscoveredDevicesBTLE(MMIVR.BiosensorFramework.Biosensors.EmpaticaE4.ServerClient)">
+            <summary>
+            List devices discovered over BTLE.
+            </summary>
+            <param name="E4Object">The TCP client handling resposnes.</param>
+        </member>
+        <member name="M:MMIVR.BiosensorFramework.Biosensors.EmpaticaE4.Utilities.ConnectDeviceBTLE(MMIVR.BiosensorFramework.Biosensors.EmpaticaE4.ServerClient,System.Int32)">
+            <summary>
+            Connect device over BTLE.
+            </summary>
+            <param name="E4Object">The TCP client handling resposnes.</param>
+            <param name="Timeout">The timeout for the client. Defaults to -1.</param>
+        </member>
+        <member name="M:MMIVR.BiosensorFramework.Biosensors.EmpaticaE4.Utilities.DisconnectDeviceBTLE(MMIVR.BiosensorFramework.Biosensors.EmpaticaE4.ServerClient)">
+            <summary>
+            Disconnect device connected over BTLE.
+            </summary>
+            <param name="E4Object">The TCP client handling resposnes.</param>
+        </member>
+        <member name="M:MMIVR.BiosensorFramework.Biosensors.EmpaticaE4.Utilities.SubscribeToStream(MMIVR.BiosensorFramework.Biosensors.EmpaticaE4.ServerClient,MMIVR.BiosensorFramework.Biosensors.EmpaticaE4.ServerClient.DeviceStreams)">
+            <summary>
+            Subscribes device to data stream.
+            </summary>
+            <param name="E4Object">The TCP client handling resposnes.</param>
+            <param name="Stream">The stream to unsubscribe from.</param>
+        </member>
+        <member name="M:MMIVR.BiosensorFramework.Biosensors.EmpaticaE4.Utilities.UnsubscribeToStream(MMIVR.BiosensorFramework.Biosensors.EmpaticaE4.ServerClient,MMIVR.BiosensorFramework.Biosensors.EmpaticaE4.ServerClient.DeviceStreams)">
+            <summary>
+            Unsubscribes device from data streams.
+            </summary>
+            <param name="E4Object">The TCP client handling resposnes.</param>
+            <param name="Stream">The stream to unsubscribe from.</param>
+        </member>
+        <member name="M:MMIVR.BiosensorFramework.Biosensors.EmpaticaE4.Utilities.SuspendStreaming(MMIVR.BiosensorFramework.Biosensors.EmpaticaE4.ServerClient)">
+            <summary>
+            Suspends the data streaming on the E4 device.
+            </summary>
+            <param name="E4Object">The TCP client handling resposnes.</param>
+        </member>
+        <member name="M:MMIVR.BiosensorFramework.Biosensors.EmpaticaE4.Utilities.StartStreaming(MMIVR.BiosensorFramework.Biosensors.EmpaticaE4.ServerClient)">
+            <summary>
+            Starts the data streaming on the E4 device.
+            </summary>
+            <param name="E4Object">The TCP client handling resposnes.</param>
+        </member>
+        <member name="T:MMIVR.BiosensorFramework.Extensions.ArrayExtensions">
+            <summary>
+            Extension methods to support the array manipulations needed for feature extraction and machine learning.
+            </summary>
+        </member>
+        <member name="M:MMIVR.BiosensorFramework.Extensions.ArrayExtensions.SplitAcc3D(System.Double[],System.Double[]@,System.Double[]@,System.Double[]@)">
+            <summary>
+            Splits the 3D accelerometer readings into three separate arrays for the input pipeline.
+            </summary>
+            <param name="array">Array with 3D accelerometer readings</param>
+            <param name="x">Array with only x axis readings</param>
+            <param name="y">Array with only y axis readings</param>
+            <param name="z">Array with only z axis readings</param>
+        </member>
+        <member name="M:MMIVR.BiosensorFramework.Extensions.ArrayExtensions.ToFloat(System.Double[])">
+            <summary>
+            Converts a double array to a float array.
+            </summary>
+            <param name="array">Original double array.</param>
+            <returns>The converted double array in float format.</returns>
+        </member>
+        <member name="M:MMIVR.BiosensorFramework.Extensions.ArrayExtensions.AllIndexesOf(System.Collections.Generic.List{MMIVR.BiosensorFramework.MachineLearningUtilities.ExtractedMultiFeatures},System.Int32)">
+            <summary>
+            Gets all indices from an ExtractedMultiFeatures class object that match target label.
+            </summary>
+            <param name="array">A list of labeled feature sets.</param>
+            <param name="value">The class to search for.</param>
+            <returns>A List of indices where the feature set matches the target label.</returns>
+        </member>
+        <member name="M:MMIVR.BiosensorFramework.Extensions.ArrayExtensions.GetSubArray``1(``0[],System.Int32,System.Int32)">
+            <summary>
+            Generic extension to split an array from the start index to end index.
+            </summary>
+            <typeparam name="T">Standard data types.</typeparam>
+            <param name="array">An array of values with more than one value.</param>
+            <param name="start">The index to start the sub array.</param>
+            <param name="end">The noninclusive index to end the sub array.</param>
+            <returns>The sub array from start to end of original array.</returns>
+        </member>
+        <member name="M:MMIVR.BiosensorFramework.Extensions.ArrayExtensions.Shuffle``1(System.Collections.Generic.IList{``0})">
+            <summary>
+            Generic implementation of Fisher-Yates shuffling algorithm.
+            </summary>
+            <typeparam name="T">Standard data types.</typeparam>
+            <param name="list">List of values to be shuffled.</param>
+        </member>
+        <member name="T:MMIVR.BiosensorFramework.MachineLearningUtilities.ExtractedFeatures">
+            <summary>
+            Class to hold extracted features for inferencing.
+            </summary>
+        </member>
+        <member name="F:MMIVR.BiosensorFramework.MachineLearningUtilities.ExtractedFeatures.StressFeatures">
+            <summary>
+            Array to store the hand crafted features.
+            </summary>
+        </member>
+        <member name="T:MMIVR.BiosensorFramework.MachineLearningUtilities.ExtractedMultiFeatures">
+            <summary>
+            Class to hold extracted features for training a multi-class model.
+            </summary>
+        </member>
+        <member name="F:MMIVR.BiosensorFramework.MachineLearningUtilities.ExtractedMultiFeatures.StressFeatures">
+            <summary>
+            Array to store the hand crafted features.
+            </summary>
+        </member>
+        <member name="F:MMIVR.BiosensorFramework.MachineLearningUtilities.ExtractedMultiFeatures.Result">
+            <summary>
+            The label for the stress features.
+            </summary>
+        </member>
+        <member name="T:MMIVR.BiosensorFramework.MachineLearningUtilities.ExtractedRegFeatures">
+            <summary>
+            Class to hold extracted features for training a regression model.
+            </summary>
+        </member>
+        <member name="F:MMIVR.BiosensorFramework.MachineLearningUtilities.ExtractedRegFeatures.StressFeatures">
+            <summary>
+            Array to store the hand crafted features.
+            </summary>
+        </member>
+        <member name="F:MMIVR.BiosensorFramework.MachineLearningUtilities.ExtractedRegFeatures.Result">
+            <summary>
+            The label for the stress features.
+            </summary>
+        </member>
+        <member name="T:MMIVR.BiosensorFramework.MachineLearningUtilities.ExtractedBinFeatures">
+            <summary>
+            Class to hold extracted features for training a binary model.
+            </summary>
+        </member>
+        <member name="F:MMIVR.BiosensorFramework.MachineLearningUtilities.ExtractedBinFeatures.Features">
+            <summary>
+            Array to store the hand crafted features.
+            </summary>
+        </member>
+        <member name="F:MMIVR.BiosensorFramework.MachineLearningUtilities.ExtractedBinFeatures.Label">
+            <summary>
+            The label for the stress features.
+            </summary>
+        </member>
+        <member name="T:MMIVR.BiosensorFramework.MachineLearningUtilities.PredictionMultiResult">
+            <summary>
+            Class to hold multi-class prediction result.
+            </summary>
+        </member>
+        <member name="F:MMIVR.BiosensorFramework.MachineLearningUtilities.PredictionMultiResult.Result">
+            <summary>
+            The label of the inferenced data.
+            </summary>
+        </member>
+        <member name="T:MMIVR.BiosensorFramework.MachineLearningUtilities.PredictionRegResult">
+            <summary>
+            Class to hold regression prediction result.
+            </summary>
+        </member>
+        <member name="F:MMIVR.BiosensorFramework.MachineLearningUtilities.PredictionRegResult.Result">
+            <summary>
+            The label of the inferenced data.
+            </summary>
+        </member>
+        <member name="T:MMIVR.BiosensorFramework.MachineLearningUtilities.PredictionBinResult">
+            <summary>
+            Class to hold binary prediction result.
+            </summary>
+        </member>
+        <member name="F:MMIVR.BiosensorFramework.MachineLearningUtilities.PredictionBinResult.Prediction">
+            <summary>
+            The label of the inferenced data.
+            </summary>
+        </member>
+        <member name="F:MMIVR.BiosensorFramework.MachineLearningUtilities.PredictionBinResult.Probability">
+            <summary>
+            The probability of the predicted label.
+            </summary>
+        </member>
+        <member name="F:MMIVR.BiosensorFramework.MachineLearningUtilities.PredictionBinResult.Score">
+            <summary>
+            The score of the predicted label.
+            </summary>
+        </member>
+        <member name="T:MMIVR.BiosensorFramework.MachineLearningUtilities.DataImport">
+            <summary>
+            Class for importing data from CSV files and txt files.
+            </summary>
+        </member>
+        <member name="T:MMIVR.BiosensorFramework.MachineLearningUtilities.DataImport.CollectedData">
+            <summary>
+            The organization of the imported data.
+            </summary>
+        </member>
+        <member name="M:MMIVR.BiosensorFramework.MachineLearningUtilities.DataImport.LoadFile(System.String,System.Int32)">
+            <summary>
+            Loads a TXT file of stored readings.
+            </summary>
+            <param name="Filepath">The absolute filepath to the file.</param>
+            <param name="WindowSize">The window size, in seconds, for collecting data. Defaults to 5 seconds.</param>
+            <returns>List of Tuples containing data and tags.</returns>
+        </member>
+        <member name="M:MMIVR.BiosensorFramework.MachineLearningUtilities.DataImport.LoadCollectedDataset(System.String,System.String,System.String,System.Int32)">
+            <summary>
+            Parses and transforms the data collected from a biosensor from a txt file.  To facilitate training the Fast Forest classifier used, the WESAD data is loaded in 
+            first to allow retraining.
+            </summary>
+            <param name="WesadDirectory">The top directory of the WESAD dataset.</param>
+            <param name="DirectoryPath">The top directory with the data.</param>
+            <param name="SearchPattern">The search pattern to find the relevant files in the DirectoryPath.</param>
+            <param name="WindowSize">The window size, in seconds, for collecting data. Defaults to 5 seconds.</param>
+            <returns>List of Tuples with data and tags.</returns>
+        </member>
+        <member name="M:MMIVR.BiosensorFramework.MachineLearningUtilities.DataImport.LoadDataset(System.String)">
+            <summary>
+            Loads in a CSV datasets from the filesystem from the WESAD dataset.
+            </summary>
+            <param name="DirectoryPath">The top directory with the data.</param>
+            <returns>List of Tuples with Subject ID, sensor data, and tags.</returns>
+        </member>
+        <member name="M:MMIVR.BiosensorFramework.MachineLearningUtilities.DataImport.SchmidtDatasetPipeline(System.String,Microsoft.ML.MLContext,Microsoft.ML.DataOperationsCatalog.TrainTestData@,Microsoft.ML.DataOperationsCatalog.TrainTestData@,Microsoft.ML.DataOperationsCatalog.TrainTestData@,System.Int32,System.Double)">
+            <summary>
+            Pipeline implemented to process the WESAD dataset.
+            Schmidt, Philip, et al. "Introducing wesad, a multimodal dataset for wearable stress and affect detection." 
+                Proceedings of the 20th ACM International Conference on Multimodal Interaction. 2018.
+            </summary>
+            <param name="DirectoryPath">The top directory with the data.</param>
+            <param name="mlContext">The Microsoft.ML context.</param>
+            <param name="MultiClass">The returned TrainTestData for the multi-class models.</param>
+            <param name="BinClass">The returned TrainTestData for the binary models.</param>
+            <param name="RegClass">The returned TrainTestData for the regression models.</param>
+            <param name="WindowSize">The window size, in seconds, for collecting data. Defaults to 5 seconds.</param>
+            <param name="TrainTestRatio">The percentage of the data that is train and test. Default is 0.1.</param>
+        </member>
+        <member name="M:MMIVR.BiosensorFramework.MachineLearningUtilities.DataImport.ConvertRawToBin(Microsoft.ML.MLContext,System.Collections.Generic.List{System.Tuple{System.Double[],System.Int32}},System.Double)">
+            <summary>
+            Converts raw List of Tuples into a TrainTestData set for Microsoft.ML for binary classification training.
+            </summary>
+            <param name="mlContext">The Microsoft.ML context.</param>
+            <param name="RawFeatures">The data and tags loaded in.</param>
+            <param name="TrainTestRatio">The percentage of the data that is train and test. Default is 0.1.</param>
+            <returns>The TrainTestData to be used in training a Microsoft.ML model.</returns>
+        </member>
+        <member name="M:MMIVR.BiosensorFramework.MachineLearningUtilities.DataImport.ConvertRawToMulti(Microsoft.ML.MLContext,System.Collections.Generic.List{System.Tuple{System.Double[],System.Int32}},System.Double)">
+            <summary>
+            Converts raw List of Tuples into a TrainTestData set for Microsoft.ML multi-class training.
+            </summary>
+            <param name="mlContext">The Microsoft.ML context.</param>
+            <param name="RawFeatures">The data and tags loaded in.</param>
+            <param name="TrainTestRatio">The percentage of the data that is train and test. Default is 0.1.</param>
+            <returns>The TrainTestData to be used in training a Microsoft.ML model.</returns>
+        </member>
+        <member name="T:MMIVR.BiosensorFramework.MachineLearningUtilities.Predict">
+            <summary>
+            Class for performing predictions on Microsoft.ML models.
+            </summary>
+        </member>
+        <member name="M:MMIVR.BiosensorFramework.MachineLearningUtilities.Predict.PredictWindow(Microsoft.ML.MLContext,Microsoft.ML.ITransformer,System.Collections.Generic.List{System.Collections.Generic.List{System.Double}})">
+            <summary>
+            Takes the readings from the windowed data, extracts the features, and runs it through a prediction pipeline.
+            </summary>
+            <param name="mlContext">Microsoft ML context for operations to be performed in.</param>
+            <param name="Model">The loaded model for operations to be performed on.</param>
+            <param name="WindowReadings">Packaged List of List of sensor readings.</param>
+        </member>
+        <member name="M:MMIVR.BiosensorFramework.MachineLearningUtilities.Predict.MakeMultiPrediction(Microsoft.ML.MLContext,MMIVR.BiosensorFramework.MachineLearningUtilities.ExtractedMultiFeatures,Microsoft.ML.ITransformer)">
+            <summary>
+            Performs a prediction on a dataset for multi-class models.
+            </summary>
+            <param name="mlContext">Microsoft ML context for operations to be performed in.</param>
+            <param name="LiveData">The extracted features packaged in the ExtractedMultiFeatures class.</param>
+            <param name="Model">The model to perform inferencing with.</param>
+            <returns></returns>
+        </member>
+        <member name="M:MMIVR.BiosensorFramework.MachineLearningUtilities.Predict.MakeBinPrediction(Microsoft.ML.MLContext,MMIVR.BiosensorFramework.MachineLearningUtilities.ExtractedBinFeatures,Microsoft.ML.ITransformer)">
+            <summary>
+            Performs a prediction on a dataset for binary classification models.
+            </summary>
+            <param name="mlContext">Microsoft ML context for operations to be performed in.</param>
+            <param name="LiveData">The extracted features packaged in the ExtractedMultiFeatures class.</param>
+            <param name="Model">The model to perform inferencing with.</param>
+            <returns></returns>
+        </member>
+        <member name="M:MMIVR.BiosensorFramework.MachineLearningUtilities.Predict.MakeRegPrediction(Microsoft.ML.MLContext,Microsoft.ML.IDataView,Microsoft.ML.ITransformer)">
+            <summary>
+            Performs a prediction on a dataset for regression classification models.
+            </summary>
+            <param name="mlContext">Microsoft ML context for operations to be performed in.</param>
+            <param name="LiveData">The extracted features packaged in the ExtractedMultiFeatures class.</param>
+            <param name="Model">The model to perform inferencing with.</param>
+            <returns></returns>
+        </member>
+        <member name="T:MMIVR.BiosensorFramework.InputPipeline.SignalProcessing">
+            <summary>
+            Public methods to compute features of biosensor signals.
+            </summary>
+        </member>
+        <member name="M:MMIVR.BiosensorFramework.InputPipeline.SignalProcessing.ProcessEdaSignal(System.Double[],System.Double)">
+            <summary>
+            Method to compute features of EDA signal.
+            </summary>
+            <param name="EdaSignal">An array containing the EDA signal readings.</param>
+            <param name="SamplingRate">The sampling rate of the sensor. Defaults to 4 Hz.</param>
+            <returns></returns>
+        </member>
+        <member name="M:MMIVR.BiosensorFramework.InputPipeline.SignalProcessing.ProcessAccSignal(System.Double[],System.Double)">
+            <summary>
+            Method to compute features for 3-axis accelerometer signals.
+            </summary>
+            <param name="AccSignal">An array of accelerometer data, packaged in [X, Y, Z] format in a single array.</param>
+            <param name="SamplingRate">The sampling rate of the sensor. Defaults to 32 Hz.</param>
+            <returns></returns>
+        </member>
+        <member name="M:MMIVR.BiosensorFramework.InputPipeline.SignalProcessing.ProcessTmpSignal(System.Double[])">
+            <summary>
+            Method to compute the features of the temperature signal.
+            </summary>
+            <param name="TempSignal">An array containing the temperature sensor readings.</param>
+            <returns></returns>
+        </member>
+        <member name="M:MMIVR.BiosensorFramework.InputPipeline.SignalProcessing.ProcessPpgSignal(System.Double[],System.Double,System.Double,System.Int32)">
+            <summary>
+            Method to compute the features for the PPG signal.
+            </summary>
+            <param name="PpgSignal">An array containing readings from the PPG sensor.</param>
+            <param name="SamplingRate">The sampling rate of the sensor. Defaults to 64 Hz.</param>
+            <param name="Threshold">The signal threshold for feature computation. Defaults to 3.5.</param>
+            <param name="PeakSize">The peak size needed for feature computation. Defaults to 3.</param>
+            <returns></returns>
+        </member>
+    </members>
+</doc>
