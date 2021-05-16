@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <doc>
     <assembly>
-        <name>MMIVR</name>
+        <name>Biosensor Framework</name>
     </assembly>
     <members>
         <member name="M:MMIVR.BiosensorFramework.DataProcessing.BloodVolumePulse.GetHeartFeatures(System.Int32[],System.Double)">

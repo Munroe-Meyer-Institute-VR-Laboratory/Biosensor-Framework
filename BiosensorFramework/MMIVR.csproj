@@ -13,6 +13,7 @@
     <PackageTags>Affective Computing, Machine Learning, Unity</PackageTags>
     <PackageId>MMIVR-BF</PackageId>
     <Copyright>2021</Copyright>
+    <AssemblyName>Biosensor Framework</AssemblyName>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
