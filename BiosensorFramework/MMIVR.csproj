@@ -14,6 +14,7 @@
     <PackageId>MMIVR-BF</PackageId>
     <Copyright>2021</Copyright>
     <AssemblyName>Biosensor Framework</AssemblyName>
+    <ApplicationIcon>shield.ico</ApplicationIcon>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
