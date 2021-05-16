@@ -12,58 +12,169 @@ using MMIVR.BiosensorFramework.Exceptions;
 
 namespace MMIVR.BiosensorFramework.Biosensors.EmpaticaE4
 {
+    /// <summary>
+    /// Class to instantiate a client to communicate with TCP server.
+    /// </summary>
     public class ServerClient : IDisposable
     {
-        public enum DeviceStreams { ACC, BVP, GSR, IBI, HR, TMP, BAT, TAG }
-        // Connection to be used in communications
+        /// <summary>
+        /// The applicable device data streams for the E4 server.
+        /// </summary>
+        public enum DeviceStreams 
+        { 
+            /// <summary>
+            /// Accelerometer data stream.
+            /// </summary>
+            ACC, 
+            /// <summary>
+            /// Blood volume pulse data stream.
+            /// </summary>
+            BVP, 
+            /// <summary>
+            /// Galvanic skin response data stream.
+            /// </summary>
+            GSR, 
+            /// <summary>
+            /// Inter-beat interval data stream.
+            /// </summary>
+            IBI, 
+            /// <summary>
+            /// Heart rate data stream.
+            /// </summary>
+            HR, 
+            /// <summary>
+            /// Temperature data stream.
+            /// </summary>
+            TMP, 
+            /// <summary>
+            /// Battery data stream.
+            /// </summary>
+            BAT, 
+            /// <summary>
+            /// Tags data stream. This is the onboard E4 button.
+            /// </summary>
+            TAG 
+        }
+        /// <summary>
+        /// Connection to be used in communications
+        /// </summary>
         public Socket SocketConnection;
-        // Name of the device for connection
+        /// <summary>
+        /// Name of the device for connection
+        /// </summary>
         public string DeviceName = string.Empty;
-        // List of subscribed streams for synchronizing readings
+        /// <summary>
+        /// List of subscribed streams for synchronizing readings
+        /// </summary>
         public List<DeviceStreams> SubscribedStreams = new List<DeviceStreams>();
-        // Lists for readings
+        /// <summary>
+        /// List for 3D accelerometer readings.
+        /// </summary>
         public List<double> ACCReadings3D = new List<double>();
+        /// <summary>
+        /// List for X accelerometer readings.
+        /// </summary>
         public List<double> ACCReadingsX = new List<double>();
+        /// <summary>
+        /// List for Y accelerometer readings.
+        /// </summary>
         public List<double> ACCReadingsY = new List<double>();
+        /// <summary>
+        /// List for Z accelerometer readings.
+        /// </summary>
         public List<double> ACCReadingsZ = new List<double>();
+        /// <summary>
+        /// List for accelerometer timestamps.
+        /// </summary>
         public List<double> ACCTimestamps = new List<double>();
-
+        /// <summary>
+        /// List for blood volume pulse readings.
+        /// </summary>
         public List<double> BVPReadings = new List<double>();
+        /// <summary>
+        /// List for blood volume pulse timestamps.
+        /// </summary>
         public List<double> BVPTimestamps = new List<double>();
-
+        /// <summary>
+        /// List for galvanic skin response readings.
+        /// </summary>
         public List<double> GSRReadings = new List<double>();
+        /// <summary>
+        /// List for galvanic skin response timestamps.
+        /// </summary>
         public List<double> GSRTimestamps = new List<double>();
-
+        /// <summary>
+        /// List for inter-beat interval readings.
+        /// </summary>
         public List<double> IBIReadings = new List<double>();
+        /// <summary>
+        /// List for inter-beat interval timestamps.
+        /// </summary>
         public List<double> IBITimestamps = new List<double>();
-
+        /// <summary>
+        /// List for heart rate readings.
+        /// </summary>
         public List<double> HRReadings = new List<double>();
+        /// <summary>
+        /// List for heart rate timestamps.
+        /// </summary>
         public List<double> HRTimestamps = new List<double>();
-
+        /// <summary>
+        /// List for temperature readings.
+        /// </summary>
         public List<double> TMPReadings = new List<double>();
+        /// <summary>
+        /// List for temperature timestamps.
+        /// </summary>
         public List<double> TMPTimestamps = new List<double>();
-
+        /// <summary>
+        /// List for battery readings.
+        /// </summary>
         public List<double> BATReadings = new List<double>();
+        /// <summary>
+        /// List for battery timestamps.
+        /// </summary>
         public List<double> BATTimestamps = new List<double>();
-
+        /// <summary>
+        /// List for tag readings.
+        /// </summary>
         public List<double> TAGReadings = new List<double>();
+        /// <summary>
+        /// List for tag timestamps.
+        /// </summary>
         public List<double> TAGTimestamps = new List<double>();
-        // Size of receive buffer.
+        /// <summary>
+        /// Size of receive buffer.
+        /// </summary>
         public const int BufferSize = 4096;
-        // Receive buffer.
+        /// <summary>
+        /// Receive buffer.
+        /// </summary>
         public readonly byte[] Buffer = new byte[BufferSize];
-        // Received data string.
+        /// <summary>
+        /// Received data string.
+        /// </summary>
         public readonly StringBuilder Sb = new StringBuilder();
         // The port number for the remote device.
         private const string ServerAddress = "127.0.0.1";
         private const int ServerPort = 28000;
-        // ManualResetEvent instances signal completion.
+        /// <summary>
+        /// ManualResetEvent instances signal completion.
+        /// </summary>
         public readonly ManualResetEvent ConnectDone = new ManualResetEvent(false);
+        /// <summary>
+        /// ManualResetEvent signal completion of send.
+        /// </summary>
         public readonly ManualResetEvent SendDone = new ManualResetEvent(false);
+        /// <summary>
+        /// ManualResetEvent signal completion of receive.
+        /// </summary>
         public readonly ManualResetEvent ReceiveDone = new ManualResetEvent(false);
         // The response from the remote device.
         private static String _response = String.Empty;
-        /// <summary>  </summary>
+        /// <summary>  
+        /// Starts the TCP client.
+        /// </summary>
         public void StartClient()
         {
             // Connect to a remote device.
@@ -86,9 +197,9 @@ namespace MMIVR.BiosensorFramework.Biosensors.EmpaticaE4
             }
         }
         /// <summary>
-        /// 
+        /// The callback for connect events to the TCP server.
         /// </summary>
-        /// <param name="ar"></param>
+        /// <param name="ar">The async result.</param>
         private void ConnectCallback(IAsyncResult ar)
         {
             try
@@ -107,9 +218,8 @@ namespace MMIVR.BiosensorFramework.Biosensors.EmpaticaE4
             }
         }
         /// <summary>
-        /// 
+        /// Starts the receive process.
         /// </summary>
-        /// <param name="E4Client"></param>
         public void Receive()
         {
             try
@@ -123,9 +233,9 @@ namespace MMIVR.BiosensorFramework.Biosensors.EmpaticaE4
             }
         }
         /// <summary>
-        /// 
+        /// TCP receive callback.
         /// </summary>
-        /// <param name="ar"></param>
+        /// <param name="ar">Async result.</param>
         private void ReceiveCallback(IAsyncResult ar)
         {
             try
@@ -177,10 +287,10 @@ namespace MMIVR.BiosensorFramework.Biosensors.EmpaticaE4
             }
         }
         /// <summary>
-        /// 
+        /// Send data to TCP server.
         /// </summary>
-        /// <param name="client"></param>
-        /// <param name="data"></param>
+        /// <param name="client">The TCP client.</param>
+        /// <param name="data">The data to send.</param>
         public void Send(Socket client, String data)
         {
             // Convert the string data to byte data using ASCII encoding.
@@ -190,9 +300,9 @@ namespace MMIVR.BiosensorFramework.Biosensors.EmpaticaE4
             client.BeginSend(byteData, 0, byteData.Length, 0, SendCallback, client);
         }
         /// <summary>
-        /// 
+        /// The callback for send completion.
         /// </summary>
-        /// <param name="ar"></param>
+        /// <param name="ar">The async result.</param>
         private void SendCallback(IAsyncResult ar)
         {
             try
@@ -210,9 +320,9 @@ namespace MMIVR.BiosensorFramework.Biosensors.EmpaticaE4
             }
         }
         /// <summary>
-        /// 
+        /// Handles the response from the E4 TCP server.
         /// </summary>
-        /// <param name="response"></param>
+        /// <param name="response">The response from the server.</param>
         private void HandleResponseFromEmpaticaBLEServer(string response)
         {
             List<string[]> AllResponses = new List<string[]>();
@@ -280,9 +390,10 @@ namespace MMIVR.BiosensorFramework.Biosensors.EmpaticaE4
             }
         }
         /// <summary>
-        /// 
+        /// Takes the TCP data and places it into the corresponding list.
         /// </summary>
-        /// <param name="DataPacket"></param>
+        /// <param name="DataPacket">The data packet from TCP server.</param>
+        /// <param name="response">Unused.</param>
         private void HandleDataStream(string[] DataPacket, string response)
         {
             // Get the data type from the first packet string
@@ -338,9 +449,9 @@ namespace MMIVR.BiosensorFramework.Biosensors.EmpaticaE4
             }
         }
         /// <summary>
-        /// 
+        /// Handles the received error codes.
         /// </summary>
-        /// <param name="ErrorResponse"></param>
+        /// <param name="ErrorResponse">TCP error response to be parsed.</param>
         private void HandleErrorCodes(string[] ErrorResponse)
         {
             // Check error index for device_subscribe command
@@ -381,9 +492,9 @@ namespace MMIVR.BiosensorFramework.Biosensors.EmpaticaE4
             }
         }
         /// <summary>
-        /// 
+        /// Handles the device discovered response.
         /// </summary>
-        /// <param name="responses"></param>
+        /// <param name="responses">The responses from the TCP server.</param>
         private void HandleDiscoverResponse(string[] responses)
         {
             int DevicesFound = int.Parse(responses[2]);
@@ -399,6 +510,10 @@ namespace MMIVR.BiosensorFramework.Biosensors.EmpaticaE4
                 }
             }
         }
+        /// <summary>
+        /// Handles the discover device from BTLE connection.
+        /// </summary>
+        /// <param name="responses">The responses from the TCP server.</param>
         private void HandleDiscoverResponseBTLE(string[] responses)
         {
             int DevicesFound = int.Parse(responses[2]);
@@ -417,20 +532,39 @@ namespace MMIVR.BiosensorFramework.Biosensors.EmpaticaE4
                 }
             }
         }
+        /// <summary>
+        /// Adds tag event to tag list.
+        /// </summary>
         public void TagStressEvent()
         {
             TAGReadings.Add(1.0f);
             TAGTimestamps.Add(DateTimeOffset.UtcNow.ToUnixTimeSeconds());
         }
+        /// <summary>
+        /// Closes the TCP client.
+        /// </summary>
         public void Dispose()
         {
             SocketConnection.Close();
         }
     }
+    /// <summary>
+    /// Utilities for sending commands to TCP server.
+    /// </summary>
     public class Utilities
     {
+        /// <summary>
+        /// Delegate to alert that windowed data is ready. Triggered by stopwatch.
+        /// </summary>
         public delegate void WindowedDataReady();
+        /// <summary>
+        /// Event to alert that windowed data is ready.
+        /// </summary>
         public static event WindowedDataReady WindowedDataReadyEvent;
+        /// <summary>
+        /// Starts the E4 server GUI with a process call.
+        /// </summary>
+        /// <param name="ServerPath">The path to the server exe.</param>
         public static void StartE4ServerGUI(string ServerPath)
         {
             System.Diagnostics.Process process = new System.Diagnostics.Process();
@@ -442,8 +576,17 @@ namespace MMIVR.BiosensorFramework.Biosensors.EmpaticaE4
             process.StartInfo = startInfo;
             process.Start();
         }
-        /// <summary>  </summary>
+        /// <summary> 
+        /// List of available devices on TCP server.
+        /// </summary>
         public static List<string> AvailableDevices = new List<string>();
+        /// <summary>
+        /// Starts the E4 server.
+        /// </summary>
+        /// <param name="ServerPath">The path to the exe.</param>
+        /// <param name="APIKey">The API key to complete connection.</param>
+        /// <param name="IPaddress">The IP address to the TCP server. Defaults to 127.0.0.1</param>
+        /// <param name="Port">The port to connect through. Defaults to 8000.</param>
         public static void StartE4Server(string ServerPath, string APIKey, string IPaddress = "127.0.0.1", string Port = "8000")
         {
             System.Diagnostics.Process process = new System.Diagnostics.Process();
@@ -456,6 +599,11 @@ namespace MMIVR.BiosensorFramework.Biosensors.EmpaticaE4
             process.StartInfo = startInfo;
             process.Start();
         }
+        /// <summary>
+        /// Starts the windowed data reading timer.
+        /// </summary>
+        /// <param name="Seconds">The number of seconds for the timer.</param>
+        /// <returns>Returns the timer instance.</returns>
         public static System.Timers.Timer StartTimer(float Seconds)
         {
             System.Timers.Timer WindowTimer = new System.Timers.Timer(Seconds * 1000);
@@ -468,6 +616,12 @@ namespace MMIVR.BiosensorFramework.Biosensors.EmpaticaE4
         {
             WindowedDataReadyEvent?.Invoke();
         }
+        /// <summary>
+        /// Grab data window.
+        /// </summary>
+        /// <param name="E4Object">The TCP client handling the responses.</param>
+        /// <param name="Filepath">The filepath to save out the data. Defaults to null.</param>
+        /// <returns>List of List of data from TCP server.</returns>
         public static List<List<double>> GrabWindow(ServerClient E4Object, string Filepath = null)
         {
             List<List<double>> ReturnList = new List<List<double>>
@@ -489,6 +643,10 @@ namespace MMIVR.BiosensorFramework.Biosensors.EmpaticaE4
             ClearReadings(E4Object);
             return ReturnList;
         }
+        /// <summary>
+        /// Clears the data lists.
+        /// </summary>
+        /// <param name="E4Object">The TCP client handling the responses.</param>
         public static void ClearReadings(ServerClient E4Object)
         {
             E4Object.ACCReadings3D.Clear();
@@ -518,6 +676,11 @@ namespace MMIVR.BiosensorFramework.Biosensors.EmpaticaE4
             E4Object.TMPReadings.Clear();
             E4Object.TMPTimestamps.Clear();
         }
+        /// <summary>
+        /// Saves the readings from the lists of data to file.
+        /// </summary>
+        /// <param name="E4Object">The TCP client handling the responses.</param>
+        /// <param name="Filepath">The filepath to the file to save data to.</param>
         public static void SaveReadings(ServerClient E4Object, string Filepath)
         {
             string Lines = 
@@ -543,9 +706,9 @@ namespace MMIVR.BiosensorFramework.Biosensors.EmpaticaE4
             File.AppendAllText(Filepath, Lines);
         }
         /// <summary>
-        /// 
+        /// Lists the discovered device on the TCP server to the AvailableDevices list.
         /// </summary>
-        /// <param name="E4Object"></param>
+        /// <param name="E4Object">The TCP client handling resposnes.</param>
         public static void ListDiscoveredDevices(ServerClient E4Object)
         {
             E4Object.Send(E4Object.SocketConnection, "device_list" + Environment.NewLine);
@@ -554,9 +717,9 @@ namespace MMIVR.BiosensorFramework.Biosensors.EmpaticaE4
             E4Object.ReceiveDone.WaitOne();
         }
         /// <summary>
-        /// 
+        /// Connect device from TCP server.
         /// </summary>
-        /// <param name="E4Object"></param>
+        /// <param name="E4Object">The TCP client handling resposnes.</param>
         public static void ConnectDevice(ServerClient E4Object)
         {
             E4Object.Send(E4Object.SocketConnection, "device_connect " + E4Object.DeviceName + Environment.NewLine);
@@ -565,9 +728,9 @@ namespace MMIVR.BiosensorFramework.Biosensors.EmpaticaE4
             E4Object.ReceiveDone.WaitOne();
         }
         /// <summary>
-        /// 
+        /// Disconnect device from TCP server.
         /// </summary>
-        /// <param name="E4Object"></param>
+        /// <param name="E4Object">The TCP client handling resposnes.</param>
         public static void DisconnectDevice(ServerClient E4Object)
         {
             E4Object.Send(E4Object.SocketConnection, "device_disconnect" + Environment.NewLine);
@@ -576,9 +739,9 @@ namespace MMIVR.BiosensorFramework.Biosensors.EmpaticaE4
             E4Object.ReceiveDone.WaitOne();
         }
         /// <summary>
-        /// 
+        /// List devices discovered over BTLE.
         /// </summary>
-        /// <param name="E4Object"></param>
+        /// <param name="E4Object">The TCP client handling resposnes.</param>
         public static void ListDiscoveredDevicesBTLE(ServerClient E4Object)
         {
             E4Object.Send(E4Object.SocketConnection, "device_discover_list" + Environment.NewLine);
@@ -587,8 +750,10 @@ namespace MMIVR.BiosensorFramework.Biosensors.EmpaticaE4
             E4Object.ReceiveDone.WaitOne();
         }
         /// <summary>
-        /// 
+        /// Connect device over BTLE.
         /// </summary>
+        /// <param name="E4Object">The TCP client handling resposnes.</param>
+        /// <param name="Timeout">The timeout for the client. Defaults to -1.</param>
         public static void ConnectDeviceBTLE(ServerClient E4Object, int Timeout = -1)
         {
             if (Timeout != -1 && Timeout < 254 && Timeout > -1)
@@ -600,9 +765,9 @@ namespace MMIVR.BiosensorFramework.Biosensors.EmpaticaE4
             E4Object.ReceiveDone.WaitOne();
         }
         /// <summary>
-        /// 
+        /// Disconnect device connected over BTLE.
         /// </summary>
-        /// <param name="E4Object"></param>
+        /// <param name="E4Object">The TCP client handling resposnes.</param>
         public static void DisconnectDeviceBTLE(ServerClient E4Object)
         {
             E4Object.Send(E4Object.SocketConnection, "device_disconnect_btle " + E4Object.DeviceName + Environment.NewLine);
@@ -611,10 +776,10 @@ namespace MMIVR.BiosensorFramework.Biosensors.EmpaticaE4
             E4Object.ReceiveDone.WaitOne();
         }
         /// <summary>
-        /// 
+        /// Subscribes device to data stream.
         /// </summary>
-        /// <param name="E4Object"></param>
-        /// <param name="Stream"></param>
+        /// <param name="E4Object">The TCP client handling resposnes.</param>
+        /// <param name="Stream">The stream to unsubscribe from.</param>
         public static void SubscribeToStream(ServerClient E4Object, ServerClient.DeviceStreams Stream)
         {
             if (!E4Object.SubscribedStreams.Contains(Stream))
@@ -652,10 +817,10 @@ namespace MMIVR.BiosensorFramework.Biosensors.EmpaticaE4
             }
         }
         /// <summary>
-        /// 
+        /// Unsubscribes device from data streams.
         /// </summary>
-        /// <param name="E4Object"></param>
-        /// <param name="Stream"></param>
+        /// <param name="E4Object">The TCP client handling resposnes.</param>
+        /// <param name="Stream">The stream to unsubscribe from.</param>
         public static void UnsubscribeToStream(ServerClient E4Object, ServerClient.DeviceStreams Stream)
         {
             if (E4Object.SubscribedStreams.Contains(Stream))
@@ -693,9 +858,9 @@ namespace MMIVR.BiosensorFramework.Biosensors.EmpaticaE4
             }
         }
         /// <summary>
-        /// 
+        /// Suspends the data streaming on the E4 device.
         /// </summary>
-        /// <param name="E4Object"></param>
+        /// <param name="E4Object">The TCP client handling resposnes.</param>
         public static void SuspendStreaming(ServerClient E4Object)
         {
             E4Object.Send(E4Object.SocketConnection, "pause ON" + Environment.NewLine);
@@ -704,9 +869,9 @@ namespace MMIVR.BiosensorFramework.Biosensors.EmpaticaE4
             E4Object.ReceiveDone.WaitOne();
         }
         /// <summary>
-        /// 
+        /// Starts the data streaming on the E4 device.
         /// </summary>
-        /// <param name="E4Object"></param>
+        /// <param name="E4Object">The TCP client handling resposnes.</param>
         public static void StartStreaming(ServerClient E4Object)
         {
             E4Object.Send(E4Object.SocketConnection, "pause OFF" + Environment.NewLine);
