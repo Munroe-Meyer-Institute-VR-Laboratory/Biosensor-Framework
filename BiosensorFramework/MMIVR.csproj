@@ -11,7 +11,7 @@
     <RepositoryUrl>https://github.com/Munroe-Meyer-Institute-VR-Laboratory/Biosensor-Framework</RepositoryUrl>
     <RepositoryType>GitHub</RepositoryType>
     <PackageTags>Affective Computing, Machine Learning, Unity</PackageTags>
-    <PackageId>MMIVR-BF</PackageId>
+    <PackageId>Biosensor-Framework</PackageId>
     <Copyright>2021</Copyright>
     <AssemblyName>Biosensor Framework</AssemblyName>
     <ApplicationIcon>shield.ico</ApplicationIcon>
