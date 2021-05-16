@@ -67,11 +67,12 @@ namespace MMIVR.BiosensorFramework.DataProcessing
             return SummedFeatures;
         }
         /// <summary>
-        /// Returns indices above a threshold, removes zero elements
+        /// Returns indices above a threshold, removes zero elements.  Intended for time-series data collection.
         /// </summary>
-        /// <param name="array"></param>
-        /// <param name="Threshold"></param>
-        /// <returns></returns>
+        /// <param name="array">An array of data.</param>
+        /// <param name="Threshold">The threshold for inclusion in return data.</param>
+        /// <param name="SamplingRate">The sampling rate of the data.</param>
+        /// <returns>List of List of indices above the threshold.</returns>
         public static List<List<int>> FindAbove(double[] array, double Threshold, double SamplingRate)
         {
             List<List<int>> Peaks = new List<List<int>>();
@@ -114,7 +115,7 @@ namespace MMIVR.BiosensorFramework.DataProcessing
         /// </summary>
         /// <param name="Peaks"> List of List of indices that represent the indices above threshold </param>
         /// <param name="ZeroCrossings"> List of indices where zero crossings happen </param>
-        /// <returns></returns>
+        /// <returns>List of peak indices.</returns>
         private static List<int[]> ConstructPeaks(List<List<int>> Peaks, Tuple<int[], int[]> ZeroCrossings)
         {
             List<int[]> ConstructedPeaks = new List<int[]>();

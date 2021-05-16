@@ -11,18 +11,21 @@ using System.Linq;
 
 namespace MMIVR.BiosensorFramework.MachineLearningUtilities
 {
+    /// <summary>
+    /// Class for importing data from CSV files and txt files.
+    /// </summary>
     public class DataImport
     {
         /// <summary>
-        /// 
+        /// The organization of the imported data.
         /// </summary>
         enum CollectedData { Acc3D, GSR, BVP, TMP, IBI, BAT, TAG, TIMESTAMPS, DATE }
         /// <summary>
-        /// 
+        /// Loads a TXT file of stored readings.
         /// </summary>
-        /// <param name="Filepath"></param>
-        /// <param name="WindowSize"></param>
-        /// <returns></returns>
+        /// <param name="Filepath">The absolute filepath to the file.</param>
+        /// <param name="WindowSize">The window size, in seconds, for collecting data. Defaults to 5 seconds.</param>
+        /// <returns>List of Tuples containing data and tags.</returns>
         public static List<Tuple<double[], int>> LoadFile(string Filepath, int WindowSize = 5)
         {
             List<Tuple<double[], int>> DataFeatures = new List<Tuple<double[], int>>();
@@ -94,9 +97,11 @@ namespace MMIVR.BiosensorFramework.MachineLearningUtilities
         /// Parses and transforms the data collected from a biosensor from a txt file.  To facilitate training the Fast Forest classifier used, the WESAD data is loaded in 
         /// first to allow retraining.
         /// </summary>
-        /// <param name="DirectoryPath"></param>
-        /// <param name="SearchPattern"></param>
-        /// <returns></returns>
+        /// <param name="WesadDirectory">The top directory of the WESAD dataset.</param>
+        /// <param name="DirectoryPath">The top directory with the data.</param>
+        /// <param name="SearchPattern">The search pattern to find the relevant files in the DirectoryPath.</param>
+        /// <param name="WindowSize">The window size, in seconds, for collecting data. Defaults to 5 seconds.</param>
+        /// <returns>List of Tuples with data and tags.</returns>
         public static List<Tuple<double[], int>> LoadCollectedDataset(string WesadDirectory, string DirectoryPath, string SearchPattern, int WindowSize = 5)
         {
             string[] files = Directory.GetFiles(DirectoryPath, SearchPattern, SearchOption.TopDirectoryOnly);
@@ -196,10 +201,10 @@ namespace MMIVR.BiosensorFramework.MachineLearningUtilities
             return DataFeatures;
         }
         /// <summary>
-        /// 
+        /// Loads in a CSV datasets from the filesystem from the WESAD dataset.
         /// </summary>
-        /// <param name="DirectoryPath"></param>
-        /// <returns></returns>
+        /// <param name="DirectoryPath">The top directory with the data.</param>
+        /// <returns>List of Tuples with Subject ID, sensor data, and tags.</returns>
         public static List<Tuple<string, List<double[]>, double[]>> LoadDataset(string DirectoryPath)
         {
             string[] files = Directory.GetFiles(DirectoryPath, "*.csv", SearchOption.AllDirectories);
@@ -251,10 +256,16 @@ namespace MMIVR.BiosensorFramework.MachineLearningUtilities
         }
         /// <summary>
         /// Pipeline implemented to process the WESAD dataset.
-        /// </summary>
         /// Schmidt, Philip, et al. "Introducing wesad, a multimodal dataset for wearable stress and affect detection." 
         ///     Proceedings of the 20th ACM International Conference on Multimodal Interaction. 2018.
-        /// <param name="WindowSize"></param>
+        /// </summary>
+        /// <param name="DirectoryPath">The top directory with the data.</param>
+        /// <param name="mlContext">The Microsoft.ML context.</param>
+        /// <param name="MultiClass">The returned TrainTestData for the multi-class models.</param>
+        /// <param name="BinClass">The returned TrainTestData for the binary models.</param>
+        /// <param name="RegClass">The returned TrainTestData for the regression models.</param>
+        /// <param name="WindowSize">The window size, in seconds, for collecting data. Defaults to 5 seconds.</param>
+        /// <param name="TrainTestRatio">The percentage of the data that is train and test. Default is 0.1.</param>
         public static void SchmidtDatasetPipeline(string DirectoryPath, MLContext mlContext, out TrainTestData MultiClass, out TrainTestData BinClass, out TrainTestData RegClass, int WindowSize = 5, double TrainTestRatio = 0.1)
         {
             List<ExtractedMultiFeatures> MultiFeatureSet = new List<ExtractedMultiFeatures>();
@@ -298,6 +309,13 @@ namespace MMIVR.BiosensorFramework.MachineLearningUtilities
             BinClass = mlContext.Data.TrainTestSplit(BinClassView, TrainTestRatio);
             RegClass = mlContext.Data.TrainTestSplit(RegClassView, TrainTestRatio);
         }
+        /// <summary>
+        /// Converts raw List of Tuples into a TrainTestData set for Microsoft.ML for binary classification training.
+        /// </summary>
+        /// <param name="mlContext">The Microsoft.ML context.</param>
+        /// <param name="RawFeatures">The data and tags loaded in.</param>
+        /// <param name="TrainTestRatio">The percentage of the data that is train and test. Default is 0.1.</param>
+        /// <returns>The TrainTestData to be used in training a Microsoft.ML model.</returns>
         public static TrainTestData ConvertRawToBin(MLContext mlContext, List<Tuple<double[], int>> RawFeatures, double TrainTestRatio = 0.1)
         {
             List<ExtractedBinFeatures> BinFeatureSet = new List<ExtractedBinFeatures>();
@@ -312,7 +330,14 @@ namespace MMIVR.BiosensorFramework.MachineLearningUtilities
             IDataView BinClassView = mlContext.Data.LoadFromEnumerable(BinFeatureSet);
             return mlContext.Data.TrainTestSplit(BinClassView, TrainTestRatio);
         }
-        public static TrainTestData ConvertRawToMulti(List<Tuple<double[], int>> RawFeatures)
+        /// <summary>
+        /// Converts raw List of Tuples into a TrainTestData set for Microsoft.ML multi-class training.
+        /// </summary>
+        /// <param name="mlContext">The Microsoft.ML context.</param>
+        /// <param name="RawFeatures">The data and tags loaded in.</param>
+        /// <param name="TrainTestRatio">The percentage of the data that is train and test. Default is 0.1.</param>
+        /// <returns>The TrainTestData to be used in training a Microsoft.ML model.</returns>
+        public static TrainTestData ConvertRawToMulti(MLContext mlContext, List<Tuple<double[], int>> RawFeatures, double TrainTestRatio = 0.1)
         {
             throw new NotImplementedException();
         }
