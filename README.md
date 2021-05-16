@@ -134,6 +134,7 @@ When the device has streaming restarted, it will begin collecting data as quickl
 The data can be manipulated once the timer expires for the window size.  The data can be grabbed by the GrabWindow function, which also can be fed a filepath to write the readings to a data file.  Predictions can be done on the raw data using the PredictWindow function and a prediction is returned in a simple structure that contains the output bool.
 
 ### Class Documentation
+[Biosensor Framework Documentation](https://github.com/Munroe-Meyer-Institute-VR-Laboratory/Biosensor-Framework/blob/main/BiosensorFramework/BiosensorFrameworkDoc.md)
 
 ### Citation
 
