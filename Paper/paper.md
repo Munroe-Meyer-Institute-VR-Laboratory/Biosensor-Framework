@@ -11,7 +11,7 @@ authors:
     orcid: 0000-0003-0819-0710
     affiliation: 1
   - name: James Gehringer, PhD
-    orcid: 0000-0000-0000-0000
+    orcid: 0000-0003-3457-2288
     affiliation: 1
 affiliations:
  - name: Virtual Reality Laboratory in the Munroe Meyer Institute at the University of Nebraska Medical Center
