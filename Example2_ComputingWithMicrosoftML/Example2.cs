@@ -19,7 +19,7 @@ namespace Example2_ComputingWithMicrosoftML
         // TODO: Fill these out with your own values
         public static string APIKey = "";
         public static string ServerPath = @"";
-        public static string WesadDirectory = @"E:\Datasets\WESAD_CSV";
+        public static string WesadDirectory = @"";
         public static string SessionOutputPath = @"";
 
         static void Main(string[] args)

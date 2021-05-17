@@ -760,10 +760,10 @@
         <member name="M:MMIVR.BiosensorFramework.DataProcessing.TarvainenDetrending.RemoveTrend(System.Double[],System.Int32,System.Double[])">
             <summary>
             A time-varying finite-impulse-response high-pass filter for detrending
-            </summary>
             If using this in a published study, cite:
                 Tarvainen, Mika P., Perttu O. Ranta-Aho, and Pasi A.Karjalainen. "An advanced detrending method with
                     application to HRV analysis." IEEE Transactions on Biomedical Engineering 49.2 (2002): 172-175.
+            </summary>
             <param name="InputSignal"> Original EDA signal </param>
             <param name="Lambda"> The 'smoothing' factor of the filter </param>
             <param name="Filter"> Coefficients for the 0, 1, 2 diagonals in the second derivative matrix.  Can be null, will default to standard value </param>
@@ -1417,6 +1417,84 @@
             <param name="LiveData">The extracted features packaged in the ExtractedMultiFeatures class.</param>
             <param name="Model">The model to perform inferencing with.</param>
             <returns></returns>
+        </member>
+        <member name="T:MMIVR.BiosensorFramework.MachineLearningUtilities.Train">
+            <summary>
+            Class to perform training of Microsoft.ML models.
+            </summary>
+        </member>
+        <member name="M:MMIVR.BiosensorFramework.MachineLearningUtilities.Train.RunBenchmarks(System.String,Microsoft.ML.ITransformer@,Microsoft.ML.ITransformer@,Microsoft.ML.ITransformer@)">
+            <summary>
+            Runs regression, multi-class, and binary classification tasks on the WESAD dataset and compares performance.  Returns the best performing model of each category.
+            </summary>
+            <param name="DirectoryPath">Path to directory with WESAD dataset.</param>
+            <param name="BestRegModel">The best regression ITransformer model.</param>
+            <param name="BestMultiModel">The best multi-class ITransformer model.</param>
+            <param name="BestBinModel">The best binary ITransformer model.</param>
+        </member>
+        <member name="M:MMIVR.BiosensorFramework.MachineLearningUtilities.Train.PrintBinMetrics(Microsoft.ML.Data.BinaryClassificationMetrics)">
+            <summary>
+            Prints the performance metrics of the binary classification test to Console.
+            </summary>
+            <param name="metrics">The metrics from the test set.</param>
+        </member>
+        <member name="M:MMIVR.BiosensorFramework.MachineLearningUtilities.Train.PrintMultiMetrics(Microsoft.ML.Data.MulticlassClassificationMetrics)">
+            <summary>
+            Prints the performance of the multi-class classification test to Console.
+            </summary>
+            <param name="metrics">The metrics from the test set.</param>
+        </member>
+        <member name="M:MMIVR.BiosensorFramework.MachineLearningUtilities.Train.PrintRegMetrics(Microsoft.ML.Data.RegressionMetrics)">
+            <summary>
+            Prints the performance metrics of the regression classification test to Console.
+            </summary>
+            <param name="metrics">The metrics from the test set.</param>
+        </member>
+        <member name="M:MMIVR.BiosensorFramework.MachineLearningUtilities.Train.BuildAndTrainMultiClassModels(Microsoft.ML.MLContext,Microsoft.ML.IDataView)">
+            <summary>
+            Trains multi-class models built-in to Microsoft.ML on the TrainingSet provided.
+            </summary>
+            <param name="mlContext">The Microsoft.ML context to perform operations in.</param>
+            <param name="TrainingSet">The time-series dataset to train the models on.</param>
+            <returns>List of models that can be used in performance benchmarks.</returns>
+        </member>
+        <member name="M:MMIVR.BiosensorFramework.MachineLearningUtilities.Train.BuildAndTrainBinClassModels(Microsoft.ML.MLContext,Microsoft.ML.IDataView)">
+            <summary>
+            Trains binary classification models built-in to Microsoft.ML on the provided TrainingSet data.
+            </summary>
+            <param name="mlContext">The Microsoft.ML context to perform operations in.</param>
+            <param name="TrainingSet">The time-series dataset to train the models on.</param>
+            <returns>List of models that can be used in performance benchmarks.</returns>
+        </member>
+        <member name="M:MMIVR.BiosensorFramework.MachineLearningUtilities.Train.BuildAndTrainRegressionModels(Microsoft.ML.MLContext,Microsoft.ML.IDataView)">
+            <summary>
+            Train regression classification models built-in to Microsoft.ML on the provided TrainingSet data.
+            </summary>
+            <param name="mlContext">The Microsoft.ML context to perform operations in.</param>
+            <param name="TrainingSet">The time-series dataset to train the models on.</param>
+            <returns>List of models that can be used in performance benchmarks.</returns>
+        </member>
+        <member name="M:MMIVR.BiosensorFramework.MachineLearningUtilities.Train.TrimFeatureSet(System.Collections.Generic.List{MMIVR.BiosensorFramework.MachineLearningUtilities.ExtractedMultiFeatures},System.Collections.Generic.List{System.Int32})">
+            <summary>
+            Removes specified labels from the dataset.
+            </summary>
+            <param name="FeatureSet">The data to remove samples from.</param>
+            <param name="LabelsToRemove">List of labels to remove from dataset.</param>
+            <returns>Trimmed list.</returns>
+        </member>
+        <member name="M:MMIVR.BiosensorFramework.MachineLearningUtilities.Train.MultiToBin(System.Collections.Generic.List{MMIVR.BiosensorFramework.MachineLearningUtilities.ExtractedMultiFeatures})">
+            <summary>
+            Converts multi-class feature set to binary class representation.
+            </summary>
+            <param name="FeatureSet">The feature set to convert.</param>
+            <returns>Binary class representation of the input data.</returns>
+        </member>
+        <member name="M:MMIVR.BiosensorFramework.MachineLearningUtilities.Train.MultiToReg(System.Collections.Generic.List{MMIVR.BiosensorFramework.MachineLearningUtilities.ExtractedMultiFeatures})">
+            <summary>
+            Converts multi-class feature dataset to regression class feature dataset.
+            </summary>
+            <param name="FeatureSet">the feature set to convert.</param>
+            <returns>Regression class representation of the input data.</returns>
         </member>
         <member name="T:MMIVR.BiosensorFramework.InputPipeline.SignalProcessing">
             <summary>

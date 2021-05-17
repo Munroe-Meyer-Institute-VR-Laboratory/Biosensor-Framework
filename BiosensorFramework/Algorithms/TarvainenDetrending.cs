@@ -9,10 +9,10 @@ namespace MMIVR.BiosensorFramework.DataProcessing
     {
         /// <summary>
         /// A time-varying finite-impulse-response high-pass filter for detrending
-        /// </summary>
         /// If using this in a published study, cite:
         ///     Tarvainen, Mika P., Perttu O. Ranta-Aho, and Pasi A.Karjalainen. "An advanced detrending method with
         ///         application to HRV analysis." IEEE Transactions on Biomedical Engineering 49.2 (2002): 172-175.
+        /// </summary>
         /// <param name="InputSignal"> Original EDA signal </param>
         /// <param name="Lambda"> The 'smoothing' factor of the filter </param>
         /// <param name="Filter"> Coefficients for the 0, 1, 2 diagonals in the second derivative matrix.  Can be null, will default to standard value </param>

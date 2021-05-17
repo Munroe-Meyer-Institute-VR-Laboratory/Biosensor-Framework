@@ -10,8 +10,18 @@ using static Microsoft.ML.DataOperationsCatalog;
 
 namespace MMIVR.BiosensorFramework.MachineLearningUtilities
 {
+    /// <summary>
+    /// Class to perform training of Microsoft.ML models.
+    /// </summary>
     public class Train
     {
+        /// <summary>
+        /// Runs regression, multi-class, and binary classification tasks on the WESAD dataset and compares performance.  Returns the best performing model of each category.
+        /// </summary>
+        /// <param name="DirectoryPath">Path to directory with WESAD dataset.</param>
+        /// <param name="BestRegModel">The best regression ITransformer model.</param>
+        /// <param name="BestMultiModel">The best multi-class ITransformer model.</param>
+        /// <param name="BestBinModel">The best binary ITransformer model.</param>
         public static void RunBenchmarks(string DirectoryPath, out ITransformer BestRegModel, out ITransformer BestMultiModel, out ITransformer BestBinModel)
         {
             MLContext mlContext = new MLContext();
@@ -102,6 +112,10 @@ namespace MMIVR.BiosensorFramework.MachineLearningUtilities
             //mlContext.Model.Save(BestBinModel, BinModelSchema, @"C:\BinModel.zip");
             //mlContext.Model.Save(BestRegModel, RegModelSchema, @"C:\RegModel.zip");
         }
+        /// <summary>
+        /// Prints the performance metrics of the binary classification test to Console.
+        /// </summary>
+        /// <param name="metrics">The metrics from the test set.</param>
         public static void PrintBinMetrics(BinaryClassificationMetrics metrics)
         {
             Console.WriteLine("Accuracy: {0}" +
@@ -115,6 +129,10 @@ namespace MMIVR.BiosensorFramework.MachineLearningUtilities
                 metrics.Accuracy, metrics.AreaUnderPrecisionRecallCurve, metrics.AreaUnderRocCurve, metrics.F1Score,
                 metrics.NegativePrecision, metrics.NegativeRecall, metrics.PositivePrecision, metrics.PositiveRecall);
         }
+        /// <summary>
+        /// Prints the performance of the multi-class classification test to Console.
+        /// </summary>
+        /// <param name="metrics">The metrics from the test set.</param>
         public static void PrintMultiMetrics(MulticlassClassificationMetrics metrics)
         {
             Console.WriteLine("Log Loss: {0}" +
@@ -140,6 +158,10 @@ namespace MMIVR.BiosensorFramework.MachineLearningUtilities
             }
             Console.WriteLine();
         }
+        /// <summary>
+        /// Prints the performance metrics of the regression classification test to Console.
+        /// </summary>
+        /// <param name="metrics">The metrics from the test set.</param>
         public static void PrintRegMetrics(RegressionMetrics metrics)
         {
             Console.WriteLine("Loss Function: " + metrics.LossFunction);
@@ -149,6 +171,12 @@ namespace MMIVR.BiosensorFramework.MachineLearningUtilities
             Console.WriteLine("RSquared: " + metrics.RSquared);
             Console.WriteLine();
         }
+        /// <summary>
+        /// Trains multi-class models built-in to Microsoft.ML on the TrainingSet provided.
+        /// </summary>
+        /// <param name="mlContext">The Microsoft.ML context to perform operations in.</param>
+        /// <param name="TrainingSet">The time-series dataset to train the models on.</param>
+        /// <returns>List of models that can be used in performance benchmarks.</returns>
         public static List<ITransformer> BuildAndTrainMultiClassModels(MLContext mlContext, IDataView TrainingSet)
         {
             List<ITransformer> Models = new List<ITransformer>();
@@ -182,6 +210,12 @@ namespace MMIVR.BiosensorFramework.MachineLearningUtilities
 
             return Models;
         }
+        /// <summary>
+        /// Trains binary classification models built-in to Microsoft.ML on the provided TrainingSet data.
+        /// </summary>
+        /// <param name="mlContext">The Microsoft.ML context to perform operations in.</param>
+        /// <param name="TrainingSet">The time-series dataset to train the models on.</param>
+        /// <returns>List of models that can be used in performance benchmarks.</returns>
         public static List<ITransformer> BuildAndTrainBinClassModels(MLContext mlContext, IDataView TrainingSet)
         {
             List<ITransformer> Models = new List<ITransformer>();
@@ -211,6 +245,12 @@ namespace MMIVR.BiosensorFramework.MachineLearningUtilities
 
             return Models;
         }
+        /// <summary>
+        /// Train regression classification models built-in to Microsoft.ML on the provided TrainingSet data.
+        /// </summary>
+        /// <param name="mlContext">The Microsoft.ML context to perform operations in.</param>
+        /// <param name="TrainingSet">The time-series dataset to train the models on.</param>
+        /// <returns>List of models that can be used in performance benchmarks.</returns>
         public static List<ITransformer> BuildAndTrainRegressionModels(MLContext mlContext, IDataView TrainingSet)
         {
             List<ITransformer> Models = new List<ITransformer>();
@@ -253,6 +293,12 @@ namespace MMIVR.BiosensorFramework.MachineLearningUtilities
 
             return Models;
         }
+        /// <summary>
+        /// Removes specified labels from the dataset.
+        /// </summary>
+        /// <param name="FeatureSet">The data to remove samples from.</param>
+        /// <param name="LabelsToRemove">List of labels to remove from dataset.</param>
+        /// <returns>Trimmed list.</returns>
         public static List<ExtractedMultiFeatures> TrimFeatureSet(List<ExtractedMultiFeatures> FeatureSet, List<int> LabelsToRemove)
         {
             for (int i = 0; i < LabelsToRemove.Count; i++)
@@ -266,6 +312,11 @@ namespace MMIVR.BiosensorFramework.MachineLearningUtilities
             }
             return FeatureSet;
         }
+        /// <summary>
+        /// Converts multi-class feature set to binary class representation.
+        /// </summary>
+        /// <param name="FeatureSet">The feature set to convert.</param>
+        /// <returns>Binary class representation of the input data.</returns>
         public static List<ExtractedBinFeatures> MultiToBin(List<ExtractedMultiFeatures> FeatureSet)
         {
             List<ExtractedBinFeatures> ConFeatures = new List<ExtractedBinFeatures>();
@@ -286,6 +337,11 @@ namespace MMIVR.BiosensorFramework.MachineLearningUtilities
             }
             return ConFeatures;
         }
+        /// <summary>
+        /// Converts multi-class feature dataset to regression class feature dataset.
+        /// </summary>
+        /// <param name="FeatureSet">the feature set to convert.</param>
+        /// <returns>Regression class representation of the input data.</returns>
         public static List<ExtractedRegFeatures> MultiToReg(List<ExtractedMultiFeatures> FeatureSet)
         {
             List<ExtractedRegFeatures> ConFeatures = new List<ExtractedRegFeatures>();

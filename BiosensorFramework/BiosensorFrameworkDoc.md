@@ -196,6 +196,17 @@
 - [TarvainenDetrending](#T-MMIVR-BiosensorFramework-DataProcessing-TarvainenDetrending 'MMIVR.BiosensorFramework.DataProcessing.TarvainenDetrending')
   - [GetResidual(TrendedSignal,DetrendedSignal)](#M-MMIVR-BiosensorFramework-DataProcessing-TarvainenDetrending-GetResidual-System-Double[],System-Double[]- 'MMIVR.BiosensorFramework.DataProcessing.TarvainenDetrending.GetResidual(System.Double[],System.Double[])')
   - [RemoveTrend(InputSignal,Lambda,Filter)](#M-MMIVR-BiosensorFramework-DataProcessing-TarvainenDetrending-RemoveTrend-System-Double[],System-Int32,System-Double[]- 'MMIVR.BiosensorFramework.DataProcessing.TarvainenDetrending.RemoveTrend(System.Double[],System.Int32,System.Double[])')
+- [Train](#T-MMIVR-BiosensorFramework-MachineLearningUtilities-Train 'MMIVR.BiosensorFramework.MachineLearningUtilities.Train')
+  - [BuildAndTrainBinClassModels(mlContext,TrainingSet)](#M-MMIVR-BiosensorFramework-MachineLearningUtilities-Train-BuildAndTrainBinClassModels-Microsoft-ML-MLContext,Microsoft-ML-IDataView- 'MMIVR.BiosensorFramework.MachineLearningUtilities.Train.BuildAndTrainBinClassModels(Microsoft.ML.MLContext,Microsoft.ML.IDataView)')
+  - [BuildAndTrainMultiClassModels(mlContext,TrainingSet)](#M-MMIVR-BiosensorFramework-MachineLearningUtilities-Train-BuildAndTrainMultiClassModels-Microsoft-ML-MLContext,Microsoft-ML-IDataView- 'MMIVR.BiosensorFramework.MachineLearningUtilities.Train.BuildAndTrainMultiClassModels(Microsoft.ML.MLContext,Microsoft.ML.IDataView)')
+  - [BuildAndTrainRegressionModels(mlContext,TrainingSet)](#M-MMIVR-BiosensorFramework-MachineLearningUtilities-Train-BuildAndTrainRegressionModels-Microsoft-ML-MLContext,Microsoft-ML-IDataView- 'MMIVR.BiosensorFramework.MachineLearningUtilities.Train.BuildAndTrainRegressionModels(Microsoft.ML.MLContext,Microsoft.ML.IDataView)')
+  - [MultiToBin(FeatureSet)](#M-MMIVR-BiosensorFramework-MachineLearningUtilities-Train-MultiToBin-System-Collections-Generic-List{MMIVR-BiosensorFramework-MachineLearningUtilities-ExtractedMultiFeatures}- 'MMIVR.BiosensorFramework.MachineLearningUtilities.Train.MultiToBin(System.Collections.Generic.List{MMIVR.BiosensorFramework.MachineLearningUtilities.ExtractedMultiFeatures})')
+  - [MultiToReg(FeatureSet)](#M-MMIVR-BiosensorFramework-MachineLearningUtilities-Train-MultiToReg-System-Collections-Generic-List{MMIVR-BiosensorFramework-MachineLearningUtilities-ExtractedMultiFeatures}- 'MMIVR.BiosensorFramework.MachineLearningUtilities.Train.MultiToReg(System.Collections.Generic.List{MMIVR.BiosensorFramework.MachineLearningUtilities.ExtractedMultiFeatures})')
+  - [PrintBinMetrics(metrics)](#M-MMIVR-BiosensorFramework-MachineLearningUtilities-Train-PrintBinMetrics-Microsoft-ML-Data-BinaryClassificationMetrics- 'MMIVR.BiosensorFramework.MachineLearningUtilities.Train.PrintBinMetrics(Microsoft.ML.Data.BinaryClassificationMetrics)')
+  - [PrintMultiMetrics(metrics)](#M-MMIVR-BiosensorFramework-MachineLearningUtilities-Train-PrintMultiMetrics-Microsoft-ML-Data-MulticlassClassificationMetrics- 'MMIVR.BiosensorFramework.MachineLearningUtilities.Train.PrintMultiMetrics(Microsoft.ML.Data.MulticlassClassificationMetrics)')
+  - [PrintRegMetrics(metrics)](#M-MMIVR-BiosensorFramework-MachineLearningUtilities-Train-PrintRegMetrics-Microsoft-ML-Data-RegressionMetrics- 'MMIVR.BiosensorFramework.MachineLearningUtilities.Train.PrintRegMetrics(Microsoft.ML.Data.RegressionMetrics)')
+  - [RunBenchmarks(DirectoryPath,BestRegModel,BestMultiModel,BestBinModel)](#M-MMIVR-BiosensorFramework-MachineLearningUtilities-Train-RunBenchmarks-System-String,Microsoft-ML-ITransformer@,Microsoft-ML-ITransformer@,Microsoft-ML-ITransformer@- 'MMIVR.BiosensorFramework.MachineLearningUtilities.Train.RunBenchmarks(System.String,Microsoft.ML.ITransformer@,Microsoft.ML.ITransformer@,Microsoft.ML.ITransformer@)')
+  - [TrimFeatureSet(FeatureSet,LabelsToRemove)](#M-MMIVR-BiosensorFramework-MachineLearningUtilities-Train-TrimFeatureSet-System-Collections-Generic-List{MMIVR-BiosensorFramework-MachineLearningUtilities-ExtractedMultiFeatures},System-Collections-Generic-List{System-Int32}- 'MMIVR.BiosensorFramework.MachineLearningUtilities.Train.TrimFeatureSet(System.Collections.Generic.List{MMIVR.BiosensorFramework.MachineLearningUtilities.ExtractedMultiFeatures},System.Collections.Generic.List{System.Int32})')
 - [Type](#T-MMIVR-BiosensorFramework-DataProcessing-ThirdParty-DSPLib-DSP-Window-Type 'MMIVR.BiosensorFramework.DataProcessing.ThirdParty.DSPLib.DSP.Window.Type')
 - [Utilities](#T-MMIVR-BiosensorFramework-Biosensors-EmpaticaE4-Utilities 'MMIVR.BiosensorFramework.Biosensors.EmpaticaE4.Utilities')
   - [AvailableDevices](#F-MMIVR-BiosensorFramework-Biosensors-EmpaticaE4-Utilities-AvailableDevices 'MMIVR.BiosensorFramework.Biosensors.EmpaticaE4.Utilities.AvailableDevices')
@@ -2749,6 +2760,9 @@ Removes the stationary signal from the EDA signal and returns the residual signa
 ##### Summary
 
 A time-varying finite-impulse-response high-pass filter for detrending
+If using this in a published study, cite:
+    Tarvainen, Mika P., Perttu O. Ranta-Aho, and Pasi A.Karjalainen. "An advanced detrending method with
+        application to HRV analysis." IEEE Transactions on Biomedical Engineering 49.2 (2002): 172-175.
 
 ##### Returns
 
@@ -2761,6 +2775,178 @@ Filtered signal without a trend, double[]
 | InputSignal | [System.Double[]](http://msdn.microsoft.com/query/dev14.query?appId=Dev14IDEF1&l=EN-US&k=k:System.Double[] 'System.Double[]') | Original EDA signal |
 | Lambda | [System.Int32](http://msdn.microsoft.com/query/dev14.query?appId=Dev14IDEF1&l=EN-US&k=k:System.Int32 'System.Int32') | The 'smoothing' factor of the filter |
 | Filter | [System.Double[]](http://msdn.microsoft.com/query/dev14.query?appId=Dev14IDEF1&l=EN-US&k=k:System.Double[] 'System.Double[]') | Coefficients for the 0, 1, 2 diagonals in the second derivative matrix.  Can be null, will default to standard value |
+
+<a name='T-MMIVR-BiosensorFramework-MachineLearningUtilities-Train'></a>
+## Train `type`
+
+##### Namespace
+
+MMIVR.BiosensorFramework.MachineLearningUtilities
+
+##### Summary
+
+Class to perform training of Microsoft.ML models.
+
+<a name='M-MMIVR-BiosensorFramework-MachineLearningUtilities-Train-BuildAndTrainBinClassModels-Microsoft-ML-MLContext,Microsoft-ML-IDataView-'></a>
+### BuildAndTrainBinClassModels(mlContext,TrainingSet) `method`
+
+##### Summary
+
+Trains binary classification models built-in to Microsoft.ML on the provided TrainingSet data.
+
+##### Returns
+
+List of models that can be used in performance benchmarks.
+
+##### Parameters
+
+| Name | Type | Description |
+| ---- | ---- | ----------- |
+| mlContext | [Microsoft.ML.MLContext](#T-Microsoft-ML-MLContext 'Microsoft.ML.MLContext') | The Microsoft.ML context to perform operations in. |
+| TrainingSet | [Microsoft.ML.IDataView](#T-Microsoft-ML-IDataView 'Microsoft.ML.IDataView') | The time-series dataset to train the models on. |
+
+<a name='M-MMIVR-BiosensorFramework-MachineLearningUtilities-Train-BuildAndTrainMultiClassModels-Microsoft-ML-MLContext,Microsoft-ML-IDataView-'></a>
+### BuildAndTrainMultiClassModels(mlContext,TrainingSet) `method`
+
+##### Summary
+
+Trains multi-class models built-in to Microsoft.ML on the TrainingSet provided.
+
+##### Returns
+
+List of models that can be used in performance benchmarks.
+
+##### Parameters
+
+| Name | Type | Description |
+| ---- | ---- | ----------- |
+| mlContext | [Microsoft.ML.MLContext](#T-Microsoft-ML-MLContext 'Microsoft.ML.MLContext') | The Microsoft.ML context to perform operations in. |
+| TrainingSet | [Microsoft.ML.IDataView](#T-Microsoft-ML-IDataView 'Microsoft.ML.IDataView') | The time-series dataset to train the models on. |
+
+<a name='M-MMIVR-BiosensorFramework-MachineLearningUtilities-Train-BuildAndTrainRegressionModels-Microsoft-ML-MLContext,Microsoft-ML-IDataView-'></a>
+### BuildAndTrainRegressionModels(mlContext,TrainingSet) `method`
+
+##### Summary
+
+Train regression classification models built-in to Microsoft.ML on the provided TrainingSet data.
+
+##### Returns
+
+List of models that can be used in performance benchmarks.
+
+##### Parameters
+
+| Name | Type | Description |
+| ---- | ---- | ----------- |
+| mlContext | [Microsoft.ML.MLContext](#T-Microsoft-ML-MLContext 'Microsoft.ML.MLContext') | The Microsoft.ML context to perform operations in. |
+| TrainingSet | [Microsoft.ML.IDataView](#T-Microsoft-ML-IDataView 'Microsoft.ML.IDataView') | The time-series dataset to train the models on. |
+
+<a name='M-MMIVR-BiosensorFramework-MachineLearningUtilities-Train-MultiToBin-System-Collections-Generic-List{MMIVR-BiosensorFramework-MachineLearningUtilities-ExtractedMultiFeatures}-'></a>
+### MultiToBin(FeatureSet) `method`
+
+##### Summary
+
+Converts multi-class feature set to binary class representation.
+
+##### Returns
+
+Binary class representation of the input data.
+
+##### Parameters
+
+| Name | Type | Description |
+| ---- | ---- | ----------- |
+| FeatureSet | [System.Collections.Generic.List{MMIVR.BiosensorFramework.MachineLearningUtilities.ExtractedMultiFeatures}](http://msdn.microsoft.com/query/dev14.query?appId=Dev14IDEF1&l=EN-US&k=k:System.Collections.Generic.List 'System.Collections.Generic.List{MMIVR.BiosensorFramework.MachineLearningUtilities.ExtractedMultiFeatures}') | The feature set to convert. |
+
+<a name='M-MMIVR-BiosensorFramework-MachineLearningUtilities-Train-MultiToReg-System-Collections-Generic-List{MMIVR-BiosensorFramework-MachineLearningUtilities-ExtractedMultiFeatures}-'></a>
+### MultiToReg(FeatureSet) `method`
+
+##### Summary
+
+Converts multi-class feature dataset to regression class feature dataset.
+
+##### Returns
+
+Regression class representation of the input data.
+
+##### Parameters
+
+| Name | Type | Description |
+| ---- | ---- | ----------- |
+| FeatureSet | [System.Collections.Generic.List{MMIVR.BiosensorFramework.MachineLearningUtilities.ExtractedMultiFeatures}](http://msdn.microsoft.com/query/dev14.query?appId=Dev14IDEF1&l=EN-US&k=k:System.Collections.Generic.List 'System.Collections.Generic.List{MMIVR.BiosensorFramework.MachineLearningUtilities.ExtractedMultiFeatures}') | the feature set to convert. |
+
+<a name='M-MMIVR-BiosensorFramework-MachineLearningUtilities-Train-PrintBinMetrics-Microsoft-ML-Data-BinaryClassificationMetrics-'></a>
+### PrintBinMetrics(metrics) `method`
+
+##### Summary
+
+Prints the performance metrics of the binary classification test to Console.
+
+##### Parameters
+
+| Name | Type | Description |
+| ---- | ---- | ----------- |
+| metrics | [Microsoft.ML.Data.BinaryClassificationMetrics](#T-Microsoft-ML-Data-BinaryClassificationMetrics 'Microsoft.ML.Data.BinaryClassificationMetrics') | The metrics from the test set. |
+
+<a name='M-MMIVR-BiosensorFramework-MachineLearningUtilities-Train-PrintMultiMetrics-Microsoft-ML-Data-MulticlassClassificationMetrics-'></a>
+### PrintMultiMetrics(metrics) `method`
+
+##### Summary
+
+Prints the performance of the multi-class classification test to Console.
+
+##### Parameters
+
+| Name | Type | Description |
+| ---- | ---- | ----------- |
+| metrics | [Microsoft.ML.Data.MulticlassClassificationMetrics](#T-Microsoft-ML-Data-MulticlassClassificationMetrics 'Microsoft.ML.Data.MulticlassClassificationMetrics') | The metrics from the test set. |
+
+<a name='M-MMIVR-BiosensorFramework-MachineLearningUtilities-Train-PrintRegMetrics-Microsoft-ML-Data-RegressionMetrics-'></a>
+### PrintRegMetrics(metrics) `method`
+
+##### Summary
+
+Prints the performance metrics of the regression classification test to Console.
+
+##### Parameters
+
+| Name | Type | Description |
+| ---- | ---- | ----------- |
+| metrics | [Microsoft.ML.Data.RegressionMetrics](#T-Microsoft-ML-Data-RegressionMetrics 'Microsoft.ML.Data.RegressionMetrics') | The metrics from the test set. |
+
+<a name='M-MMIVR-BiosensorFramework-MachineLearningUtilities-Train-RunBenchmarks-System-String,Microsoft-ML-ITransformer@,Microsoft-ML-ITransformer@,Microsoft-ML-ITransformer@-'></a>
+### RunBenchmarks(DirectoryPath,BestRegModel,BestMultiModel,BestBinModel) `method`
+
+##### Summary
+
+Runs regression, multi-class, and binary classification tasks on the WESAD dataset and compares performance.  Returns the best performing model of each category.
+
+##### Parameters
+
+| Name | Type | Description |
+| ---- | ---- | ----------- |
+| DirectoryPath | [System.String](http://msdn.microsoft.com/query/dev14.query?appId=Dev14IDEF1&l=EN-US&k=k:System.String 'System.String') | Path to directory with WESAD dataset. |
+| BestRegModel | [Microsoft.ML.ITransformer@](#T-Microsoft-ML-ITransformer@ 'Microsoft.ML.ITransformer@') | The best regression ITransformer model. |
+| BestMultiModel | [Microsoft.ML.ITransformer@](#T-Microsoft-ML-ITransformer@ 'Microsoft.ML.ITransformer@') | The best multi-class ITransformer model. |
+| BestBinModel | [Microsoft.ML.ITransformer@](#T-Microsoft-ML-ITransformer@ 'Microsoft.ML.ITransformer@') | The best binary ITransformer model. |
+
+<a name='M-MMIVR-BiosensorFramework-MachineLearningUtilities-Train-TrimFeatureSet-System-Collections-Generic-List{MMIVR-BiosensorFramework-MachineLearningUtilities-ExtractedMultiFeatures},System-Collections-Generic-List{System-Int32}-'></a>
+### TrimFeatureSet(FeatureSet,LabelsToRemove) `method`
+
+##### Summary
+
+Removes specified labels from the dataset.
+
+##### Returns
+
+Trimmed list.
+
+##### Parameters
+
+| Name | Type | Description |
+| ---- | ---- | ----------- |
+| FeatureSet | [System.Collections.Generic.List{MMIVR.BiosensorFramework.MachineLearningUtilities.ExtractedMultiFeatures}](http://msdn.microsoft.com/query/dev14.query?appId=Dev14IDEF1&l=EN-US&k=k:System.Collections.Generic.List 'System.Collections.Generic.List{MMIVR.BiosensorFramework.MachineLearningUtilities.ExtractedMultiFeatures}') | The data to remove samples from. |
+| LabelsToRemove | [System.Collections.Generic.List{System.Int32}](http://msdn.microsoft.com/query/dev14.query?appId=Dev14IDEF1&l=EN-US&k=k:System.Collections.Generic.List 'System.Collections.Generic.List{System.Int32}') | List of labels to remove from dataset. |
 
 <a name='T-MMIVR-BiosensorFramework-DataProcessing-ThirdParty-DSPLib-DSP-Window-Type'></a>
 ## Type `type`
