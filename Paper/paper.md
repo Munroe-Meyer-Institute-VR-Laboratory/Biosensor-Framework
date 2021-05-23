@@ -6,6 +6,7 @@ tags:
   - Biometrics
   - Machine Learning
   - Unity
+  - Microsoft.ML
 authors:
   - name: Walker Arce
     orcid: 0000-0003-0819-0710
