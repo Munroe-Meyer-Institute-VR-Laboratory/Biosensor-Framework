@@ -5,9 +5,9 @@
     <Authors>Walker Arce</Authors>
     <Company>Virtual Reality Laboratory in the Munroe Meyer Institute at the University of Nebraska Medical Center</Company>
     <Product>Biosensor Framework</Product>
-    <Description>Biosensor Framework is a C# library that handles the full process of gathering biometric data from a body-worn sensor, transforming it into handcrafted feature vectors, and delivering an inferencing result in twenty-six lines of code. Purpose built to handle the Empatica E4 biosensor, the Empatica provided TCP client is wrapped in a static C# class to provide convenient function calls and error handling to simplify code structure.</Description>
+    <Description>Biosensor Framework is a C# library that handles the full process of gathering biometric data from a body-worn sensor, transforming it into handcrafted feature vectors, and delivering an inferencing result in thirty-five lines of code. Purpose built to handle the Empatica E4 biosensor, the Empatica provided TCP client is wrapped in a static C# class to provide convenient function calls and error handling to simplify code structure.</Description>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-    <PackageProjectUrl></PackageProjectUrl>
+    <PackageProjectUrl>https://github.com/Munroe-Meyer-Institute-VR-Laboratory/Biosensor-Framework</PackageProjectUrl>
     <RepositoryUrl>https://github.com/Munroe-Meyer-Institute-VR-Laboratory/Biosensor-Framework</RepositoryUrl>
     <RepositoryType>GitHub</RepositoryType>
     <PackageTags>Affective Computing, Machine Learning, Unity</PackageTags>
@@ -15,11 +15,23 @@
     <Copyright>2021</Copyright>
     <AssemblyName>Biosensor Framework</AssemblyName>
     <ApplicationIcon>shield.ico</ApplicationIcon>
+    <PackageLicenseFile></PackageLicenseFile>
+	<PackageReadmeFile>README.md</PackageReadmeFile>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-    <DocumentationFile>D:\GitHub Repos\Biosensor-Framework\BiosensorFramework\BiosensorFrameworkDoc.xml</DocumentationFile>
+    <DocumentationFile>BiosensorFrameworkDoc.xml</DocumentationFile>
   </PropertyGroup>
+
+  <ItemGroup>
+    <None Include="..\README.md" Pack="true" PackagePath="\" />
+    <None Remove="LICENSE.md" />
+    <None Remove="packages\Microsoft.ML.1.5.5\LICENSE" />
+    <None Include="..\LICENSE.md">
+      <Pack>True</Pack>
+      <PackagePath></PackagePath>
+    </None>
+  </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="LightGBM" Version="2.2.3" />
@@ -32,5 +44,18 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
   </ItemGroup>
+
+  <ItemGroup>
+    <None Include="..\LICENSE.md">
+      <Pack>True</Pack>
+      <PackagePath></PackagePath>
+    </None>
+  </ItemGroup>
+  
+  <PropertyGroup>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <PackageReleaseNotes></PackageReleaseNotes>
+    <NeutralLanguage>en-US</NeutralLanguage>
+  </PropertyGroup>
 
 </Project>
