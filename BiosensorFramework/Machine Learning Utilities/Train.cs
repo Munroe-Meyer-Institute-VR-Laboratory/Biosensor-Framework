@@ -23,6 +23,7 @@ namespace MMIVR.BiosensorFramework.MachineLearningUtilities
         /// <param name="BestRegModel">The best regression ITransformer model.</param>
         /// <param name="BestMultiModel">The best multi-class ITransformer model.</param>
         /// <param name="BestBinModel">The best binary ITransformer model.</param>
+        /// <param name="ModelDir">The top directory to save the best models to. Default null.</param>
         public static void RunBenchmarks(string DirectoryPath, out ITransformer BestRegModel, out ITransformer BestMultiModel, out ITransformer BestBinModel, string ModelDir = null)
         {
             MLContext mlContext = new MLContext();
