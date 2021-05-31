@@ -19,13 +19,14 @@ namespace Example2_ComputingWithMicrosoftML
         // TODO: Fill these out with your own values
         public static string APIKey = "";
         public static string ServerPath = @"";
-        public static string WesadDirectory = @"";
+        public static string WesadDirectory = @"E:\Datasets\WESAD_CSV";
         public static string SessionOutputPath = @"";
+        public static string ModelDir = @"E:\Datasets";
 
         static void Main(string[] args)
         {
             mlContext = new MLContext();
-            Train.RunBenchmarks(WesadDirectory, out ITransformer RegModel, out ITransformer MultiModel, out Model);
+            Train.RunBenchmarks(WesadDirectory, out ITransformer RegModel, out ITransformer MultiModel, out Model, ModelDir);
             Console.ReadKey();
 
             Console.WriteLine("E4 Console Interface - Press ENTER to begin the client");

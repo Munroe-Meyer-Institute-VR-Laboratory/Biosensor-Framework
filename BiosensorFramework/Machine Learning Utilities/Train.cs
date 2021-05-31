@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using Microsoft.ML;
 using Microsoft.ML.Data;
@@ -22,7 +23,7 @@ namespace MMIVR.BiosensorFramework.MachineLearningUtilities
         /// <param name="BestRegModel">The best regression ITransformer model.</param>
         /// <param name="BestMultiModel">The best multi-class ITransformer model.</param>
         /// <param name="BestBinModel">The best binary ITransformer model.</param>
-        public static void RunBenchmarks(string DirectoryPath, out ITransformer BestRegModel, out ITransformer BestMultiModel, out ITransformer BestBinModel)
+        public static void RunBenchmarks(string DirectoryPath, out ITransformer BestRegModel, out ITransformer BestMultiModel, out ITransformer BestBinModel, string ModelDir = null)
         {
             MLContext mlContext = new MLContext();
 
@@ -108,9 +109,12 @@ namespace MMIVR.BiosensorFramework.MachineLearningUtilities
                     continue;
                  }
             }
-            //mlContext.Model.Save(BestMultiModel, MultiModelSchema, @"C:\MultiModel.zip");
-            //mlContext.Model.Save(BestBinModel, BinModelSchema, @"C:\BinModel.zip");
-            //mlContext.Model.Save(BestRegModel, RegModelSchema, @"C:\RegModel.zip");
+            if (ModelDir != null)
+            {
+                mlContext.Model.Save(BestMultiModel, MultiModelSchema, Path.Combine(ModelDir, "MultiModel.zip"));
+                mlContext.Model.Save(BestBinModel, BinModelSchema, Path.Combine(ModelDir, "BinModel.zip"));
+                mlContext.Model.Save(BestRegModel, RegModelSchema, Path.Combine(ModelDir, "RegModel.zip"));
+            }
         }
         /// <summary>
         /// Prints the performance metrics of the binary classification test to Console.
