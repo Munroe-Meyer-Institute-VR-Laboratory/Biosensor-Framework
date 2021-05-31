@@ -65,6 +65,7 @@ Regression Model Metrics
 |     R Squared              |     65.17          |     **79.79**        |     78.12                |     26.11    |
 
 Multi-Class Classification Metrics
+
 |                          |     Fast Forest    |     Fast Tree    |     LBFGS Regression    |     LBFGS Max Entropy    |
 |--------------------------|--------------------|------------------|-------------------------|--------------------------|
 |     Log Loss             |     31.30          |     22.27        |     45.11               |     41.51                |
@@ -82,6 +83,7 @@ Multi-Class Classification Metrics
 |     Class 2 Loss         |     71.23          |     52.41        |     152.03              |     140.35               |
 
 Binary Classification Metrics
+
 |                           |     Fast Forest    |     Fast Tree    |
 |---------------------------|--------------------|------------------|
 |     Accuracy              |     92.35          |     **96.85**        |
