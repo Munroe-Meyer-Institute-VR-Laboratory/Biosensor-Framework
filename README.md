@@ -20,7 +20,7 @@ This library provides the following capabilities:
 -	Contains models trained on WESAD dataset in the Microsoft.ML framework
 
 ### Motivation
-For our lab to use biosensor data in our research projects, we needed an interface to pull in data from our Empatica E4, perform feature extraction, and return inferences from a trained model.  From our research, there was no existing all in one library to do this and major parts of this project did not exist.  Additionally, there was no Unity compatible way to process this data and perform actions from the output.  From a programming perspective, it is best if there was no string manipulation when interacting with the server, so there needed to be a true wrapper for the TCP client communications.  The development of the Biosensor Framework has allowed us to use these features reliably in all of our research projects.
+For our lab to use biosensor data in our research projects, we needed an interface to pull in data from our Empatica E4, perform feature extraction, and return inferences from a trained model.  From our research, there was no existing all in one library to do this and major parts of this project did not exist.  Additionally, there was no Unity compatible way to process this data and perform actions from the output.  From a programming perspective, it is best if there was no string manipulation when interacting with the server, so there needed to be a true wrapper for the TCP client communications.  The development of the Biosensor Framework has allowed us to use these features reliably in all of our research projects.  There will be errors about the loaded dependencies, though the project should still run with those present.
 
 ### Dependencies
 
