@@ -24,8 +24,15 @@ For our lab to use biosensor data in our research projects, we needed an interfa
 
 ### Dependencies
 
-### Installation
+    .NETStandard 2.0
+        LightGBM (>= 2.2.3)
+        MathNet.Numerics (>= 4.15.0)
+        Microsoft.ML (>= 1.5.5)
+        Microsoft.ML.FastTree (>= 1.5.5)
+        Microsoft.ML.LightGbm (>= 1.5.5)
 
+### Installation
+The library can be installed using the NuGet package manager and is listed publicly.  For Unity, downloading the package and importing it through the Unity UI is the best approach.  This includes all of the dependency libraries, a test script, a test scene, and an example output file.  This example performs the same tasks as Example2 and needs to be supplied the E4 Streaming Server exe path, an output path, and your API key for your device.
 
 ### Basic Usage
 This repository has two example projects.  Example1 shows the basic usage to communicate with the server and pull data off of a biosensor.  Example2 expands Example1 by adding in Microsoft.ML inferencing.  Example2 will be used to explain the operation of the library.
