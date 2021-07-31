@@ -34,6 +34,8 @@ For our lab to use biosensor data in our research projects, we needed an interfa
 ### Installation
 The library can be installed using the [NuGet package manager](https://www.nuget.org/packages/Biosensor-Framework/) and is listed publicly.  For Unity, downloading the package and importing it through the Unity UI is the best approach.  This includes all of the dependency libraries, a test script, a test scene, and an example output file.  This example performs the same tasks as Example2 and needs to be supplied the E4 Streaming Server exe path, an output path, and your API key for your device.
 
+The following command can be used to install the package using the NuGet CLI:
+
 `Install-Package Biosensor-Framework -Version 1.0.0`
 
 ### Unity Package
