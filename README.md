@@ -39,7 +39,15 @@ The following command can be used to install the package using the NuGet CLI:
 `Install-Package Biosensor-Framework -Version 1.0.0`
 
 ### Unity Package
-The included Unity package includes the required DLLs, a test script, and an example output file.  Follow this [link](https://docs.unity3d.com/Manual/upm-ui-local.html) for instructions on installing Unity packages that are located on disk.
+The included Unity package includes the required DLLs, a test script, and an example output file.  To install the package, clone this repository and open the target Unity project. 
+
+Click on Assets -> Import Package -> Custom Package...
+
+![image](https://user-images.githubusercontent.com/22334349/127775654-de8f4aeb-92c4-4d99-8c17-1b8f3b738e78.png)
+
+Navigate to the [Unity Package](https://github.com/Munroe-Meyer-Institute-VR-Laboratory/Biosensor-Framework/tree/main/Unity%20Package) folder and click on the "BiosensorFramework_Unity.unitypackage" file.  When the file has loaded in, click "All" and "Import" to import the package into your project.
+
+![image](https://user-images.githubusercontent.com/22334349/127775776-724fa58d-6365-4613-9268-a722b357a8b5.png)
 
 ### Testing Installation
 Once the package has been installed, this repo can be cloned to get the test [datasets](https://github.com/Munroe-Meyer-Institute-VR-Laboratory/Biosensor-Framework/tree/main/Dataset) and the [trained models](https://github.com/Munroe-Meyer-Institute-VR-Laboratory/Biosensor-Framework/tree/main/Trained%20Models).  
