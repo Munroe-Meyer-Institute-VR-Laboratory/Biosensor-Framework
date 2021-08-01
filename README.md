@@ -41,19 +41,37 @@ The following command can be used to install the package using the NuGet CLI:
 ### Unity Package
 The included Unity package includes the required DLLs, a test script, and an example output file.
 
+### Testing Installation
+Once the package has been installed, this repo can be cloned to get the test [datasets](https://github.com/Munroe-Meyer-Institute-VR-Laboratory/Biosensor-Framework/tree/main/Dataset) and the [trained models](https://github.com/Munroe-Meyer-Institute-VR-Laboratory/Biosensor-Framework/tree/main/Trained%20Models).  Follow Example 1 to test the functionality of the Empatica E4 TCP server communication and window data gathering.  Follow Example 2 to test the functionality of Microsoft.ML for affective computing tasks with a connected body-worn sensor.  Follow Example 3 to demonstrate the functionality of Microsoft.ML for affective computing tasks without a connected body-worn sensor using the WESAD dataset. 
+
 ### Basic Usage
 This repository has two example projects.  Example1 shows the basic usage to communicate with the server and pull data off of a biosensor.  Example2 expands Example1 by adding in Microsoft.ML inferencing.  Example2 will be used to explain the operation of the library.
 
 ```
-        public static ServerClient Device1;
-        static ServerClient client;
-        // TODO: Fill these out with your own values
-        public static string APIKey = "";
-        public static string ServerPath = "";
+        using System;
+        using System.Diagnostics;
+        using System.IO;
+        using System.Threading;
+        using Microsoft.ML;
+
+        using MMIVR.BiosensorFramework.Biosensors.EmpaticaE4;
+        using MMIVR.BiosensorFramework.MachineLearningUtilities;
         
-        public static MLContext mlContext;
-        public static ITransformer Model;
-        public static DataViewSchema ModelSchema;
+        namespace Example2_ComputingWithMicrosoftML
+        {
+            class Program
+            {
+                public static ServerClient Device1;
+                static ServerClient client;
+                public static MLContext mlContext;
+                public static ITransformer Model;
+                public static DataViewSchema ModelSchema;
+                // TODO: Fill these out with your own values
+                public static string APIKey = "";
+                public static string ServerPath = @"";
+                public static string WesadDirectory = @"";
+                public static string SessionOutputPath = @"";
+                public static string ModelDir = @"";
 ```
 For each project, a client connection is established using the ServerClient class.  This handles the TCP initialization, command communication, and error handling.  Each device will have its own ServerClient instance, so Device1 is represented by a device name and a TCP connection.  Additionally, the API key and the path to the server executable need to be defined.  The API key can be found by following Empatica's directions from the Installation section.  The path to the server is found in the installation directory for the server (i.e. @"{installation path}\EmpaticaBLEServer.exe").
 
@@ -62,12 +80,12 @@ Next the Microsoft.ML variables are created.
         static void Main(string[] args)
         {
             mlContext = new MLContext();
-            Train.RunBenchmarks(out ITransformer RegModel, out ITransformer MultiModel, out ITransformer BinModel);
-            Console.ReadKey();
+            Train.RunBenchmarks(WesadDirectory, out ITransformer RegModel, out ITransformer MultiModel, out Model, ModelDir);
 ```
 In this example, the models are trained on the WESAD data using the RunBenchmarks function.  The best performing models for each class are output.  For this example, the binary classification model (BinModel) is used.
 ```
             Console.WriteLine("E4 Console Interface - Press ENTER to begin the client");
+            Console.ReadKey();
 
             Console.WriteLine("Step 1 - Start Empatica server");
             Utilities.StartE4ServerGUI(ServerPath);
@@ -84,6 +102,7 @@ The E4 server can also be started through the command line variant as shown.
             Console.WriteLine("Step 2 - Getting connected E4 devices");
             Utilities.ListDiscoveredDevices(client);
             Console.ReadKey();
+
             Console.WriteLine("     Available Devices:");
             Utilities.AvailableDevices.ForEach(i => Console.WriteLine("     Device Name: {0}", i));
             Console.ReadKey();
