@@ -9,6 +9,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Example1_ServerInterfacingC
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Example2_ComputingWithMicrosoftML", "..\Example2_ComputingWithMicrosoftML\Example2_ComputingWithMicrosoftML.csproj", "{C9907FB6-72B5-4AC5-8A51-82AB1733E571}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Example3_ComputingWithoutAnE4", "..\Example3_ComputingWithoutAnE4\Example3_ComputingWithoutAnE4.csproj", "{A1C2A033-D5EE-4449-B23D-89285943B50E}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -41,6 +43,14 @@ Global
 		{C9907FB6-72B5-4AC5-8A51-82AB1733E571}.Release|Any CPU.Build.0 = Release|Any CPU
 		{C9907FB6-72B5-4AC5-8A51-82AB1733E571}.Release|x64.ActiveCfg = Release|x64
 		{C9907FB6-72B5-4AC5-8A51-82AB1733E571}.Release|x64.Build.0 = Release|x64
+		{A1C2A033-D5EE-4449-B23D-89285943B50E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A1C2A033-D5EE-4449-B23D-89285943B50E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A1C2A033-D5EE-4449-B23D-89285943B50E}.Debug|x64.ActiveCfg = Debug|x64
+		{A1C2A033-D5EE-4449-B23D-89285943B50E}.Debug|x64.Build.0 = Debug|x64
+		{A1C2A033-D5EE-4449-B23D-89285943B50E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A1C2A033-D5EE-4449-B23D-89285943B50E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A1C2A033-D5EE-4449-B23D-89285943B50E}.Release|x64.ActiveCfg = Release|Any CPU
+		{A1C2A033-D5EE-4449-B23D-89285943B50E}.Release|x64.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

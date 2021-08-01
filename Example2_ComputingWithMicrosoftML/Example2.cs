@@ -27,9 +27,9 @@ namespace Example2_ComputingWithMicrosoftML
         {
             mlContext = new MLContext();
             Train.RunBenchmarks(WesadDirectory, out ITransformer RegModel, out ITransformer MultiModel, out Model, ModelDir);
-            Console.ReadKey();
 
             Console.WriteLine("E4 Console Interface - Press ENTER to begin the client");
+            Console.ReadKey();
 
             Console.WriteLine("Step 1 - Start Empatica server");
             Utilities.StartE4ServerGUI(ServerPath);
