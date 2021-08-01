@@ -53,7 +53,7 @@ Navigate to the [Unity Package](https://github.com/Munroe-Meyer-Institute-VR-Lab
 Once the package has been installed, this repo can be cloned to get the test [datasets](https://github.com/Munroe-Meyer-Institute-VR-Laboratory/Biosensor-Framework/tree/main/Dataset) and the [trained models](https://github.com/Munroe-Meyer-Institute-VR-Laboratory/Biosensor-Framework/tree/main/Trained%20Models).  
 Follow Example 1 to test the functionality of the Empatica E4 TCP server communication and window data gathering.  
 Follow Example 2 to test the functionality of Microsoft.ML for affective computing tasks with a connected body-worn sensor.  
-Follow Example 3 to demonstrate the functionality of Microsoft.ML for affective computing tasks without a connected body-worn sensor using the WESAD dataset. 
+Follow Example 3 to demonstrate the functionality of Microsoft.ML for affective computing tasks using the WESAD dataset without a connected body-worn sensor. 
 
 ### Basic Usage
 This repository has two example projects.  Example1 shows the basic usage to communicate with the server and pull data off of a biosensor.  Example2 expands Example1 by adding in Microsoft.ML inferencing.  Example2 will be used to explain the operation of the library.
