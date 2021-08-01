@@ -4,6 +4,13 @@ using System.Threading;
 
 using MMIVR.BiosensorFramework.Biosensors.EmpaticaE4;
 
+/// <summary>
+/// Example 1 - Server Interfacing Console
+/// This example is meant to demonstrate the base functionality of the Empatica E4 interfacing via the provided TCP server.
+/// 
+/// The Virtual Reality Laboratory in the Munroe Meyer Institute at the University of Nebraska Medical Center
+/// Author: Walker Arce
+/// </summary>
 namespace Example1_ServerInterfacingConsole
 {
     class Program

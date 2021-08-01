@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.IO;
-using System.Threading;
 using MathNet.Numerics.Statistics;
 using Microsoft.ML;
 
@@ -10,6 +8,18 @@ using MMIVR.BiosensorFramework.Extensions;
 using MMIVR.BiosensorFramework.InputPipeline;
 using MMIVR.BiosensorFramework.MachineLearningUtilities;
 
+/// <summary>
+/// Example 3 - Computing Without An E4
+/// This example is meant to show how to use the core library for affective computing tasks without the body-worn sensor.
+/// 
+/// The Virtual Reality Laboratory in the Munroe Meyer Institute at the University of Nebraska Medical Center
+/// Author: Walker Arce
+/// 
+/// Copy the 'Dataset' folder from the main repo folder to the 'Biosensor-Framework\Example3_ComputingWithoutAnE4\bin\x64\{Release or Debug}'
+/// Copy the BinModel.zip trained model to a new folder called 'Models' in the same bin folder
+/// For more information on running this example, visit the repository
+/// https://github.com/Munroe-Meyer-Institute-VR-Laboratory/Biosensor-Framework
+/// </summary>
 namespace Example3_ComputingWithoutAnE4
 {
     class Program
@@ -20,7 +30,6 @@ namespace Example3_ComputingWithoutAnE4
         public static int WindowSize = 5;
         // Output and input filepaths
         public static string WesadDirectory = Path.Combine(Environment.CurrentDirectory, "Dataset");
-        public static string SessionOutputPath = Path.Combine(Environment.CurrentDirectory, "Output");
         public static string ModelDir = Path.Combine(Environment.CurrentDirectory, "Models");
 
         static void Main(string[] args)

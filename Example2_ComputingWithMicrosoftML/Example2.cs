@@ -7,6 +7,13 @@ using Microsoft.ML;
 using MMIVR.BiosensorFramework.Biosensors.EmpaticaE4;
 using MMIVR.BiosensorFramework.MachineLearningUtilities;
 
+/// <summary>
+/// Example 2 - Computing With Microsoft ML
+/// This example is meant to demonstrate the base functionality of the Microsoft.ML for affective computing tasks with a connected body-worn sensor.
+/// 
+/// The Virtual Reality Laboratory in the Munroe Meyer Institute at the University of Nebraska Medical Center
+/// Author: Walker Arce
+/// </summary>
 namespace Example2_ComputingWithMicrosoftML
 {
     class Program
