@@ -1,3 +1,6 @@
+[![status](https://joss.theoj.org/papers/ce2098ed62af72faa9a4817dabdc34e3/status.svg)](https://joss.theoj.org/papers/ce2098ed62af72faa9a4817dabdc34e3)
+
+
 ## Biosensor Framework: A C# Library for Affective Computing
 ### Parties Involved
 Institution: Munroe Meyer Institute in the University of Nebraska Medical Center<br>
