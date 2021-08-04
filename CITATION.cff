@@ -1,0 +1,12 @@
+cff-version: 1.1.0
+message: "If you use this software, please cite it as below."
+authors:
+  - family-names: Arce
+    given-names: Walker
+    orcid: https://orcid.org/0000-0003-0819-0710
+  - family-names: Gehringer
+    given-names: James
+    orcid: https://orcid.org/0000-0003-3457-2288
+title: Munroe-Meyer-Institute-VR-Laboratory/Biosensor-Framework: Biosensor-Framework
+version: v1.0
+date-released: 2021-08-04
