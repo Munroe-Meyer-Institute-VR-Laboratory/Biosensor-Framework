@@ -1,5 +1,4 @@
-[![status](https://joss.theoj.org/papers/ce2098ed62af72faa9a4817dabdc34e3/status.svg)](https://joss.theoj.org/papers/ce2098ed62af72faa9a4817dabdc34e3)
-
+[![status](https://joss.theoj.org/papers/ce2098ed62af72faa9a4817dabdc34e3/status.svg)](https://joss.theoj.org/papers/ce2098ed62af72faa9a4817dabdc34e3) [![DOI](https://zenodo.org/badge/354086592.svg)](https://zenodo.org/badge/latestdoi/354086592)
 
 ## Biosensor Framework: A C# Library for Affective Computing
 ### Parties Involved
