@@ -170,7 +170,8 @@ The data can be manipulated once the timer expires for the window size.  The dat
 ### Class Documentation
 [Biosensor Framework Documentation](https://github.com/Munroe-Meyer-Institute-VR-Laboratory/Biosensor-Framework/blob/main/BiosensorFramework/BiosensorFrameworkDoc.md)
 
-### Citation
+### Paper Citation
+Arce, W., Gehringer, J., (2021). Biosensor Framework: A C# Library for Affective Computing. Journal of Open Source Software, 6(64), 3455, https://doi.org/10.21105/joss.03455
 
 ### Contact
 To address issues in the codebase, please create an issue in the repo and it will be addressed by a maintainer.  For collaboration inquiries, please address Dr. James Gehringer (james.gehringer@unmc.edu).  For technical questions, please address Walker Arce (walker.arce@unmc.edu).
