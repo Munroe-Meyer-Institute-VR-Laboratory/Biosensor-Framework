@@ -60,13 +60,13 @@
   - [Features](#F-MMIVR-BiosensorFramework-MachineLearningUtilities-ExtractedBinFeatures-Features 'MMIVR.BiosensorFramework.MachineLearningUtilities.ExtractedBinFeatures.Features')
   - [Label](#F-MMIVR-BiosensorFramework-MachineLearningUtilities-ExtractedBinFeatures-Label 'MMIVR.BiosensorFramework.MachineLearningUtilities.ExtractedBinFeatures.Label')
 - [ExtractedFeatures](#T-MMIVR-BiosensorFramework-MachineLearningUtilities-ExtractedFeatures 'MMIVR.BiosensorFramework.MachineLearningUtilities.ExtractedFeatures')
-  - [StressFeatures](#F-MMIVR-BiosensorFramework-MachineLearningUtilities-ExtractedFeatures-StressFeatures 'MMIVR.BiosensorFramework.MachineLearningUtilities.ExtractedFeatures.StressFeatures')
+  - [Features](#F-MMIVR-BiosensorFramework-MachineLearningUtilities-ExtractedFeatures-Features 'MMIVR.BiosensorFramework.MachineLearningUtilities.ExtractedFeatures.Features')
 - [ExtractedMultiFeatures](#T-MMIVR-BiosensorFramework-MachineLearningUtilities-ExtractedMultiFeatures 'MMIVR.BiosensorFramework.MachineLearningUtilities.ExtractedMultiFeatures')
+  - [Features](#F-MMIVR-BiosensorFramework-MachineLearningUtilities-ExtractedMultiFeatures-Features 'MMIVR.BiosensorFramework.MachineLearningUtilities.ExtractedMultiFeatures.Features')
   - [Result](#F-MMIVR-BiosensorFramework-MachineLearningUtilities-ExtractedMultiFeatures-Result 'MMIVR.BiosensorFramework.MachineLearningUtilities.ExtractedMultiFeatures.Result')
-  - [StressFeatures](#F-MMIVR-BiosensorFramework-MachineLearningUtilities-ExtractedMultiFeatures-StressFeatures 'MMIVR.BiosensorFramework.MachineLearningUtilities.ExtractedMultiFeatures.StressFeatures')
 - [ExtractedRegFeatures](#T-MMIVR-BiosensorFramework-MachineLearningUtilities-ExtractedRegFeatures 'MMIVR.BiosensorFramework.MachineLearningUtilities.ExtractedRegFeatures')
+  - [Features](#F-MMIVR-BiosensorFramework-MachineLearningUtilities-ExtractedRegFeatures-Features 'MMIVR.BiosensorFramework.MachineLearningUtilities.ExtractedRegFeatures.Features')
   - [Result](#F-MMIVR-BiosensorFramework-MachineLearningUtilities-ExtractedRegFeatures-Result 'MMIVR.BiosensorFramework.MachineLearningUtilities.ExtractedRegFeatures.Result')
-  - [StressFeatures](#F-MMIVR-BiosensorFramework-MachineLearningUtilities-ExtractedRegFeatures-StressFeatures 'MMIVR.BiosensorFramework.MachineLearningUtilities.ExtractedRegFeatures.StressFeatures')
 - [FFT](#T-MMIVR-BiosensorFramework-DataProcessing-ThirdParty-DSPLib-FFT 'MMIVR.BiosensorFramework.DataProcessing.ThirdParty.DSPLib.FFT')
   - [#ctor()](#M-MMIVR-BiosensorFramework-DataProcessing-ThirdParty-DSPLib-FFT-#ctor 'MMIVR.BiosensorFramework.DataProcessing.ThirdParty.DSPLib.FFT.#ctor')
   - [BitReverse()](#M-MMIVR-BiosensorFramework-DataProcessing-ThirdParty-DSPLib-FFT-BitReverse-System-UInt32,System-UInt32- 'MMIVR.BiosensorFramework.DataProcessing.ThirdParty.DSPLib.FFT.BitReverse(System.UInt32,System.UInt32)')
@@ -132,6 +132,7 @@
   - [MakeMultiPrediction(mlContext,LiveData,Model)](#M-MMIVR-BiosensorFramework-MachineLearningUtilities-Predict-MakeMultiPrediction-Microsoft-ML-MLContext,MMIVR-BiosensorFramework-MachineLearningUtilities-ExtractedMultiFeatures,Microsoft-ML-ITransformer- 'MMIVR.BiosensorFramework.MachineLearningUtilities.Predict.MakeMultiPrediction(Microsoft.ML.MLContext,MMIVR.BiosensorFramework.MachineLearningUtilities.ExtractedMultiFeatures,Microsoft.ML.ITransformer)')
   - [MakeRegPrediction(mlContext,LiveData,Model)](#M-MMIVR-BiosensorFramework-MachineLearningUtilities-Predict-MakeRegPrediction-Microsoft-ML-MLContext,Microsoft-ML-IDataView,Microsoft-ML-ITransformer- 'MMIVR.BiosensorFramework.MachineLearningUtilities.Predict.MakeRegPrediction(Microsoft.ML.MLContext,Microsoft.ML.IDataView,Microsoft.ML.ITransformer)')
   - [PredictWindow(mlContext,Model,WindowReadings)](#M-MMIVR-BiosensorFramework-MachineLearningUtilities-Predict-PredictWindow-Microsoft-ML-MLContext,Microsoft-ML-ITransformer,System-Collections-Generic-List{System-Collections-Generic-List{System-Double}}- 'MMIVR.BiosensorFramework.MachineLearningUtilities.Predict.PredictWindow(Microsoft.ML.MLContext,Microsoft.ML.ITransformer,System.Collections.Generic.List{System.Collections.Generic.List{System.Double}})')
+  - [PredictWindowMulti(mlContext,Model,WindowReadings)](#M-MMIVR-BiosensorFramework-MachineLearningUtilities-Predict-PredictWindowMulti-Microsoft-ML-MLContext,Microsoft-ML-ITransformer,System-Collections-Generic-List{System-Collections-Generic-List{System-Double}}- 'MMIVR.BiosensorFramework.MachineLearningUtilities.Predict.PredictWindowMulti(Microsoft.ML.MLContext,Microsoft.ML.ITransformer,System.Collections.Generic.List{System.Collections.Generic.List{System.Double}})')
 - [PredictionBinResult](#T-MMIVR-BiosensorFramework-MachineLearningUtilities-PredictionBinResult 'MMIVR.BiosensorFramework.MachineLearningUtilities.PredictionBinResult')
   - [Prediction](#F-MMIVR-BiosensorFramework-MachineLearningUtilities-PredictionBinResult-Prediction 'MMIVR.BiosensorFramework.MachineLearningUtilities.PredictionBinResult.Prediction')
   - [Probability](#F-MMIVR-BiosensorFramework-MachineLearningUtilities-PredictionBinResult-Probability 'MMIVR.BiosensorFramework.MachineLearningUtilities.PredictionBinResult.Probability')
@@ -205,7 +206,7 @@
   - [PrintBinMetrics(metrics)](#M-MMIVR-BiosensorFramework-MachineLearningUtilities-Train-PrintBinMetrics-Microsoft-ML-Data-BinaryClassificationMetrics- 'MMIVR.BiosensorFramework.MachineLearningUtilities.Train.PrintBinMetrics(Microsoft.ML.Data.BinaryClassificationMetrics)')
   - [PrintMultiMetrics(metrics)](#M-MMIVR-BiosensorFramework-MachineLearningUtilities-Train-PrintMultiMetrics-Microsoft-ML-Data-MulticlassClassificationMetrics- 'MMIVR.BiosensorFramework.MachineLearningUtilities.Train.PrintMultiMetrics(Microsoft.ML.Data.MulticlassClassificationMetrics)')
   - [PrintRegMetrics(metrics)](#M-MMIVR-BiosensorFramework-MachineLearningUtilities-Train-PrintRegMetrics-Microsoft-ML-Data-RegressionMetrics- 'MMIVR.BiosensorFramework.MachineLearningUtilities.Train.PrintRegMetrics(Microsoft.ML.Data.RegressionMetrics)')
-  - [RunBenchmarks(DirectoryPath,BestRegModel,BestMultiModel,BestBinModel)](#M-MMIVR-BiosensorFramework-MachineLearningUtilities-Train-RunBenchmarks-System-String,Microsoft-ML-ITransformer@,Microsoft-ML-ITransformer@,Microsoft-ML-ITransformer@- 'MMIVR.BiosensorFramework.MachineLearningUtilities.Train.RunBenchmarks(System.String,Microsoft.ML.ITransformer@,Microsoft.ML.ITransformer@,Microsoft.ML.ITransformer@)')
+  - [RunBenchmarks(DirectoryPath,BestRegModel,BestMultiModel,BestBinModel,ModelDir)](#M-MMIVR-BiosensorFramework-MachineLearningUtilities-Train-RunBenchmarks-System-String,Microsoft-ML-ITransformer@,Microsoft-ML-ITransformer@,Microsoft-ML-ITransformer@,System-String- 'MMIVR.BiosensorFramework.MachineLearningUtilities.Train.RunBenchmarks(System.String,Microsoft.ML.ITransformer@,Microsoft.ML.ITransformer@,Microsoft.ML.ITransformer@,System.String)')
   - [TrimFeatureSet(FeatureSet,LabelsToRemove)](#M-MMIVR-BiosensorFramework-MachineLearningUtilities-Train-TrimFeatureSet-System-Collections-Generic-List{MMIVR-BiosensorFramework-MachineLearningUtilities-ExtractedMultiFeatures},System-Collections-Generic-List{System-Int32}- 'MMIVR.BiosensorFramework.MachineLearningUtilities.Train.TrimFeatureSet(System.Collections.Generic.List{MMIVR.BiosensorFramework.MachineLearningUtilities.ExtractedMultiFeatures},System.Collections.Generic.List{System.Int32})')
 - [Type](#T-MMIVR-BiosensorFramework-DataProcessing-ThirdParty-DSPLib-DSP-Window-Type 'MMIVR.BiosensorFramework.DataProcessing.ThirdParty.DSPLib.DSP.Window.Type')
 - [Utilities](#T-MMIVR-BiosensorFramework-Biosensors-EmpaticaE4-Utilities 'MMIVR.BiosensorFramework.Biosensors.EmpaticaE4.Utilities')
@@ -1038,8 +1039,8 @@ MMIVR.BiosensorFramework.MachineLearningUtilities
 
 Class to hold extracted features for inferencing.
 
-<a name='F-MMIVR-BiosensorFramework-MachineLearningUtilities-ExtractedFeatures-StressFeatures'></a>
-### StressFeatures `constants`
+<a name='F-MMIVR-BiosensorFramework-MachineLearningUtilities-ExtractedFeatures-Features'></a>
+### Features `constants`
 
 ##### Summary
 
@@ -1056,19 +1057,19 @@ MMIVR.BiosensorFramework.MachineLearningUtilities
 
 Class to hold extracted features for training a multi-class model.
 
+<a name='F-MMIVR-BiosensorFramework-MachineLearningUtilities-ExtractedMultiFeatures-Features'></a>
+### Features `constants`
+
+##### Summary
+
+Array to store the hand crafted features.
+
 <a name='F-MMIVR-BiosensorFramework-MachineLearningUtilities-ExtractedMultiFeatures-Result'></a>
 ### Result `constants`
 
 ##### Summary
 
 The label for the stress features.
-
-<a name='F-MMIVR-BiosensorFramework-MachineLearningUtilities-ExtractedMultiFeatures-StressFeatures'></a>
-### StressFeatures `constants`
-
-##### Summary
-
-Array to store the hand crafted features.
 
 <a name='T-MMIVR-BiosensorFramework-MachineLearningUtilities-ExtractedRegFeatures'></a>
 ## ExtractedRegFeatures `type`
@@ -1081,19 +1082,19 @@ MMIVR.BiosensorFramework.MachineLearningUtilities
 
 Class to hold extracted features for training a regression model.
 
+<a name='F-MMIVR-BiosensorFramework-MachineLearningUtilities-ExtractedRegFeatures-Features'></a>
+### Features `constants`
+
+##### Summary
+
+Array to store the hand crafted features.
+
 <a name='F-MMIVR-BiosensorFramework-MachineLearningUtilities-ExtractedRegFeatures-Result'></a>
 ### Result `constants`
 
 ##### Summary
 
 The label for the stress features.
-
-<a name='F-MMIVR-BiosensorFramework-MachineLearningUtilities-ExtractedRegFeatures-StressFeatures'></a>
-### StressFeatures `constants`
-
-##### Summary
-
-Array to store the hand crafted features.
 
 <a name='T-MMIVR-BiosensorFramework-DataProcessing-ThirdParty-DSPLib-FFT'></a>
 ## FFT `type`
@@ -2118,6 +2119,21 @@ Takes the readings from the windowed data, extracts the features, and runs it th
 | Model | [Microsoft.ML.ITransformer](#T-Microsoft-ML-ITransformer 'Microsoft.ML.ITransformer') | The loaded model for operations to be performed on. |
 | WindowReadings | [System.Collections.Generic.List{System.Collections.Generic.List{System.Double}}](http://msdn.microsoft.com/query/dev14.query?appId=Dev14IDEF1&l=EN-US&k=k:System.Collections.Generic.List 'System.Collections.Generic.List{System.Collections.Generic.List{System.Double}}') | Packaged List of List of sensor readings. |
 
+<a name='M-MMIVR-BiosensorFramework-MachineLearningUtilities-Predict-PredictWindowMulti-Microsoft-ML-MLContext,Microsoft-ML-ITransformer,System-Collections-Generic-List{System-Collections-Generic-List{System-Double}}-'></a>
+### PredictWindowMulti(mlContext,Model,WindowReadings) `method`
+
+##### Summary
+
+Takes the readings from the windowed data, extracts the features, and runs it through a prediction pipeline.
+
+##### Parameters
+
+| Name | Type | Description |
+| ---- | ---- | ----------- |
+| mlContext | [Microsoft.ML.MLContext](#T-Microsoft-ML-MLContext 'Microsoft.ML.MLContext') | Microsoft ML context for operations to be performed in. |
+| Model | [Microsoft.ML.ITransformer](#T-Microsoft-ML-ITransformer 'Microsoft.ML.ITransformer') | The loaded model for operations to be performed on. |
+| WindowReadings | [System.Collections.Generic.List{System.Collections.Generic.List{System.Double}}](http://msdn.microsoft.com/query/dev14.query?appId=Dev14IDEF1&l=EN-US&k=k:System.Collections.Generic.List 'System.Collections.Generic.List{System.Collections.Generic.List{System.Double}}') | Packaged List of List of sensor readings. |
+
 <a name='T-MMIVR-BiosensorFramework-MachineLearningUtilities-PredictionBinResult'></a>
 ## PredictionBinResult `type`
 
@@ -2914,8 +2930,8 @@ Prints the performance metrics of the regression classification test to Console.
 | ---- | ---- | ----------- |
 | metrics | [Microsoft.ML.Data.RegressionMetrics](#T-Microsoft-ML-Data-RegressionMetrics 'Microsoft.ML.Data.RegressionMetrics') | The metrics from the test set. |
 
-<a name='M-MMIVR-BiosensorFramework-MachineLearningUtilities-Train-RunBenchmarks-System-String,Microsoft-ML-ITransformer@,Microsoft-ML-ITransformer@,Microsoft-ML-ITransformer@-'></a>
-### RunBenchmarks(DirectoryPath,BestRegModel,BestMultiModel,BestBinModel) `method`
+<a name='M-MMIVR-BiosensorFramework-MachineLearningUtilities-Train-RunBenchmarks-System-String,Microsoft-ML-ITransformer@,Microsoft-ML-ITransformer@,Microsoft-ML-ITransformer@,System-String-'></a>
+### RunBenchmarks(DirectoryPath,BestRegModel,BestMultiModel,BestBinModel,ModelDir) `method`
 
 ##### Summary
 
@@ -2929,6 +2945,7 @@ Runs regression, multi-class, and binary classification tasks on the WESAD datas
 | BestRegModel | [Microsoft.ML.ITransformer@](#T-Microsoft-ML-ITransformer@ 'Microsoft.ML.ITransformer@') | The best regression ITransformer model. |
 | BestMultiModel | [Microsoft.ML.ITransformer@](#T-Microsoft-ML-ITransformer@ 'Microsoft.ML.ITransformer@') | The best multi-class ITransformer model. |
 | BestBinModel | [Microsoft.ML.ITransformer@](#T-Microsoft-ML-ITransformer@ 'Microsoft.ML.ITransformer@') | The best binary ITransformer model. |
+| ModelDir | [System.String](http://msdn.microsoft.com/query/dev14.query?appId=Dev14IDEF1&l=EN-US&k=k:System.String 'System.String') | The top directory to save the best models to. Default null. |
 
 <a name='M-MMIVR-BiosensorFramework-MachineLearningUtilities-Train-TrimFeatureSet-System-Collections-Generic-List{MMIVR-BiosensorFramework-MachineLearningUtilities-ExtractedMultiFeatures},System-Collections-Generic-List{System-Int32}-'></a>
 ### TrimFeatureSet(FeatureSet,LabelsToRemove) `method`

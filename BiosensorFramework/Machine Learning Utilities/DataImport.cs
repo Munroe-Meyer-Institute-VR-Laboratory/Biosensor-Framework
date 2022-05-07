@@ -289,7 +289,7 @@ namespace MMIVR.BiosensorFramework.MachineLearningUtilities
 
                     MultiFeatureSet.Add(new ExtractedMultiFeatures()
                     {
-                        StressFeatures = SubjectFeatures.ToArray().ToFloat(),
+                        Features = SubjectFeatures.ToArray().ToFloat(),
                         Result = (uint)Dataset.Item3.GetSubArray(i * 700, (i + WindowSize) * 700).Mean(),
                     });
 

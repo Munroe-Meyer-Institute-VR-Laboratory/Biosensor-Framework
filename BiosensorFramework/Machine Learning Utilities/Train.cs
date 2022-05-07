@@ -331,13 +331,13 @@ namespace MMIVR.BiosensorFramework.MachineLearningUtilities
                     ConFeatures.Add(new ExtractedBinFeatures()
                     {
                         Label = false,
-                        Features = FeatureSet[i].StressFeatures
+                        Features = FeatureSet[i].Features
                     });
                 else
                     ConFeatures.Add(new ExtractedBinFeatures()
                     {
                         Label = FeatureSet[i].Result == 1,
-                        Features = FeatureSet[i].StressFeatures,
+                        Features = FeatureSet[i].Features,
                     });
             }
             return ConFeatures;
@@ -355,7 +355,7 @@ namespace MMIVR.BiosensorFramework.MachineLearningUtilities
                 ConFeatures.Add(new ExtractedRegFeatures()
                 {
                     Result = FeatureSet[i].Result,
-                    StressFeatures = FeatureSet[i].StressFeatures,
+                    Features = FeatureSet[i].Features,
                 });
             }
             return ConFeatures;

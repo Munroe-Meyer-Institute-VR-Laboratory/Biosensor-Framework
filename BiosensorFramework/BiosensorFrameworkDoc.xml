@@ -1220,7 +1220,7 @@
             Class to hold extracted features for inferencing.
             </summary>
         </member>
-        <member name="F:MMIVR.BiosensorFramework.MachineLearningUtilities.ExtractedFeatures.StressFeatures">
+        <member name="F:MMIVR.BiosensorFramework.MachineLearningUtilities.ExtractedFeatures.Features">
             <summary>
             Array to store the hand crafted features.
             </summary>
@@ -1230,7 +1230,7 @@
             Class to hold extracted features for training a multi-class model.
             </summary>
         </member>
-        <member name="F:MMIVR.BiosensorFramework.MachineLearningUtilities.ExtractedMultiFeatures.StressFeatures">
+        <member name="F:MMIVR.BiosensorFramework.MachineLearningUtilities.ExtractedMultiFeatures.Features">
             <summary>
             Array to store the hand crafted features.
             </summary>
@@ -1245,7 +1245,7 @@
             Class to hold extracted features for training a regression model.
             </summary>
         </member>
-        <member name="F:MMIVR.BiosensorFramework.MachineLearningUtilities.ExtractedRegFeatures.StressFeatures">
+        <member name="F:MMIVR.BiosensorFramework.MachineLearningUtilities.ExtractedRegFeatures.Features">
             <summary>
             Array to store the hand crafted features.
             </summary>
@@ -1391,6 +1391,14 @@
             <param name="Model">The loaded model for operations to be performed on.</param>
             <param name="WindowReadings">Packaged List of List of sensor readings.</param>
         </member>
+        <member name="M:MMIVR.BiosensorFramework.MachineLearningUtilities.Predict.PredictWindowMulti(Microsoft.ML.MLContext,Microsoft.ML.ITransformer,System.Collections.Generic.List{System.Collections.Generic.List{System.Double}})">
+            <summary>
+            Takes the readings from the windowed data, extracts the features, and runs it through a prediction pipeline.
+            </summary>
+            <param name="mlContext">Microsoft ML context for operations to be performed in.</param>
+            <param name="Model">The loaded model for operations to be performed on.</param>
+            <param name="WindowReadings">Packaged List of List of sensor readings.</param>
+        </member>
         <member name="M:MMIVR.BiosensorFramework.MachineLearningUtilities.Predict.MakeMultiPrediction(Microsoft.ML.MLContext,MMIVR.BiosensorFramework.MachineLearningUtilities.ExtractedMultiFeatures,Microsoft.ML.ITransformer)">
             <summary>
             Performs a prediction on a dataset for multi-class models.
@@ -1423,7 +1431,7 @@
             Class to perform training of Microsoft.ML models.
             </summary>
         </member>
-        <member name="M:MMIVR.BiosensorFramework.MachineLearningUtilities.Train.RunBenchmarks(System.String,Microsoft.ML.ITransformer@,Microsoft.ML.ITransformer@,Microsoft.ML.ITransformer@)">
+        <member name="M:MMIVR.BiosensorFramework.MachineLearningUtilities.Train.RunBenchmarks(System.String,Microsoft.ML.ITransformer@,Microsoft.ML.ITransformer@,Microsoft.ML.ITransformer@,System.String)">
             <summary>
             Runs regression, multi-class, and binary classification tasks on the WESAD dataset and compares performance.  Returns the best performing model of each category.
             </summary>
@@ -1431,6 +1439,7 @@
             <param name="BestRegModel">The best regression ITransformer model.</param>
             <param name="BestMultiModel">The best multi-class ITransformer model.</param>
             <param name="BestBinModel">The best binary ITransformer model.</param>
+            <param name="ModelDir">The top directory to save the best models to. Default null.</param>
         </member>
         <member name="M:MMIVR.BiosensorFramework.MachineLearningUtilities.Train.PrintBinMetrics(Microsoft.ML.Data.BinaryClassificationMetrics)">
             <summary>
