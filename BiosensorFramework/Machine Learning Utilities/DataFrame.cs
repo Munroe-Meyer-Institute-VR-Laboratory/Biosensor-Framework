@@ -11,7 +11,7 @@ namespace MMIVR.BiosensorFramework.MachineLearningUtilities
         /// Array to store the hand crafted features.
         /// </summary>
         [VectorType(119)]
-        public float[] StressFeatures;
+        public float[] Features;
     }
     /// <summary>
     /// Class to hold extracted features for training a multi-class model.
@@ -22,7 +22,7 @@ namespace MMIVR.BiosensorFramework.MachineLearningUtilities
         /// Array to store the hand crafted features.
         /// </summary>
         [VectorType(119)]
-        public float[] StressFeatures;
+        public float[] Features;
         /// <summary>
         /// The label for the stress features.
         /// </summary>
@@ -37,7 +37,7 @@ namespace MMIVR.BiosensorFramework.MachineLearningUtilities
         /// Array to store the hand crafted features.
         /// </summary>
         [VectorType(119)]
-        public float[] StressFeatures;
+        public float[] Features;
         /// <summary>
         /// The label for the stress features.
         /// </summary>

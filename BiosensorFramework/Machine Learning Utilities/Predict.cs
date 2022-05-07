@@ -58,6 +58,39 @@ namespace MMIVR.BiosensorFramework.MachineLearningUtilities
             return Prediction;
         }
         /// <summary>
+        /// Takes the readings from the windowed data, extracts the features, and runs it through a prediction pipeline.
+        /// </summary>
+        /// <param name="mlContext">Microsoft ML context for operations to be performed in.</param>
+        /// <param name="Model">The loaded model for operations to be performed on.</param>
+        /// <param name="WindowReadings">Packaged List of List of sensor readings.</param>
+        public static PredictionMultiResult PredictWindowMulti(MLContext mlContext, ITransformer Model, List<List<double>> WindowReadings)
+        {
+            List<double> Features = new List<double>();
+            int WindowCount = (int)Math.Round(WindowReadings[0].ToArray().Length / 96.0, 0, MidpointRounding.AwayFromZero);
+            WindowCount = WindowCount > 5 ? 5 : WindowCount;
+            for (int i = 0; i < WindowCount; i++)
+            {
+                Features.AddRange(SignalProcessing.ProcessAccSignal(WindowReadings[0].ToArray().GetSubArray(i * 96, (i + 1) * 96)));
+                Features.AddRange(SignalProcessing.ProcessAccSignal(WindowReadings[1].ToArray().GetSubArray(i * 32, (i + 1) * 32)));
+                Features.AddRange(SignalProcessing.ProcessAccSignal(WindowReadings[2].ToArray().GetSubArray(i * 32, (i + 1) * 32)));
+                Features.AddRange(SignalProcessing.ProcessAccSignal(WindowReadings[3].ToArray().GetSubArray(i * 32, (i + 1) * 32)));
+            }
+            for (int i = 0; i < (5 - WindowCount) * 4; i++)
+            {
+                Features.AddRange(new double[4]);
+            }
+            Features.AddRange(SignalProcessing.ProcessPpgSignal(WindowReadings[4].ToArray()));
+            Features.AddRange(SignalProcessing.ProcessEdaSignal(WindowReadings[5].ToArray()));
+            Features.AddRange(SignalProcessing.ProcessTmpSignal(WindowReadings[6].ToArray()));
+
+            ExtractedMultiFeatures WindowFeatures = new ExtractedMultiFeatures()
+            {
+                Features = Features.ToArray().ToFloat(),
+            };
+            PredictionMultiResult Prediction = MakeMultiPrediction(mlContext, WindowFeatures, Model);
+            return Prediction;
+        }
+        /// <summary>
         /// Performs a prediction on a dataset for multi-class models.
         /// </summary>
         /// <param name="mlContext">Microsoft ML context for operations to be performed in.</param>
